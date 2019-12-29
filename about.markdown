@@ -4,15 +4,6 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
-
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
-
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
-
-
-[jekyll-organization]: https://github.com/jekyll
+This is the personal github page for Mohsen Kiskani. I am currently an applied researcher at Expedia Group working on auction bidding algorithms. I have a PhD in 
+Electrical Engineering from University of California Santa Cruz. I have also been a postdoctoral researcher in the same institute. Currently, I am interested in 
+machine learning and statistics.  

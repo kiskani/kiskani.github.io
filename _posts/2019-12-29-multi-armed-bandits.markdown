@@ -89,6 +89,8 @@ def compute_list_cumulative(A):
     for i in range(1, len(A)):
         B.append(B[-1] + A[i])
     return B
+{% endhighlight %}
+{% highlight python %}
 T = 100000
 steps = list(range(1, T+1))
 ucb_rewards, ucb_regrets, ucb_actions = ucb_algorithm(T)
