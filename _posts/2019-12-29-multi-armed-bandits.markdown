@@ -55,7 +55,7 @@ def full_exploitation(t):
     regrets = [qa[max_idx]]*t
     return [multiArmedBandit(max_idx) for _ in range(t)], regrets, [max_idx]*t
 {% endhighlight %}
-Then, the regret bound grows linearly with time `t` but if they follow the `Upper Confidence Bound` algorithm as 
+Then, the regret bound grows linearly with time `t` but if they follow the `Upper Confidence Bound` algorithm <meta http-equiv="refresh" content="0; url=https://lilianweng.github.io/lil-log" /> as 
 {% highlight python %}
 def ucb_algorithm(t):
     assert t>3, "t should be greater than the number of arms"
