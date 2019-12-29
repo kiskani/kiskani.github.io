@@ -4,7 +4,13 @@ title:  "Upper Confidence Bound algorithm in Multi-Armed Bandits"
 date:   2019-12-28 20:39:11 -0800
 categories: multi-armed-bandits
 ---
-In this post, I will try to explain some interesting ideas around multi-armed bandits. I will implement the greedy exploitation algorithm along with the Upper Confidence Bound algorithm in Python for a simple multi-armed bandit problem. Defining a simple multi-armed bandit as follows
+In this post, I will try to explain some interesting ideas around multi-armed bandits. I will implement the greedy exploitation algorithm along with the Upper Confidence Bound algorithm in Python for a simple multi-armed bandit problem. 
+{% highlight python %}
+import numpy as np
+import math 
+import matplotlib.pyplot as plt
+{% endhighlight %}
+Defining a simple multi-armed bandit as follows
 {% highlight python %}
 def multiArmedBandit(k):
     if k == 0:
@@ -74,3 +80,28 @@ def ucb_algorithm(t):
         regrets.append(qa[action])
     return rewards, regrets, actions
 {% endhighlight %}
+then the regret bound increases logarithmically with `t`. Here is the code to see the results,
+{% highlight python %}
+def compute_list_cumulative(A):
+    if len(A) < 1: 
+        return []
+    B = [A[0]]
+    for i in range(1, len(A)):
+        B.append(B[-1] + A[i])
+    return B
+T = 100000
+steps = list(range(1, T+1))
+ucb_rewards, ucb_regrets, ucb_actions = ucb_algorithm(T)
+greedy_rewards, greedy_regrets, greedy_actions = full_exploitation(T)
+greedy_regrets_cumul = compute_list_cumulative(greedy_regrets)
+ucb_regrets_cumul = compute_list_cumulative(ucb_regrets)
+plt.figure(figsize=(14,4))
+plt.plot(steps, greedy_regrets_cumul, label = 'Greedy regrets')
+plt.plot(steps, ucb_regrets_cumul, label = 'UCB regrets')
+plt.legend(loc='right')
+plt.show()
+{% endhighlight %}
+And this plot shows the regret bounds.
+![Regret Bounds](regret_bounds.png)
+A summary of this code is available in the following notebook.
+![Code](multi-armed-bandit.ipynb)
