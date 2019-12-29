@@ -103,5 +103,4 @@ plt.show()
 {% endhighlight %}
 And this plot shows the regret bounds.
 ![Regret Bounds](regret_bounds.png)
-A summary of this code is available in the following notebook.
-![Code](multi-armed-bandit.ipynb)
+A summary of this code is available in [this notebook.](https://github.com/kiskani/kiskani.github.io/blob/master/multi-armed-bandits/2019/12/29/multi-armed-bandit.ipynb)
