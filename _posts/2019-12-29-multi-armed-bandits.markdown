@@ -40,6 +40,19 @@ plt.hist(arm3, bins, alpha=0.5, label='arm 3')
 plt.legend(loc='upper right')
 plt.show()
 {% endhighlight %}
-This is a plot of the distribution of different arms
+This is a histogram of the distribution of different arms
 ![Arm distributions](arm_distributions.png)
+This plot clearly shows that the best action to take would be action 1 which is equivalent to taking the second arm. However, this distribution is unkown to the 
+agent and therefore, they cannot choose the optimal action. But they can try to sample from different actions. If they follow a greedy approach as below 
+{% highlight python %}
+def full_exploitation(t):
+    # Greedy approach: full exploitation and no exploration 
+    A = [multiArmedBandit(i) for i in range(4)]
+    max_idx = max(range(4), key=lambda i:A[i])
+    #print("arm0 :{:.2f}  arm1 :{:.2f}  arm2 :{:.2f}  arm3 :{:.2f}\t ==> Selected Arm: {}".format(\
+    #    A[0], A[1], A[2], A[3], max_idx))
+    qa = [1, 0, 2, 2]
+    regrets = [qa[max_idx]]*t
+    return [multiArmedBandit(max_idx) for _ in range(t)], regrets, [max_idx]*t
+{% endhighlight %}
 
