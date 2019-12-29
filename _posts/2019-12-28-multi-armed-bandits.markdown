@@ -2,7 +2,7 @@
 layout: post
 title:  "Multi-Armed Bandits"
 date:   2019-12-28 20:39:11 -0800
-categories: Reiforcement Learning
+categories: multi-armed-bandits
 ---
 In this post, I will try to explain some interesting ideas around multi-armed bandits. Defining a simple multi-armed-bandit as follows
 {% highlight python %}
@@ -41,5 +41,5 @@ plt.legend(loc='upper right')
 plt.show()
 {% endhighlight %}
 This is a plot of the distribution of different arms
-#![Arm distributions](arm_distributions.png)
+![Arm distributions](arm_distributions.png)
 
