@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Multi-Armed Bandits"
+title:  "Python implementation of Upper Confidence Bound algorithm in Multi-Armed Bandits"
 date:   2019-12-28 20:39:11 -0800
 categories: multi-armed-bandits
 ---
