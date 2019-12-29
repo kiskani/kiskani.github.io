@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  "Python implementation of Upper Confidence Bound algorithm in Multi-Armed Bandits"
+title:  "Upper Confidence Bound algorithm in Multi-Armed Bandits"
 date:   2019-12-28 20:39:11 -0800
 categories: multi-armed-bandits
 ---
-In this post, I will try to explain some interesting ideas around multi-armed bandits. Defining a simple multi-armed-bandit as follows
+In this post, I will try to explain some interesting ideas around multi-armed bandits. I will implement the greedy exploitation algorithm along with the Upper Confidence Bound algorithm in Python for a simple multi-armed bandit problem. Defining a simple multi-armed bandit as follows
 {% highlight python %}
 def multiArmedBandit(k):
     if k == 0:
