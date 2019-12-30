@@ -66,4 +66,4 @@ alpha, beta = greedy_update_posterior_params(500,  [0.1,0.8,0.6,0.3])
 alpha, beta = thompson_sampling_update_posterior_params(500,  [0.1,0.8,0.6,0.3])
 {% endhighlight %}
 ![Thompson Sampling](thompson.png)
-A summary of this code is available in [this notebook.](https://github.com/kiskani/kiskani.github.io/blob/master/multi-armed-bandits/2019/12/29/multi-armed-bandit.ipynb)
+A summary of this code is available in [this notebook.](https://github.com/kiskani/kiskani.github.io/blob/master/multi-armed-bandits/2019/12/29/Thompson-sampling.ipynb)
