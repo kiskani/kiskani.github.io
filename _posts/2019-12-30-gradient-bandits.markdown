@@ -163,4 +163,5 @@ opt_policy, r_hist = gradient_bandit(100)
 plt.plot(opt_policy, 'o')
 {% endhighlight %}
 ![Gradient Bandit](gradient-bandit.png)
+
 A summary of this code is available in [this notebook.](https://github.com/kiskani/kiskani.github.io/blob/master/multi-armed-bandits/2019/12/30/Gradient-Bandit.ipynb)
