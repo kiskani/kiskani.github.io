@@ -119,7 +119,7 @@ $$
 
 This means that we select a certain action and we update all the preferences. The algorithm updates all action preferences in each step. The $\bar{R}_t$ term serves as a baseline with which the reward is compared. If the reward is higher than the baseline, then the probability of taking $A_t$ in the future is increased, and if the reward is below baseline, then probability is decreased. The non-selected actions move in the opposite direction. The baseline helps reduce the varaince.
 
-Here is a simple Python implementation of this algorithm (inspired by [this post.](https://gist.github.com/khanrc/fe36cd1e7e60f61c90b5a6d484fadb7a)). 
+Here is a simple Python implementation of this algorithm (inspired by [this post](https://gist.github.com/khanrc/fe36cd1e7e60f61c90b5a6d484fadb7a)). 
 
 {% highlight python %}
 import numpy as np
