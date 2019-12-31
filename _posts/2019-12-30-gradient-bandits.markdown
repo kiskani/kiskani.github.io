@@ -117,4 +117,50 @@ H_{t+1}(a) &\leftarrow H_t(a) - \alpha (R_t - \bar{R}_t) \pi_t(a) \qquad \textrm
 \end{align} 
 $$
 
-This means that we select a certain action and we update all the preferences. The algorithm updates all action preferences in each step. The $\bar{R}_t$ term serves as a baseline with which the reward is compared. If the reward is higher than the baseline, then the probability of taking $A_t$ in the future is increased, and if the reward is below baseline, then probability is decreased. The non-selected actions move in the opposite direction. The baseline helps reduce the varaince. 
+This means that we select a certain action and we update all the preferences. The algorithm updates all action preferences in each step. The $\bar{R}_t$ term serves as a baseline with which the reward is compared. If the reward is higher than the baseline, then the probability of taking $A_t$ in the future is increased, and if the reward is below baseline, then probability is decreased. The non-selected actions move in the opposite direction. The baseline helps reduce the varaince.
+
+Here is a simple Python implementation of this algorithm (inspired by [this post.](https://gist.github.com/khanrc/fe36cd1e7e60f61c90b5a6d484fadb7a)). 
+
+{% highlight python %}
+import numpy as np
+import math
+import matplotlib.pyplot as plt
+{% endhighlight %}
+{% highlight python %}
+def get_rewards():
+    mean = np.array([-2, 1, 0, -3]) 
+    return np.random.randn(4) + mean
+{% endhighlight %}
+{% highlight python %}
+def softmax(H):
+    h = H - np.max(H)
+    exp = np.exp(h)
+    return exp / np.sum(exp)
+{% endhighlight %}
+{% highlight python %}
+def gradient_bandit(N):
+    H = np.zeros(4)  
+    r_hist = []
+    alpha = 0.1  
+    for t in range(1, N):
+        policy = softmax(H) # policy pi
+        # sampling (choice) action by policy
+        a = np.random.choice(4, p=policy) 
+        rewards = get_rewards()
+        r = rewards[a] # R_t (reward for chosen action)
+        r_hist.append(r)
+        avg_r = np.average(r_hist)
+        # update a == A_t (chosen action)
+        H[a] = H[a] + alpha*(r-avg_r)*(1-policy[a])
+        # update a != A_t (non-chosen action)
+        H[:a] = H[:a] - alpha*(r-avg_r)*policy[:a]
+        H[a+1:] = H[a+1:] - alpha*(r-avg_r)*policy[a+1:]
+    
+    return softmax(H), r_hist
+{% endhighlight %}
+{% highlight python %}
+opt_policy, r_hist = gradient_bandit(100)
+plt.plot(opt_policy, 'o')
+{% endhighlight %}
+![Gradient Bandit](gradient-bandit.png)
+A summary of this code is available in [this notebook.](https://github.com/kiskani/kiskani.github.io/blob/master/multi-armed-bandits/2019/12/29/Thompson-sampling.ipynb)
