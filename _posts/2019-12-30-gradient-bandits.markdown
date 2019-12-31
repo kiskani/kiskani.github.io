@@ -112,8 +112,8 @@ This equation can be written as
 
 $$
 \begin{align}
-H_{t+1}(A_t) &\leftarrow H_t(A_t) + \alpha R_t \left( 1 - \pi_t(A_t) \right) \nonumber \\
-H_{t+1}(a) &\leftarrow H_t(a) - \alpha R_t \pi_t(a) \qquad \textrm{if} ~ a \neq A_t
+H_{t+1}(A_t) &\leftarrow H_t(A_t) + \alpha (R_t - \bar{R}_t) \left( 1 - \pi_t(A_t) \right) \nonumber \\
+H_{t+1}(a) &\leftarrow H_t(a) - \alpha (R_t - \bar{R}_t) \pi_t(a) \qquad \textrm{if} ~ a \neq A_t
 \end{align} 
 $$
 
