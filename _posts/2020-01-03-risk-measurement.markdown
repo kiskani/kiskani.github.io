@@ -4,7 +4,7 @@ title:  "Risk Measurement in Finance"
 date:   2020-01-03 15:52:14 -0800
 categories: finance
 ---
-In this post, I will explain the methods of measuring risk in finance. One of the widely used concepts to measue the risk of an asset is the `[Sharpe Ratio](https://en.wikipedia.org/wiki/Sharpe_ratio)`. I have implemented a code in Python to compute the Sharpe Ratio for some assets. 
+In this post, I will explain the methods of measuring risk in finance. One of the widely used concepts to measue the risk of an asset is the [Sharpe Ratio](https://en.wikipedia.org/wiki/Sharpe_ratio). I have implemented a code in Python to compute the Sharpe Ratio for some assets. 
 
 {% highlight python %}
 from pandas_datareader import data  # You will need to run "pip install pandas_datareader"
