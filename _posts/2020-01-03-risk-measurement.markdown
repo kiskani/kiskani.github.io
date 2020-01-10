@@ -6,8 +6,7 @@ categories: finance
 ---
 A tribute to a great man who died on this day but whose legacy would never die. 
 
-<img src="rose.jpeg" width="48">
-![Tribute](rose.jpeg)
+<img src="rose.jpeg" align="center" width="548">
 
 In this post, I will explain the methods of measuring risk in finance. One of the widely used concepts to measue the risk of an asset is the [Sharpe Ratio](https://en.wikipedia.org/wiki/Sharpe_ratio). I have implemented a code in Python to compute the Sharpe Ratio for some assets. 
 
