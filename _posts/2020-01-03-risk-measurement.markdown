@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Risk Measurement in Finance"
+title:  "Python Finance Calculations"
 date:   2020-01-03 15:52:14 -0800
 categories: finance
 ---
@@ -8,7 +8,6 @@ categories: finance
 A tribute to a great man who died on this day but whose legacy would never die. 
 
 <img src="rose.jpeg" align="middle" width="256">
-
 --->
 In this post, I will explain the methods of measuring risk in finance. One of the widely used concepts to measue the risk of an asset is the [Sharpe Ratio](https://en.wikipedia.org/wiki/Sharpe_ratio). I have implemented a code in Python to compute the Sharpe Ratio for some assets. 
 
@@ -24,6 +23,17 @@ register_matplotlib_converters()
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 {% endhighlight %}
+
+Useful resources:
+
+[https://readthedocs.org/projects/pandas-datareader/downloads/pdf/latest/](https://readthedocs.org/projects/pandas-datareader/downloads/pdf/latest/)
+
+[https://www.investopedia.com/terms/c/consumerpriceindex.asp](https://www.investopedia.com/terms/c/consumerpriceindex.asp)
+
+[https://www.investopedia.com/insights/understanding-consumer-confidence-index/](https://www.investopedia.com/insights/understanding-consumer-confidence-index/)
+
+[https://fred.stlouisfed.org/series](https://fred.stlouisfed.org/series)
+
 {% highlight python %}
 ONE_DAY = datetime.timedelta(days=1)
 HOLIDAYS_US = holidays.US()
@@ -41,16 +51,16 @@ def next_business_day(specific_date):
     return next_day
 {% endhighlight %}
 {% highlight python %}
-def get_historical_data(share, start_date='2019-01-01', end_date='2020-01-01'):
+def get_historical_data(share, start_date='2019-01-01', end_date='2020-01-01', source='yahoo'):
     try:
-        panel_data = data.DataReader(share, 'yahoo', start_date, end_date)
+        panel_data = data.DataReader(share, source, start_date, end_date)
     except: 
         panel_data = pd.DataFrame()
     return panel_data
 {% endhighlight %}
 {% highlight python %}
-def compute_average_annual_return(share, start_date='2019-01-02', end_date='2019-12-31'):
-    panel_data = get_historical_data(share, start_date, end_date)
+def compute_average_annual_return(share, start_date='2019-01-02', end_date='2019-12-31', source='yahoo'):
+    panel_data = get_historical_data(share, start_date, end_date, source)
     if panel_data.empty:
         return None, None, None, None, None
     
@@ -75,8 +85,8 @@ def compute_average_annual_return(share, start_date='2019-01-02', end_date='2019
     return round(return_value, 4), start_date, end_date, delta, years
 {% endhighlight %}
 {% highlight python %}
-def compute_daily_return_std_per_year(share, start_date='2019-01-02', end_date='2020-01-02'):
-    panel_data = get_historical_data(share, start_date, end_date)
+def compute_daily_return_std_per_year(share, start_date='2019-01-02', end_date='2020-01-02', source='yahoo'):
+    panel_data = get_historical_data(share, start_date, end_date, source)
     if panel_data.empty:
         return None
     last_day_price = None
@@ -88,9 +98,9 @@ def compute_daily_return_std_per_year(share, start_date='2019-01-02', end_date='
     return round(np.std(daily_returns)*np.sqrt(252), 4)
 {% endhighlight %}
 {% highlight python %}
-def compute_sharpe(share, start_date='2019-01-02', end_date='2020-01-02'):
-    avg, _, _, _, _ = compute_average_annual_return(share, start_date, end_date)
-    std = compute_daily_return_std_per_year(share, start_date, end_date)
+def compute_sharpe(share, start_date='2019-01-02', end_date='2020-01-02', source='yahoo'):
+    avg, _, _, _, _ = compute_average_annual_return(share, start_date, end_date, source)
+    std = compute_daily_return_std_per_year(share, start_date, end_date, source)
     if not avg or not std:
         return
     return round(avg/std, 4)
@@ -107,6 +117,7 @@ iTickers["AAPL"] = "Apple Inc."
 iTickers["BAC"] = "Bank of America"
 iTickers["MSFT"] = "Microsoft"
 iTickers["IVV"] = "iShares Core S&P 500 ETF"
+iTickers["NFLX"] = "Netflix"
 {% endhighlight %}
 {% highlight python %}
 for symb in SP_500_symbol_list:  
@@ -115,7 +126,7 @@ for symb in SP_500_symbol_list:
     print(SP_500.loc[symb]['Name'], sharpe_ratio)
 {% endhighlight %}
 {% highlight python %}
-plt.figure(figsize=(14,4))
+plt.figure(figsize=(16,8))
 start_date='2000-01-31' 
 for symb in iTickers:
     print(iTickers[symb])
@@ -145,10 +156,12 @@ Microsoft
 Microsoft 2.9596
 iShares Core S&P 500 ETF
 iShares Core S&P 500 ETF 2.5012
+Netflix
+Netflix 0.6069
 {% endhighlight %}
 ![Some SP 500 tickers](well-known-tickers.png)
 {% highlight python %}
-plt.figure(figsize=(14,4))
+plt.figure(figsize=(16,6))
 start_date='2010-01-02' 
 end_date='2020-01-07' 
 for symb in ['BRK-B','SPY']:
@@ -160,9 +173,9 @@ plt.savefig('BRK_vs_SPY.png')
 {% endhighlight %}
 ![Berkshire Hathaway vs SP 500](BRK_vs_SPY.png)
 {% highlight python %}
-def plot_stock_price(stock, start_date='2019-01-02', end_date='2019-12-31'):
-    plt.figure(figsize=(14,4))
-    daa = get_historical_data(stock, start_date=start_date, end_date=end_date)
+def plot_stock_price(stock, start_date='2019-01-02', end_date='2019-12-31', source='yahoo'):
+    plt.figure(figsize=(16,6))
+    daa = get_historical_data(stock, start_date=start_date, end_date=end_date, source=source)
     sharpe_ratio = compute_sharpe(stock)
     plt.plot(daa['Adj Close'])
     plt.grid(color='g', linestyle='-.', linewidth=0.5)
@@ -173,6 +186,56 @@ def plot_stock_price(stock, start_date='2019-01-02', end_date='2019-12-31'):
 plot_stock_price('GOOG', start_date='2007-01-02', end_date='2010-01-02')
 {% endhighlight %}
 ![Google](GOOG_2007-01-02_2010-01-02.png)
+{% highlight python %}
+plot_stock_price('VTIP', start_date='1990-01-01', end_date='2020-01-01')
+{% endhighlight %}
+![VTIP](VTIP_1990-01-01_2020-01-01.png)
+## Overall economic indicators
+{% highlight python %}
+def plot_us_gdp(start_date = '1900-01-01', end_date = '2020-01-01'):
+    plt.figure(figsize=(16,6))
+    gdp_data = get_historical_data('GDP', start_date = start_date, end_date = end_date, source = 'fred')
+    plt.plot(gdp_data)
+    plt.grid(color='g', linestyle='-.', linewidth=0.5)
+    plt.legend(['US GDP'])
+    plt.savefig('us_gdp.png')
+{% endhighlight %}
+{% highlight python %}
+def plot_us_inflation(start_date='1940-01-01', end_date='2020-01-01', index ='CPILFESL'):
+    CPI  = get_historical_data(index, start_date = start_date, end_date = end_date, source = 'fred')
+    CPI['CPI_Diff_monthly'] = CPI[index].diff()
+    CPI['CPI_Diff_yearly'] = CPI[index].diff(12)
+    CPI['CPI_monthly_inflation_rate'] = (CPI['CPI_Diff_monthly']/CPI[index])*100
+    CPI['CPI_yearly_inflation_rate_pp'] = (CPI['CPI_Diff_yearly']/CPI[index])*100
+    plt.figure(figsize=(16,6))
+    plt.plot(CPI['CPI_monthly_inflation_rate'])
+    plt.plot(CPI['CPI_yearly_inflation_rate_pp'])
+    plt.grid(color='g', linestyle='-.', linewidth=0.5)
+    plt.legend(['US monthly inflation rate', 'US yearly point to point inflation rate'])
+    plt.savefig('us_inflation_data_{}.png'.format(index))
+    return CPI
+{% endhighlight %}
+{% highlight python %}
+def plot_index(index, start_date = '2010-01-02', end_date = '2020-01-02', source = 'fred'):
+    indx  = get_historical_data(index, start_date, end_date, source)
+    plt.figure(figsize=(16,6))
+    plt.plot(indx)
+    plt.grid(color='g', linestyle='-.', linewidth=0.5)
+    index_meaning = {'DGS10': 'US monthly interest rate (10-Year Treasury Constant Maturity Rate)', 
+                     'FEDFUNDS': 'US Effective Federal Funds Rate',
+                     'LIBOR': '3-Month London Interbank Offered Rate',
+                     'NIKKEI225': 'Nikkei Stock Average, Nikkei 225',
+                     'UNRATE': 'US Civilian Unemployment Rate',
+                     'GFDEGDQ188S': 'Federal Debt: Total Public Debt as Percent of Gross Domestic Product',
+                     'GDPC1': 'Real Gross Domestic Product percent change',
+                     'A191RL1Q225SBEA': 'Real Gross Domestic Product dollars',
+                     'CPIAUCSL': 'Consumer Price Index for All Urban Consumers: All Items',
+                     'IRLTLT01JPM156N': 'Long-Term Government Bond Yields: 10-year: Japan'
+                    }
+    plt.legend([index_meaning[index]])
+    plt.savefig('index_{}_{}_{}.png'.format(index, start_date, end_date))
+{% endhighlight %}
+# SP-500 index plots over different decades. 
 {% highlight python %}
 plot_stock_price('^GSPC', start_date='1900-01-01', end_date='1960-01-01')
 {% endhighlight %}
@@ -201,6 +264,82 @@ plot_stock_price('^GSPC', start_date='2000-01-01', end_date='2010-01-01')
 plot_stock_price('^GSPC', start_date='2010-01-01', end_date='2020-01-01')
 {% endhighlight %}
 ![SP500_2010_2020](^GSPC_2010-01-01_2020-01-01.png)
+# Consumer Price Index plot 
+{% highlight python %}
+plot_stock_price('CPI', start_date='1990-01-01', end_date='2020-01-01')
+{% endhighlight %}
+![CPI](CPI_1990-01-01_2020-01-01.png)
+# US GDP
+{% highlight python %}
+gdp = plot_us_gdp()
+{% endhighlight %}
+![usgdp](us_gdp.png)
+# US inflation plots
+{% highlight python %}
+cpi_u_inflation_data = plot_us_inflation(index = 'CPILFESL')
+{% endhighlight %}
+![CPILFESL](us_inflation_data_CPILFESL.png)
+{% highlight python %}
+cpi_u_inflation_data = plot_us_inflation(index = 'CPIAUCSL')
+{% endhighlight %}
+![CPIAUCSL](us_inflation_data_CPIAUCSL.png)
+# Consumer Confidence Index plot
+{% highlight python %}
+plot_stock_price('CCI', start_date='1960-01-01', end_date='2020-01-01')
+{% endhighlight %}
+![CCI](CCI_1960-01-01_2020-01-01.png)
+# Dow Jones Industrial Average
+{% highlight python %}
+plot_stock_price('^DJI', start_date='1940-01-01', end_date='1990-01-01')
+{% endhighlight %}
+![Dow Jones 1940](^DJI_1940-01-01_1990-01-01.png)
+{% highlight python %}
+plot_stock_price('^DJI', start_date='1990-01-01', end_date='2020-01-01')
+{% endhighlight %}
+![Dow Jones 1990](^DJI_1990-01-01_2020-01-01.png)
+# Plot of 10 year treasury bond interest rate
+{% highlight python %}
+plot_index('DGS10', start_date = '1950-01-02')
+{% endhighlight %}
+![Yield 1950](index_DGS10_1950-01-02_2020-01-02.png)
+{% highlight python %}
+plot_index('DGS10', start_date = '2010-01-02')
+{% endhighlight %}
+![Yield 2010](index_DGS10_2010-01-02_2020-01-02.png)
+# US Effective Federal Funds Rate
+{% highlight python %}
+plot_index('FEDFUNDS')
+{% endhighlight %}
+![Federal Funds](index_FEDFUNDS_2010-01-02_2020-01-02.png)
+# US unemployment rate
+{% highlight python %}
+plot_index('UNRATE', start_date = '1910-01-02')
+{% endhighlight %}
+![US Unemployment Rate](index_UNRATE_1910-01-02_2020-01-02.png)
+# NIKKEI Index
+{% highlight python %}
+plot_index('NIKKEI225')
+{% endhighlight %}
+![NIKKEI](index_NIKKEI225_2010-01-02_2020-01-02.png)
+# US Debt/GDP percentage plot
+{% highlight python %}
+plot_index('GFDEGDQ188S', start_date = '1910-01-02')
+{% endhighlight %}
+![Debt to GDP](index_GFDEGDQ188S_1910-01-02_2020-01-02.png)
+# US GDP
+{% highlight python %}
+plot_index('GDPC1', start_date = '1910-01-02')
+{% endhighlight %}
+![US GDP](index_GDPC1_1910-01-02_2020-01-02.png)
+{% highlight python %}
+plot_index('A191RL1Q225SBEA', start_date = '2010-01-02')
+{% endhighlight %}
+![US GDP Dollars](index_A191RL1Q225SBEA_2010-01-02_2020-01-02.png)
+# Japenese interest rate plot
+{% highlight python %}
+plot_index('IRLTLT01JPM156N', start_date = '1940-01-02')
+{% endhighlight %}
+![Japanese interest rate](index_IRLTLT01JPM156N_1940-01-02_2020-01-02.png)
 {% highlight python %}
 nasdaq = data.get_nasdaq_symbols()
 print(nasdaq.shape)
