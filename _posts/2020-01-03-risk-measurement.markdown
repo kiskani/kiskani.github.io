@@ -39,13 +39,13 @@ ONE_DAY = datetime.timedelta(days=1)
 HOLIDAYS_US = holidays.US()
 
 def previous_business_day(specific_date):
-    previous_day = specific_date - ONE_DAY
+    previous_day = specific_date 
     while previous_day.weekday() in holidays.WEEKEND or previous_day in HOLIDAYS_US:
         previous_day -= ONE_DAY
     return previous_day
 
 def next_business_day(specific_date):
-    next_day = specific_date + ONE_DAY
+    next_day = specific_date
     while next_day.weekday() in holidays.WEEKEND or next_day in HOLIDAYS_US:
         next_day += ONE_DAY
     return next_day
@@ -186,10 +186,75 @@ def plot_stock_price(stock, start_date='2019-01-02', end_date='2019-12-31', sour
 plot_stock_price('GOOG', start_date='2007-01-02', end_date='2010-01-02')
 {% endhighlight %}
 ![Google](GOOG_2007-01-02_2010-01-02.png)
+AT&T 
+{% highlight python %}
+plot_stock_price('T', start_date='1980-01-01', end_date='2020-01-01')
+{% endhighlight %}
+![T](T_1980-01-01_2020-01-01.png)
 {% highlight python %}
 plot_stock_price('VTIP', start_date='1990-01-01', end_date='2020-01-01')
 {% endhighlight %}
 ![VTIP](VTIP_1990-01-01_2020-01-01.png)
+Vanguard 500 Index Fund Admiral Shares
+{% highlight python %}
+plot_stock_price('VFIAX', start_date='1990-01-01', end_date='2020-01-01')
+{% endhighlight %}
+![VFIAX](VFIAX_1990-01-01_2020-01-01.png)
+iShares 20+ Year Treasury Bond ETF (TLT)
+{% highlight python %}
+plot_stock_price('TLT', start_date='1900-01-01', end_date='2020-01-01')
+{% endhighlight %}
+![TLT](TLT_1900-01-01_2020-01-01.png)
+13 Week treasury bill
+{% highlight python %}
+plot_stock_price('^IRX', start_date='1900-01-01', end_date='2020-01-01')
+{% endhighlight %}
+![IRX](^IRX_1900-01-01_2020-01-01.png)
+30 Year Treasury bill
+{% highlight python %}
+plot_stock_price('^TYX', start_date='2000-01-01', end_date='2020-01-01')
+{% endhighlight %}
+![TYX](^TYX_2000-01-01_2020-01-01.png)
+Vanguard Target Retirement 2045 Fund Investor Shares
+{% highlight python %}
+plot_stock_price('VTIVX', start_date='2000-01-01', end_date='2020-01-01')
+{% endhighlight %}
+![VTIVX](VTIVX_2000-01-01_2020-01-01.png)
+{% highlight python %}
+def compute_avg_annual_return_between_2_periods(shares, start_date='2000-01-02', end_date='2019-12-31', source='yahoo'):
+    shares_data = get_historical_data(shares, start_date=start_date, end_date=end_date, source=source)
+    adj_close = shares_data['Adj Close']
+    
+    start_date = datetime.datetime.strptime(start_date, '%Y-%m-%d')
+    end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d')
+    
+    while start_date.strftime('%Y-%m-%d') not in adj_close.index: 
+        start_date = next_business_day(start_date)
+    
+    while end_date.strftime('%Y-%m-%d') not in adj_close.index: 
+        end_date = previous_business_day(end_date)
+    
+    start_prices = adj_close.loc[start_date.strftime('%Y-%m-%d')]
+    end_prices = adj_close.loc[end_date.strftime('%Y-%m-%d')]
+    #print(end_prices, start_prices)
+    return (end_prices/start_prices)**(1/(end_date.year - start_date.year)) - 1
+{% endhighlight %}
+{% highlight python %}
+SP500_rate_of_return_all = compute_avg_annual_return_between_2_periods(SP_500_symbol_list)
+SP500_rate_of_return = {x:round(SP500_rate_of_return_all.loc[x],2) for x in SP500_rate_of_return_all.index \
+                        if not pd.isnull(SP500_rate_of_return_all.loc[x])}
+{% endhighlight %}
+{% highlight python %}
+SP500_rate_of_return_clean = {k: v for k, v in sorted(SP500_rate_of_return.items(), key=lambda item: item[1])}
+{% endhighlight %}
+{% highlight python %}
+compute_avg_annual_return_between_2_periods('BRK-B')
+{% endhighlight %}
+0.10278063728967202
+{% highlight python %}
+plot_stock_price('NVDA', start_date='2000-01-02', end_date='2019-12-31')
+{% endhighlight %}
+![NVDA](NVDA_2000-01-02_2019-12-31.png)
 ## Overall economic indicators
 {% highlight python %}
 def plot_us_gdp(start_date = '1900-01-01', end_date = '2020-01-01'):
@@ -221,7 +286,17 @@ def plot_index(index, start_date = '2010-01-02', end_date = '2020-01-02', source
     plt.figure(figsize=(16,6))
     plt.plot(indx)
     plt.grid(color='g', linestyle='-.', linewidth=0.5)
-    index_meaning = {'DGS10': 'US monthly interest rate (10-Year Treasury Constant Maturity Rate)', 
+    index_meaning = {'DGS30': '30-Year Treasury Constant Maturity Rate',
+                     'DGS20': '20-Year Treasury Constant Maturity Rate',
+                     'DGS10': '10-Year Treasury Constant Maturity Rate', 
+                     'DGS7': '7-Year Treasury Constant Maturity Rate',
+                     'DGS5': '5-Year Treasury Constant Maturity Rate',
+                     'DGS3': '3-Year Treasury Constant Maturity Rate',
+                     'DGS2': '2-Year Treasury Constant Maturity Rate',
+                     'DGS1': '1-Year Treasury Constant Maturity Rate',
+                     'DGS6MO': '6-Month Treasury Constant Maturity Rate',
+                     'DGS3MO': '3-Month Treasury Constant Maturity Rate',
+                     'DGS1MO': '1-Month Treasury Constant Maturity Rate', 
                      'FEDFUNDS': 'US Effective Federal Funds Rate',
                      'LIBOR': '3-Month London Interbank Offered Rate',
                      'NIKKEI225': 'Nikkei Stock Average, Nikkei 225',
@@ -235,6 +310,35 @@ def plot_index(index, start_date = '2010-01-02', end_date = '2020-01-02', source
     plt.legend([index_meaning[index]])
     plt.savefig('index_{}_{}_{}.png'.format(index, start_date, end_date))
 {% endhighlight %}
+# Plotting the yield maturity curve 
+{% highlight python %}
+def plot_yield_curve(specific_date):
+    next_date = next_business_day(datetime.datetime.strptime(specific_date, '%Y-%m-%d'))
+    specific_date = next_date.strftime('%Y-%m-%d')
+    syms = ['DGS1MO', 'DGS3MO', 'DGS6MO', 'DGS1', 'DGS2', 'DGS3', 'DGS5', 'DGS7', 'DGS10', 'DGS20', 'DGS30']
+    yc = data.DataReader(syms, 'fred', specific_date, specific_date)
+    names = dict(zip(syms, ['1m', '3m', '6m', '1yr', '2yr', '3yr', '5yr', '7yr', '10yr', '20yr', '30yr']))
+    yc = yc.rename(columns=names)
+    plt.figure(figsize=(16,6))
+    #plt.plot([1, 3, 6, 12, 24, 36, 60, 84, 120, 240, 360], yc.loc[specific_date])
+    plt.plot(yc.loc[specific_date])
+    plt.grid(color='g', linestyle='-.', linewidth=0.5)
+    plt.legend(['US Yield Curve on {}'.format(specific_date)])
+    plt.savefig('yield_curve_{}.png'.format(specific_date))
+    return yc.loc[specific_date]
+{% endhighlight %}
+{% highlight python %}
+yields = plot_yield_curve('2019-02-11')
+{% endhighlight %}
+![yield_curve](yield_curve_2019-02-11.png)
+{% highlight python %}
+yields = plot_yield_curve('2019-12-11')
+{% endhighlight %}
+![yield_curve](yield_curve_2019-12-11.png)
+{% highlight python %}
+plot_index('DGS6MO')
+{% endhighlight %}
+![DGS6MO](index_DGS6MO_2010-01-02_2020-01-02.png)
 # SP-500 index plots over different decades. 
 {% highlight python %}
 plot_stock_price('^GSPC', start_date='1900-01-01', end_date='1960-01-01')
