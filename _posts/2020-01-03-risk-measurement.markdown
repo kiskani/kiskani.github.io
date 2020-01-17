@@ -461,4 +461,8 @@ def compute_stats(symb):
 {% highlight python %}
 compute_stats(['EXPE', 'GOOG', 'MSFT', 'AAPL', 'BB', 'JNPR', 'BRK-B', 'BRK-A'])
 {% endhighlight %}
+# Getting historic stock dividends
+{% highlight python %}
+get_historical_data('AAPL', start_date='2019-01-02', end_date='2019-12-31', source = 'yahoo-dividends')
+{% endhighlight %}
 A summary of this code is available in [this notebook](https://github.com/kiskani/kiskani.github.io/blob/master/finance/2020/01/03/Finance-Notebook-1.ipynb).
