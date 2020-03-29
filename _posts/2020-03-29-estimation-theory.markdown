@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "Python Finance Calculations"
-date:   2020-01-03 15:52:14 -0800
-categories: finance
+title:  "Estimation theory basics"
+date:   2020-03-29 11:17:44 -0800
+categories: estimation
 ---
 <!---
 A tribute to a great man who died on this day but whose legacy would never die. 
