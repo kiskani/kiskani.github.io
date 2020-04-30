@@ -199,12 +199,12 @@ $$
 p_T(x; \alpha) \triangleq \max_{\{\theta: \alpha = g(\theta)\}} p(x;\theta)
 $$
 
+Another very important property of MLE estimation is that MLE is equivalent to minimizing the KL distance between our estimate and the real data distribution. For a proof of this important fact, see [here](https://wiseodd.github.io/techblog/2017/01/26/kl-mle/).
+
 <!---
 ## Bayesian Estimation 
 
 In situations when MVU estimator cannot be found, we can use a Bayesian approach in which $\theta$ is considered to be a random variable as opposed to a deterministic value that we are interested in finding. 
-
-Another very important property of MLE estimation is that MLE is equivalent to minimizing the KL distance between our estimate and the real data distribution. For a proof of this important fact, see [here](https://wiseodd.github.io/techblog/2017/01/26/kl-mle/).
 
 {% highlight python %} 
 pd.set_option('display.max_rows', None)
