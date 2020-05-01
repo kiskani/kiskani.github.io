@@ -17,7 +17,7 @@ $$
 
 where $c(.)$ is the transport cost function and $T_\sharp \alpha = \beta$ means that $T$ pushes forward the mass of $\alpha$ to $\beta$. This problem is of course diffult to solve and for over 200 years there has not been much progress on it. 
 
-## Kantrovich relaxation 
+## Kantrovich Relaxation 
 
 In 1942, Kantrovich proposed to relax the deterministic nature of transportation problem. Instead of mapping any point $x$ to another point $T(x)$, he proposed to the mass at any point be potentially dispatched across several locations. In order to do this, he proposed to use joint probability distributions over the space $\mathcal{M}^1_{+} (\mathcal{X} \times \mathcal{Y})$ which loosely speaking denotes the space of positive measures that sum up to one. Defining 
 
@@ -47,3 +47,24 @@ where $\mathbf{C}_{i,j} = c(x_i, y_j)$. Notice that the solution of the Kantrovi
 
 ![Kantrovich](kantrovich.png){:height="50%" width="50%"}
 
+## Wasserstein Distance
+
+Consider the case of discrete probability distributions and let $n = m$ and for some $p \ge 1$, let $$\mathbf{C} = \mathbf{D}^p = \left[ \mathbf{D}_{i,j}^p \right]_{i,j} \in \mathbb{R}^{n \times n} $$, where $$\mathbf{D} \in \mathbb{R}_+^{n \times n}$$ is a distance on $$\mathbb{[} n \mathbb{]}$$, i.e.
+
+* $$\mathbf{D} \in \mathbb{R}_+^{n \times n}$$ is symmetric. 
+* $$\mathbf{D}_{i,j} = 0$$ if and only if $$i=j$$.
+* $$\forall (i,j,k) \in \mathbb{[} n \mathbb{]}^3, ~~ \mathbf{D}_{i,k} \le \mathbf{D}_{i,j} + \mathbf{D}_{j,k}$$.
+
+Then, in a non-trivial way, using Minkowski's inequality one can prove that 
+
+$$
+W_p(\mathbf{a}, \mathbf{b}) \triangleq \mathbf{L}_{\mathbf{D}^p}(\mathbf{a}, \mathbf{b})^{1/p},
+$$
+
+is indeed a distance. This metric is called <strong>Wasserstein Distance</strong>. Notice that for the case of $$0 < p \le 1$$, this is not necessarily true. In that case, $$\mathbf{D}^p$$ is itself a distance and therefore $$W_p(\mathbf{a}, \mathbf{b})^p$$ will be a distance on the simplex. In case of continuous domains, assuming $\mathcal{X} = \mathcal{Y}$ and $p \ge 1$ and $c(x,y) = d(x,y)^p$ for some distance $d$ on space $\mathcal{X}$, the <strong>$p$-Wasserstein</strong> distance on $\mathcal{X}$ is defined as 
+
+$$
+\mathcal{W}_p(\alpha, \beta) \triangleq \mathcal{L}_{d^p}(\alpha, \beta)^{1/p}
+$$
+
+and is similarly proved to be a distance metric. 
