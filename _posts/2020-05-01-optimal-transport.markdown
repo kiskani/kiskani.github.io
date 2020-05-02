@@ -68,3 +68,68 @@ $$
 $$
 
 and is similarly proved to be a distance metric. 
+
+
+The Wasserstein distance $$\mathcal{W}_p$$ has many important properties, the most important being that it is a <em> weak distance </em>, i.e. it allows one to compare singular distributions (for instance, discrete ones) whose supports do not overlap and to quantify the spatial shift between the supports of two distributions. In particular, ``classical'' distances (or divergences) are not even defined between discrete distributions (the $L^2$ norm can only be applied to continuous measures with a density with respect to a base measure, and the discrete $\ell^2$ norm requires that positions $(x_i,y_j)$ take values in a predetermined discrete set to work properly). In sharp contrast, one has that for any $p> 0$, $$\mathcal{W}_p^p(\delta_x,\delta_y) = d(x,y)$$. Indeed, it suffices to notice that $$\mathcal{U}(\delta_x,\delta_y)=\{ \delta_{x,y}\}$$ and therefore the Kantorovich problem having only one feasible solution, $$\mathcal{W}_p^p(\delta_x,\delta_y)$$ is necessarily $$(d(x,y)^p)^{1/p}=d(x,y)$$. This shows that $$\mathcal{W}_p(\delta_x,\delta_y) \rightarrow 0$$ if $$x \rightarrow y$$. This property corresponds to the fact that $\mathcal{W}_p$ is a way to quantify [weak convergence](https://en.wikipedia.org/wiki/Convergence_of_measures).
+
+A nice feature of the Wasserstein distance over a Euclidean space $$\mathcal{X}=\mathbb{R}^d$$ for the ground cost $$c(x,y)= \lVert x-y \lVert^2$$ is that one can factor out translations; indeed, denoting $$T_{\tau} : x \mapsto x-\tau$$ the translation operator, one has
+
+$$
+	\mathcal{W}_2(T_{\tau\sharp} \alpha,T_{\tau'\sharp} \beta)^2  =
+	\mathcal{W}_2(\alpha,\beta)^2 - 2 \langle \tau-\tau', \mathbf{m}_{\alpha}-\mathbf{m}_{\beta}  \rangle + \lVert \tau-\tau' \lVert^2,
+$$
+
+where $$\mathbf{m}_{\alpha} \triangleq \int_\mathcal{X} x \mathrm{d}\alpha(x) \in \mathbb{R}^d$$ is the mean of $\alpha$. In particular, this implies the nice decomposition of the distance as
+
+$$
+	\mathcal{W}_2(\alpha,\beta)^2  = \mathcal{W}_2(\tilde\alpha,\tilde{\beta})^2  + \lVert \mathbf{m}_{\alpha}-\mathbf{m}_{\beta} \lVert^2,
+$$
+
+where $(\tilde\alpha,\tilde{\beta})$ are the ``centered'' zero mean measures $\tilde\alpha=T_{\mathbf{m}_{\alpha}\sharp}\alpha$.
+
+In case of $$p = +\infty$$, the limit of $\mathcal{W}_p^p$ as $$p \rightarrow +\infty$$ is
+
+$$
+	\mathcal{W}_{\infty}(\alpha,\beta) \triangleq
+	\min_{\pi \in \mathcal{U}(\alpha,\beta)} \sup_{(x,y) \in \mathrm{Supp}(\pi)} d(x,y),
+$$
+
+where the sup should be understood as the essential supremum according to the measure $\pi$ on $\mathcal{X}^2$. In contrast to the cases $p<+\infty$, this is a nonconvex optimization problem, which is difficult to solve numerically and to study theoretically. The $\mathcal{W}_{\infty}$ distance is related to the Hausdorff distance between the supports of $(\alpha,\beta)$.
+
+## Kantrovich Duality
+
+The Kantorovich problem is a constrained convex minimization problem, and as such, it can be naturally paired with a so-called dual problem, which is a constrained concave maximization problem. The dual problem is of the form
+
+$$
+	\mathbf{L}_{\mathbf{C}}(\mathbf{a},\mathbf{b}) = \max_{(\mathbf{f},\mathbf{g}) \in \mathbf{R}(\mathbf{C})} \langle \mathbf{f}, \mathbf{a} \rangle + \langle \mathbf{g}, \mathbf{b} \rangle,
+$$
+
+where the set of admissible dual variables is
+
+$$
+    \mathbf{R}(\mathbf{C}) \triangleq \{ (\mathbf{f},\mathbf{g}) \in \mathbb{R}^n \times \mathbb{R}^m ~:~  \mathbf{f} \mathbb{1}_m^T + \mathbb{1}_n \mathbf{g} \leq \mathbf{C} \}.
+$$
+
+Such dual variables are often referred to as <strong> Kantorovich potentials. </strong> This result is a direct consequence of the more general result on the strong duality for linear programs and can also be achieved using Lagrangian duality. Kantrovich dual problem in case of continuous distributions will be of the form
+
+$$ \mathcal{L}_c(\alpha,\beta) = \sup_{(f,g) \in \mathcal{R}(c)}\ \int_\mathcal{X} f(x) \mathrm{d}\alpha(x) + \int_\mathcal{Y} g(y) \mathrm{d}\beta(y),
+$$
+
+where the set of admissible dual potentials is
+
+$$\mathcal{R}(c) \triangleq \{(f,g) \in \mathcal{C}(\mathcal{X}) \times \mathcal{C}(\mathcal{Y}) ~~~~ \forall (x,y),~ f(x)+g(y) \leq c(x,y)\}. $$
+
+Here, $(f,g)$ is a pair of continuous functions and are also called, as in the discrete case, ``Kantorovich potentials.'' The primal-dual optimality allows us to track the support of the optimal plan as follows
+
+$$
+\mathrm{Supp}(\pi) \subset \{(x,y) \in \mathcal{X} \times \mathcal{Y} ~:~ f(x) + g(y) = c(x,y) \}
+$$
+
+and in case of discrete measures 
+
+$$
+\{(i,j) \in \mathbb{[} n \mathbb{]} \times \mathbb{[} m \mathbb{]} ~:~ \mathbf{P}_{i,j} > 0 \} \subset \{(i,j) \in \mathbb{[} n \mathbb{]} \times \mathbb{[} m \mathbb{]} ~:~ \mathbf{f}_i + \mathbf{g}_j = \mathbf{C}_{i,j} \}
+$$
+
+Note that in contrast to the primal problem, showing the existence of solutions to the dual problem is nontrivial, because the constraint set $\mathcal{R}(c)$ is not [compact](https://en.wikipedia.org/wiki/Compact_space) and the function to minimize noncoercive. However, in the case $c(x,y) = d(x,y)^p$ with $p \ge 1$, one can, however, show that optimal $(f,g)$ are necessarily Lipschitz regular, which enables us to replace the constraint by a compact one.
+
