@@ -96,6 +96,53 @@ $$
 
 where the sup should be understood as the essential supremum according to the measure $\pi$ on $\mathcal{X}^2$. In contrast to the cases $p<+\infty$, this is a nonconvex optimization problem, which is difficult to solve numerically and to study theoretically. The $\mathcal{W}_{\infty}$ distance is related to the Hausdorff distance between the supports of $(\alpha,\beta)$.
 
+For one dimensional distributions, things become very simplified. Here is a few special cases of Wasserstein distances:
+
+* The 1-Wasserstein distance between $\mathbf{a}$ and $\mathbf{b}$ is equal to half the 1-norm of their difference, $$\mathbf{L}_{\mathbf{C}} = \frac{1}{2} \lVert \mathbf{a} - \mathbf{b} \rVert_1$$.
+* For a measure $\alpha$ on $\mathbb{R}$, with the cummulative distribution function $$\mathcal{C}_{\alpha}(x)$$ and <em> quantile function </em> $$\mathcal{C}^{-1}_{\alpha}(x)$$ and for any $p \ge 1$, using a non-trivial proof (hints [page 15 of here](http://www.math.cmu.edu/~mthorpe/OTNotes)), we have 
+
+$$
+\mathcal{W}_p(\alpha,\beta)^p = \lVert \mathcal{C}^{-1}_{\alpha} - \mathcal{C}^{-1}_{\beta} \rVert_{L^p([0,1])}^p = \int_0^1 | \mathcal{C}^{-1}_{\alpha}(r) - \mathcal{C}^{-1}_{\beta}(r) |^p \mathrm{d} r.
+$$
+
+* The above equation means that through the map $\alpha \to \mathcal{C}_{\alpha}^{-1}$, the Wasserstein distance is isometric to a linear space equipped with the $\mathbf{L}^p$ norm or, equivalently, that the Wasserstein distance for measures on the real line is a Hilbertian metric. This makes the geometry of 1-D optimal transport very simple but also very different from its geometry in higher dimensions, which is not Hilbertian.
+
+* For $p = 1$, we can even simplify more as 
+
+$$
+\mathcal{W}_1(\alpha, \beta) = \lVert \mathcal{C}_{\alpha} - \mathcal{C}_{\beta} \rVert_{L^1(\mathbb{R})} = \int_{\mathbb{R}} |\mathcal{C}_{\alpha}(x) - \mathcal{C}_{\beta}(x)| \mathrm{d}x
+$$
+
+* For $p = 1$, an optimal Monge map $T$ such that $T_{\sharp}\alpha = \beta$ is defined as $$T = \mathcal{C}^{-1}_{\beta} \circ \mathcal{C}_{\alpha}$$.
+
+* In case of Gaussian distributions $$\alpha \sim \mathcal{N}(\mathbf{m}_{\alpha}, \mathbf{\Sigma}_{\alpha})$$ and $$\beta \sim \mathcal{N}(\mathbf{m}_{\beta}, \mathbf{\Sigma}_{\beta})$$, using Brenier Theorem, [page 27](https://arxiv.org/pdf/1803.00567.pdf) we can prove that the optimal Monge map is 
+
+$$
+T:x \mapsto \mathbf{m}_{\beta} + A(x-\mathbf{m}_\alpha),
+$$
+
+where 
+
+$$A=\mathbf{\Sigma}_\alpha^{-\tfrac{1}{2}}\Big(\mathbf{\Sigma}_\alpha^{\tfrac{1}{2}}\mathbf{\Sigma}_\beta\mathbf{\Sigma}_\alpha^{\tfrac{1}{2}}\Big)^{\tfrac{1}{2}}\mathbf{\Sigma}_\alpha^{-\tfrac{1}{2}}=A^T$$
+
+Further, 
+
+$$
+\mathcal{W}_2^2( \alpha,\beta) = \lVert \mathbf{m}_\alpha - \mathbf{m}_\beta \rVert^2 + \mathcal{B}(\mathbf{\Sigma}_\alpha,\mathbf{\Sigma}_\beta)^2,
+$$
+
+where $\mathcal{B}$ is <strong> Bures metric </strong>, defines as 
+
+$$
+\mathcal{B}(\mathbf{\Sigma}_\alpha,\mathbf{\Sigma}_\beta)^2 \triangleq \mathrm{Tr} \left( \mathbf{\Sigma}_\alpha + \mathbf{\Sigma}_\beta - 2 \left( \mathbf{\Sigma}_\alpha^{\frac{1}{2}} \mathbf{\Sigma}_\beta \mathbf{\Sigma}_\alpha^{\frac{1}{2}} \right)^{\frac{1}{2}}\right)
+$$
+
+where $\mathbf{\Sigma}^{1/2}$ is the matrix square root. One can show that $\mathcal{B}$ is a distance on covariance matrices and that $\mathcal{B}^2$ is convex with respect to both its arguments. In the case where $$\mathbf{\Sigma}_\alpha = \mathrm{Diag}(r_i)_i$$ and $$\mathbf{\Sigma}_\beta = \mathrm{Diag}(s_i)_i$$ are diagonals, the Bures metric is the <strong> Hellinger distance</strong>,
+
+$$ \mathcal{B}(\mathbf{\Sigma}_\alpha,\mathbf{\Sigma}_\beta) = \lVert \sqrt{r}-\sqrt{s} \rVert_2. $$
+
+This implies that for 1-D Gaussians, $\mathcal{W}_2$ is thus the Euclidean distance on the 2-D plane plotting the mean and the standard deviation of a Gaussian.
+
 ## Kantrovich Duality
 
 The Kantorovich problem is a constrained convex minimization problem, and as such, it can be naturally paired with a so-called dual problem, which is a constrained concave maximization problem. The dual problem is of the form
@@ -132,4 +179,5 @@ $$
 $$
 
 Note that in contrast to the primal problem, showing the existence of solutions to the dual problem is nontrivial, because the constraint set $\mathcal{R}(c)$ is not [compact](https://en.wikipedia.org/wiki/Compact_space) and the function to minimize noncoercive. However, in the case $c(x,y) = d(x,y)^p$ with $p \ge 1$, one can, however, show that optimal $(f,g)$ are necessarily Lipschitz regular, which enables us to replace the constraint by a compact one.
+
 
