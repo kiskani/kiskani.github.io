@@ -29,6 +29,7 @@ as the set of joint probability distributions with marginal distributions equal 
 
 $$
 \mathcal{L}_{c}(\alpha, \beta) \triangleq \min_{\pi \in \mathcal{U}(\alpha, \beta)} \int_{\mathcal{X} \times \mathcal{Y}} c(x,y) \mathrm{d} \pi(x,y) = \min_{(X,Y)} \left\{ \mathbb{E}_{(X,Y)}\left[ c(X,Y) \right] ~~:~~ X \sim \alpha, ~~ Y \sim \beta  \right\}.
+\label{eq_kantrovich_cont}
 $$
 
 In case of discrete measures, defining
@@ -180,4 +181,69 @@ $$
 
 Note that in contrast to the primal problem, showing the existence of solutions to the dual problem is nontrivial, because the constraint set $\mathcal{R}(c)$ is not [compact](https://en.wikipedia.org/wiki/Compact_space) and the function to minimize noncoercive. However, in the case $c(x,y) = d(x,y)^p$ with $p \ge 1$, one can, however, show that optimal $(f,g)$ are necessarily Lipschitz regular, which enables us to replace the constraint by a compact one.
 
+## Entropic Regularization
 
+The discrete entropy of a coupling matrix is defined as
+
+$$
+	\mathbf{H}(\mathbf{P}) \triangleq -\sum_{i,j} \mathbf{P}_{i,j} (\log(\mathbf{P}_{i,j})-1), 
+$$
+
+with an analogous definition for vectors, with the convention that $\mathbf{H}(\mathbf{a}) = -\infty$ if one of the entries $$\mathbf{a}_j$$ is 0 or negative. The function $$\mathbf{H}$$ is 1-strongly concave, because its Hessian is $$\partial^2 \mathbf{H}(P)=-\mathrm{diag}(1/\mathbf{P}_{i,j})$$ and $$\mathbf{P}_{i,j} \leq 1$$. The idea of the entropic regularization of optimal transport is to use $-\mathbf{H}$ as a regularizing function to obtain approximate solutions to the original transport problem. The new optimization problem is defined as 
+
+$$
+	\mathbf{L}_\mathbf{C}^\varepsilon(\mathbf{a},\mathbf{b}) \triangleq
+	\min_{\mathbf{P} \in \mathbf{U}(\mathbf{a},\mathbf{b})}
+		\langle \mathbf{P}, \mathbf{C} \rangle - \varepsilon \mathbf{H}(\mathbf{P}). 
+$$
+
+Since the objective in the above optimization problem is an $\epsilon$-strongly convex function, this problem has a unique optimal solution. Let, $$\mathbf{P}_{\varepsilon}$$ shows this unique solution. It can be proved that this unique solution converges to the optimal solution with maximal entropy within the set of all optimal solutions of the Kantorovich problem, namely
+
+$$
+	\mathbf{P}_\varepsilon \overset{\varepsilon \rightarrow 0}{\longrightarrow}
+	\mathrm{Argmin}_{\mathbf{P}} \{ -\mathbf{H}(\mathbf{P}) ~:~ 
+		\mathbf{P} \in \mathbf{U}(\mathbf{a},\mathbf{b}), \langle \mathbf{P}, \mathbf{C} \rangle = \mathbf{L}_\mathbf{C}(\mathbf{a},\mathbf{b}) \}
+$$
+
+so that in particular
+
+$$
+	\mathbf{L}_\mathbf{C}^\varepsilon(\mathbf{a},\mathbf{b}) \overset{\varepsilon \rightarrow 0}{\longrightarrow} \mathbf{L}_\mathbf{C}(\mathbf{a},\mathbf{b}).
+$$
+
+One also has
+
+$$
+	\mathbf{P}_\varepsilon \overset{\varepsilon \rightarrow \infty}{\longrightarrow}
+	\mathbf{a} {\mathbf{b}}^T = (\mathbf{a}_i \mathbf{b}_j)_{i,j}.
+	\label{eq_epsilon_large}
+$$
+
+In other words, for a small regularization $\varepsilon$, the solution converges to the maximum entropy optimal transport coupling. In sharp contrast, for a large regularization, the solution converges to the coupling with maximal entropy between two prescribed marginals $\mathbf{a},\mathbf{b}$, namely the joint probability between two independent random variables distributed following $\mathbf{a},\mathbf{b}$. 
+
+Defining the Kullback--Leibler divergence between couplings as
+
+$$
+	\mathbb{KL}(\mathbf{P} \mathbb{II} \mathbf{K}) \triangleq \sum_{i,j}  \mathbf{P}_{i,j} \log \left( {\frac{\mathbf{P}_{i,j}}{\mathbf{K}_{i,j}}} \right) - \mathbf{P}_{i,j} + \mathbf{K}_{i,j},
+$$
+
+the unique solution $\mathbf{P}_\varepsilon$ is a projection onto $\mathbf{U}(\mathbf{a},\mathbf{b})$ of the Gibbs kernel associated to the cost matrix $\mathbf{C}$ as
+
+$$
+	\mathbf{K}_{i,j} \triangleq e^{-\frac{\mathbf{C}_{i,j}}{\epsilon}}.
+$$
+
+Indeed one has that using the definition above
+
+$$
+	\mathbf{P}_\epsilon = \mathrm{Proj}_{\mathbf{U}(\mathbf{a},\mathbf{b})}^{\mathbb{KL}}(\mathbf{K}) \triangleq \mathrm{argmin}_{\mathbf{P} \in \mathbf{U}(\mathbf{a},\mathbf{b})} \mathbb{KL} (\mathbf{P} \mathbb{II} \mathbf{K}).
+$$
+
+Therefore, the problem of <em>regularized transport</em> is that of minimizing $$\mathbf{L}_\mathbf{C}^\varepsilon(\mathbf{a},\mathbf{b})$$ to find $$\mathbf{P}_\varepsilon$$. This allows to define the regularized counterpart of equation \eqref{eq_kantrovich_cont} as following, 
+
+$$
+\mathcal{L}_c^{\epsilon} \triangleq \min_{\pi \in \mathcal{U}(\alpha, \beta)} \int_{\mathcal{X} \times \mathcal{Y}} c(x,y) \mathrm{d} \pi(x,y) + \epsilon \mathbb{KL}\left(\pi ~||~ \alpha \otimes \beta \right) \\
+= \min_{(X,Y)} \left\{\mathbb{E}_{(X,Y)} \left( c(X, Y)  \right) + \epsilon I(X, Y) ~:~  X \sim \alpha, ~ Y \sim \beta \right\} 
+$$
+
+Note that if $$\epsilon \to \infty$$, the optimization problem reduces to minimizing the mutual information function which results in independent distributions as expected from equation \eqref{eq_epsilon_large}. When $$\epsilon \to 0$$, the solution of the regularized optimization problem converges to the solution of the optimal transport problem which is the Monge map $$Y = T(X)$$ (and $$X = T^{-1}(Y)$$). In some sense, $X$ and $Y$ will be fully dependent in this case. 
