@@ -282,3 +282,48 @@ $$
 
 with elementwise division and initialized with an arbitrary positive vector like $$\mathbf{v}^0 = \mathbb{1}_m$$. The choice of the initial vector deos not affect convergence of the algorithm. It can be shown that the Sinkhorn iterations convergence rate is linear. It can also be implemented in to run on GPU for parallel processing. 
 
+## $$\mathcal{W}_1$$ Optimal Transport
+
+Assume that $$d$$ is a distance on $$\mathcal{X} = \mathcal{Y}$$ and the ground cost is $$c(x,y) = d(x,y)$$. Also, define the <strong>Lipschitz constant</strong> of a function $$f \in \mathcal{C}(\mathcal{X})$$ as 
+
+$$
+Lip(f) \triangleq \sup \left\{\frac{|f(x)-f(y)|}{d(x,y)} ~:~ (x,y) \in \mathcal{X}^2, ~ x\neq y\right\}
+$$
+
+and define Lipschitz functions to be those functions $f$ satisfying $Lip(f) < +\infty$; they form a convex subset of $\mathcal{C}(\mathcal{X})$. Using the notion of <em>$c$-transforms</em>, it will not be difficult to prove that 
+
+$$
+\mathcal{W}_1(\alpha, \beta) = \max_f \left\{ \int_{\mathcal{X}} f(x) \mathrm{d}\alpha - \int_{\mathcal{X}} f(x) \mathrm{d}\beta ~:~ Lip(f) \le 1\right\}
+$$
+
+This expression shows that $$\mathcal{W}_1$$ is actually a norm which is called <em> Kantorovich and Rubinstein norm</em>. For discrete measures $\alpha, \beta$, if we can write $$\alpha - \beta = \sum_k \mathbf{m}_k \delta_{z_k}$$ for $$z_k \in \mathcal{X}$$ and $\sum_k \mathbf{m}_k = 0$, then 
+
+$$
+\mathcal{W}_1(\alpha, \beta) = \max_{\mathbf{f}} \left\{ \sum_{k} \mathbf{f}_k \mathbf{m}_k ~:~  \forall(k,l), ~ |\mathbf{f}_k - \mathbf{f}_l| \le d(z_k, z_l)\right\}
+$$
+
+which is a finite-dimensional convex program with quadratic-cone constraints and can be solved using interior point methods or proximal methods. When using $$d(x,y)= \|x-y\|$$ with $$\mathcal{X} = \mathbb{R}$$, we can reduce the number of constraints by ordering the $z_k$’s via $z_1 \le z_2 \le \dots$ In this case, we only have to solve
+
+$$
+\mathcal{W}_1(\alpha, \beta) = \max_{\mathbf{f}} \left\{ \sum_{k} \mathbf{f}_k \mathbf{m}_k ~:~  \forall k, ~ |\mathbf{f}_{k+1} - \mathbf{f}_k| \le z_{k+1} - z_k\right\}
+$$
+
+which is a linear program. 
+
+As mentioned before, when $0 < p \le 1$, $\tilde{d}(x,y) \triangleq d(x,y)^p$ satisfied the triangle equality and is itself a distance. Therefore, one can apply the results and algorithms above for $$\mathcal{W}_1$$ on distance $$\tilde{d}(x,y)$$ to compute $$\mathcal{W}_p$$.
+
+## $$\mathcal{W}_1$$ on Euclidean Spaces
+
+In the special case of Euclidean spaces $$\mathcal{X} = \mathcal{Y} = \mathbb{R}^d$$, using $$c(x, y) = \|x-y\|$$, the global Lipschitz constraint can be made local as a uniform bound on the gradient of $f$,
+
+$$
+\mathcal{W}_1(\alpha, \beta) = \max_{f} \left\{ \int_{\mathbb{R}^d} f(x) \mathrm{d} \alpha(x) - \int_{\mathbb{R}^d} f(x) \mathrm{d} \beta(x) ~:~  \|\nabla f \|_{\infty} \le 1\right\}
+$$
+
+here, the constraint $$\|\nabla f \|_{\infty} \le 1$$ signifies that the norm of the gradient of $f$ at any point $x$ is upper bounded by 1, $$\|\nabla f \|_2 \le 1$$ for any $x$. The dual problem will be an optimization problem under fixed divergence constraint 
+
+$$
+\mathcal{W}_1(\alpha, \beta) = \min_{s} \left\{ \int_{\mathbb{R}^d} \| s(x) \|_2 \mathrm{d}x ~:~ \mathrm{div}(s) = \alpha -\beta \right\}
+$$
+
+which is known as the Beckmann formulation. Here the vectorial function $$s(x) \in \mathbb{R}^2$$ can be interpreted as a flow field, describing the movement of mass. Outside the support of the two input measures, $\mathrm{div}(s) = 0$, which is the conservation of mass constraint.
