@@ -195,6 +195,7 @@ $$
 	\mathbf{L}_\mathbf{C}^\varepsilon(\mathbf{a},\mathbf{b}) \triangleq
 	\min_{\mathbf{P} \in \mathbf{U}(\mathbf{a},\mathbf{b})}
 		\langle \mathbf{P}, \mathbf{C} \rangle - \varepsilon \mathbf{H}(\mathbf{P}). 
+	\label{eq_entropic_optimization}
 $$
 
 Since the objective in the above optimization problem is an $\epsilon$-strongly convex function, this problem has a unique optimal solution. Let, $$\mathbf{P}_{\varepsilon}$$ shows this unique solution. It can be proved that this unique solution converges to the optimal solution with maximal entropy within the set of all optimal solutions of the Kantorovich problem, namely
@@ -231,6 +232,7 @@ the unique solution $\mathbf{P}_\varepsilon$ is a projection onto $\mathbf{U}(\m
 
 $$
 	\mathbf{K}_{i,j} \triangleq e^{-\frac{\mathbf{C}_{i,j}}{\epsilon}}.
+	\label{eq_K_sinkhorn}
 $$
 
 Indeed one has that using the definition above
@@ -247,3 +249,36 @@ $$
 $$
 
 Note that if $$\epsilon \to \infty$$, the optimization problem reduces to minimizing the mutual information function which results in independent distributions as expected from equation \eqref{eq_epsilon_large}. When $$\epsilon \to 0$$, the solution of the regularized optimization problem converges to the solution of the optimal transport problem which is the Monge map $$Y = T(X)$$ (and $$X = T^{-1}(Y)$$). In some sense, $X$ and $Y$ will be fully dependent in this case. 
+
+The dual problem for discrete distributions in case of entropic regularization will is of the form 
+
+$$
+\mathbf{L}_{\mathbf{C}}^{\epsilon} (\mathbf{a}, \mathbf{b}) = \max_{\mathbf{f} \in \mathbb{R}^n, ~ \mathbf{g} \in \mathbb{R}^m} \langle \mathbf{f}, \mathbf{a} \rangle + \langle \mathbf{g}, \mathbf{b} \rangle - \epsilon \langle e^{\mathbf{f}/\epsilon}, \mathbf{K} e^{\mathbf{g}/\epsilon} \rangle
+$$
+
+and in case of generic measures, the dual problem will be 
+
+$$
+\mathcal{L}_{c}^{\epsilon}(\alpha, \beta) = \sup_{(f,g) \in \mathcal{C}(\mathcal{X}) \times \mathcal{C} (\mathcal{Y})} \int_{\mathcal{X}} f \mathrm{d}\alpha + \int_{\mathcal{Y}} g \mathrm{d}\beta - \epsilon \int_{\mathcal{X} \times \mathcal{Y}} e^{\frac{1}{\epsilon}(-c(x,y)+f(x)+g(y))} \mathrm{d}\alpha(x) \mathrm{d}\beta(y) 
+$$
+
+## Sinkhorn Algorithm
+
+It is easy to prove that the solution to the equation \eqref{eq_entropic_optimization} is unique and has the form 
+$$\mathbf{P}_{i,j} = \mathbf{u}_i \mathbf{K}_{i,j} \mathbf{v}_j$$ for $$\forall (i,j) \in \mathbb{[} n \mathbb{]} \times \mathbb{[} m \mathbb{]}$$, for two unknown scaling variabls $$(\mathbf{u}, \mathbf{v}) \in \mathbb{R}_+^n \times \mathbb{R}_+^m$$ and $\mathbf{K}$ defined in equation \eqref{eq_K_sinkhorn}. In a matrix form, we can write $$\mathbf{P} = \mathrm{diag}(\mathbf{u}) \mathbf{K} \mathrm{diag}(\mathbf{v})$$ where $$\mathrm{diag}(\mathbf{u})~ \mathbf{K} ~\mathrm{diag}(\mathbf{v})~ \mathbb{1}_m = \mathbf{a}$$ and $$\mathrm{diag}(\mathbf{v}) ~\mathbf{K}^T ~\mathrm{diag}(\mathbf{u}) ~\mathbb{1}_n = \mathbf{b}$$. Since $$\mathrm{diag}(\mathbf{v}) \mathbb{1}_m = \mathbf{v}$$ and $$\mathrm{diag}(\mathbf{u}) \mathbb{1}_n = \mathbf{u}$$, we have 
+
+$$
+\mathbf{u} \odot \mathbf{Kv} = \mathbf{a} \\
+\mathbf{v} \odot \mathbf{K}^T\mathbf{u} = \mathbf{b}
+$$
+
+where $\odot$ denotes elementwise multiplication. This problem is known in the numerical analysis community as the matrix scaling problem and an intuitive way to handle these equations is to solve them iteratively, by modifying first $\mathbf{u}$ so that it satisfies the top Equation and then $\mathbf{v}$ to satisfy the buttom one. These two updates define Sinkhorn’s algorithm
+
+$$
+\mathbf{u}^{l+1} \triangleq \frac{\mathbf{a}}{\mathbf{K}\mathbf{v}^l} \\
+\mathbf{v}^{l+1} \triangleq \frac{\mathbf{b}}{\mathbf{K}^T\mathbf{u}^{l+1}} 
+\label{eq_sinkhorn}
+$$
+
+with elementwise division and initialized with an arbitrary positive vector like $$\mathbf{v}^0 = \mathbb{1}_m$$. The choice of the initial vector deos not affect convergence of the algorithm. It can be shown that the Sinkhorn iterations convergence rate is linear. It can also be implemented in to run on GPU for parallel processing. 
+
