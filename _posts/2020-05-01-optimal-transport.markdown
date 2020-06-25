@@ -327,3 +327,7 @@ $$
 $$
 
 which is known as the Beckmann formulation. Here the vectorial function $$s(x) \in \mathbb{R}^2$$ can be interpreted as a flow field, describing the movement of mass. Outside the support of the two input measures, $\mathrm{div}(s) = 0$, which is the conservation of mass constraint.
+
+## Statistical Divergences
+
+A divergence $D$ typically satisfies $D(\alpha, \beta) \ge 0$ and $D(\alpha, \beta) = 0$ if and only if $\alpha = \beta$, but it does not need to be symmetric or satisfy the triangular inequality. Divergences are functionals which, by looking at the pointwise ratio between two measures, give a sense of how close they are
