@@ -1,0 +1,157 @@
+---
+layout: post
+title:  "Notes on Mathematical Analysis"
+date:   2020-06-25 10:57:12 -0800
+categories: analysis
+---
+
+This is a brief primer on basic definitions and theorems in mathematical analysis. These important results are from [Integration and Modern Analysis](https://www.amazon.com/Integration-Modern-Analysis-John-Benedetto/dp/0817643060) and [Topology](https://www.amazon.com/Topology-Munkres-International-Economy-James/dp/B01DVPYWG8/). 
+
+## Definitions
+
+* A <strong> group </strong> is a set $G$ along with a rule $$\odot$$ for combining elements $a, b$ of $G$ such that 
+	- <em>Closure</em>: For all $a, b$ in $G$ we have $a \odot b \in G$. 
+	- <em>Associativity</em>: For all $a, b, c$ in $G$ we have $(a \odot b) \odot c = a \odot (b \odot c)$.
+	- <em>Identity element</em>: There exists a unique element $e$ in $G$ such that, for every element $a$ in $G$, the equation $e \odot a = a \odot e = a$ holds. 
+	- <em>Inverse</em>: For each $a$ in $G$, there exists an element $b$ in $G$, commonly denoted $a^{-1}$ such that $a \odot b = b \odot a = e$, where $e$ is the identity element.
+
+* A <strong> field </strong> is a set $F$ together with two binary operations on $F$ called <em>addition (+)</em> and <em>multiplication (.)</em>. A binary operation on $F$ is a mapping $F \times F \to F$, that is, a correspondence that associates with each ordered pair of elements of $F$ a uniquely determined element of $F$. These operations are required to satisfy the following properties, referred to as <strong>field axioms</strong>. In these axioms, $a, b$, and $c$ are arbitrary elements of the field $F$.
+	- <em>Associativity of addition and multiplication:</em> $a + (b + c) = (a + b) + c$, and $a · (b · c) = (a · b) · c$.
+	- <em>Commutativity of addition and multiplication:</em> $a + b = b + a$, and $a · b = b · a$.
+	- <em>Additive and multiplicative identity:</em> there exist two different elements 0 and 1 in $F$ such that $a + 0 = a$ and $a · 1 = a$.
+	- <em>Additive inverses:</em> for every a in $F$, there exists an element in $F$, denoted $−a$, called the additive inverse of $a$, such that $a + (−a) = 0$.
+	- <em>Multiplicative inverses:</em> for every $a \neq 0$ in $F$, there exists an element in $F$, denoted by $a^{−1}$, called the multiplicative inverse of $a$, such that $a · a^{-1} = 1$.
+	- <em>Distributivity of multiplication over addition:</em> a · (b + c) = (a · b) + (a · c).
+
+* A <strong> vector space</strong> $V$ over a field $F$ is a set together with two laws of composition. 
+	- <em> addition:</em> $V \times V \to V$, written as $v, w \rightsquigarrow v+w$ for $v$ and $w$ in $V$.
+	- <em> scalar multiplication by elements of the field:</em> $F \times V \to V$ written as $c, w \rightsquigarrow cw$ for $c \in F$ and $w \in V$.
+
+* Let $X$ be a vector space over $\mathbb{F}$ where $\mathbb{F} = \mathbb{R}$ or $\mathbb{F} = \mathbb{C}$. We call $X$ a <strong>normed vector space   </strong> if there is a function $$\lVert .\rVert: X \to \mathbb{R}^{+}$$ such that 
+	- $$\forall x \in X, ~ \lVert x \rVert = 0 \Longleftrightarrow x = 0$$.
+	- $$\forall x, y \in X, ~ \lVert x + y \rVert \le \lVert x \rVert + \lVert y \rVert$$.
+	- $$\forall a \in F, \forall x \in X, ~ \lVert a x \rVert = \lvert a \rvert \lVert x \rVert $$.
+
+* Limit Superior and Limit Inferior for a sequence $x_n$ are defined as 
+
+$$\overline{\lim_{n \to \infty}} x_n \triangleq \inf_n \sup_{k \ge n} x_k $$
+
+$$\underline{\lim_{n \to \infty}} x_n \triangleq \sup_n \inf_{k \ge n} x_k $$
+
+* A function $f: A \to B$ is <strong> surjective (onto) </strong> if every element of $B$ is the image of some element $A$ under the function $f$. It is <strong> injective (one-to-one)</strong> if for each pair of distinct points of $A$, their images under $f$ are different. And it is <strong> bijective </strong> if it is both injective and surjective. 
+
+* A <strong>topology</strong> on a set $X$ is a collection $\tau$ of subsets of $X$ having the following properties:
+	- $\emptyset$ and $X$ are in $\tau$.  
+	- The union of elements of any subcollection of $\tau$ is in $X$.
+	- The intersection of the elements of any <em>finite</em> subcollection of $\tau$ is in $X$. 
+
+* A set $X$ for which topology $\tau$ has been identified is called a <strong> topological space. </strong>
+
+* A subset $U \subseteq X$ is an <strong> open set </strong> of $X$ if $U$ belongs to the collection $\tau$. If $U$ is an open set containing $x$, then $U$ is called to be a <strong>neighborhood</strong> of $x$.
+
+* If $\tau_1$ and $\tau_2$ are two topologies on a given set $X$, and $\tau_1 \subseteq \tau_2$, then $\tau_2$ is a <strong> finer </strong> topology than $\tau_1$ and $\tau_1$ is <strong> coarser </strong> than $\tau_2$.
+
+* A topological space $X$ is called a <strong> Hausdorff space</strong> if for every pair $x_1, x_2$ of distinct points of $X$, there exist neighborhoods $U_1$ and $U_2$ of $x_1$ and $x_2$, respectively, that are disjoint. This condition is a relatively strong condition and a looser condition which is called the <strong> $T_1$ axiom </strong> requires that finite point sets be closed. Every finite point set in a Hausdorff space is closed. 
+
+* If $X$ and $Y$ are topological spaces, a function $f: X \to Y$ is said to be <strong>continuous</strong> if for each open subset $V$ of $Y$, the set $f^{-1}(V)$ is an open set of $X$. If $f$ is bijective and both $f$ and $f^{-1}$ are continuous, then $f$ is called a <strong>homeomorphism</strong>.
+
+* If $X$ is a topological space, it is said to be <strong> metrizable </strong> if there exists a metric $d$ on the set $X$ that induces the topology of $X$. A <strong> metric space</strong> is a metrizable space, together with a specific metric $d$ that gives the topology of $X$. 
+
+* A collection $\mathcal{A}$ of subsets of a space $X$ is said to <strong> cover </strong> $X$ or to be a <strong> covering </strong> of $X$, if the union of the elements of $\mathcal{A}$ is equal to $X$. It is called an <strong> open covering </strong> of $X$ if its elemets are open subsets of $X$.
+
+* A space $X$ is said to be <strong> compact </strong> if every open covering of $X$ contains a finite subcollection that covers $X$.
+
+* A function $f$ from the metric space $(X, d_x)$ to the metric space $(Y, d_y)$ is said to be <strong> uniformly continuous </strong> if given $\epsilon > 0$, there exists $\delta > 0$ such that for every pair of points $x_0, x_1$ of $X$ such that $d_x(x_0, x_1) < \delta$ we have $d_y(f(x_0), f(x_1)) < \epsilon$. 
+
+* If $X$ is a space, a point $x \in X$ is said to be an <strong> isolated point </strong> of $X$ if the one-point set $\\{x\\}$ is open in $X$.
+
+* Given a subset $A$ of a topological space $X$, the <strong> interior </strong> of $A$ denoted by <strong>Int $A$</strong> is defined as the union of all open sets contained in $A$. The <strong>closure</strong> of $A$ denoted by <strong> CI $A$ </strong> or $\bar{A}$ is defined as the intersection of all closed sets containing A. We have 
+
+$$\mathrm{Int} A \subseteq A \subseteq \bar{A} $$
+
+* A space $X$ is said to be <strong> limit point compact </strong> if every infinite subset of $X$ has a limit point. 
+
+* A space $X$ is said to be <strong> sequentially compact </strong> if every sequence of points of $X$ has a convergent subsequence. 
+
+* A space $X$ is said to be <strong> locally compact at point $x$ </strong> if there is some compact subspace $C$ of $X$ that contains a neighborhood of $x$. If space $X$ is locally compact at each of its points, $X$ is said to be <strong> locally compact.</strong> The real line $\mathbb{R}$ is locally compact while the subspace $\mathbb{Q}$ of rational numbers is not locally compact. Also $\mathbb{R}^n$ is locally compact. 
+
+* A sequence $\\{x_n : n = 1, \dots \\} \subseteq X$ where $X$ is a metric space with metric $\rho$ is called <strong>Cauchy</strong> if $\forall \epsilon > 0, \exists N$ such that $\forall m,n > N$, we have $\rho(x_m, x_n) < \epsilon$.  
+
+* If $X$ is a metric space in which every Cauchy sequence $\\{x_n: n=1,\dots\\}$ converges to some element $x \in X$, i.e. $\rho(x_n,x) \to 0$, then $X$ is called <strong>complete</strong>.
+
+* A complete normed vector space is called a <strong> Banach space</strong>.
+
+* Let $$\mathbb{F} = \mathbb{R}$$ or $$\mathbb{F} = \mathbb{C}$$. A <strong>Hilbert space</strong> $H$ is a Banach space with a function $\langle .,. \rangle : H \times H \to \mathbb{F}$ that satisfies the following conditions:
+	- $\forall x,y \in H$, we have $\langle x,y \rangle = \langle y,x \rangle$
+	- $\forall x,y,z \in H$, we have $\langle x+y,z \rangle = \langle x, z \rangle + \langle y, z \rangle$
+	- $\forall a \in \mathbb{F}, \forall x,y \in H$, we have $\langle ax,y \rangle = a\langle x,Y \rangle$
+	- $\forall x \in H$, we have $\lVert x \rVert = \sqrt{\langle x,x \rangle}$
+
+* Let $f, f_n : X \to \mathbb{R}$ be functions on $X \subseteq \mathbb{R}$. The sequence $f_n$ <strong> converges pointwise</strong> to $f$ if $\forall x \in X, \forall \epsilon >0, \exists N > 0$ such that $\forall n \ge N$, we have $\lvert f_n(x) - f(x) \rvert < \epsilon$. We say that $f_n$ <strong> converges uniformly</strong> on $X$ to $f$ if $\forall \epsilon > 0, \exists N > 0$ such that $\forall n \ge N$ and $\forall x \in X$ we have $\lvert f_n(x) - f(x) \rvert < \epsilon$. 
+
+* If $$\mathcal{P}(X)$$ denotes the power set of a set $X$, then a collection of sets $$\mathcal{R} \subseteq \mathcal{P}(X)$$ is called a <strong>ring</strong> if $$\forall A, B \in \mathcal{R}$$ we have that $$A \cap B \in \mathcal{R}$$, $$A \cup B \in \mathcal{R}$$ and $$A \setminus B \in \mathcal{R}$$.
+
+* A ring is a <strong>$\sigma$-ring</strong> if for any sequence $$\{A_n : n=1,\dots\}$$ we have that $$\bigcap_{n=1}^{\infty} A_n \in \mathcal{R}$$ and $$\bigcup_{n=1}^{\infty} A_n \in \mathcal{R}$$.
+
+* A ring (or $\sigma$-ring) $$\mathcal{A}$$ over a set $X$ is called an <strong> algebra </strong> (or <strong>$\sigma$-algebra</strong>) if $$X \in \mathcal{A}$$. In this case, $$\emptyset \in \mathcal{A}$$ and $$A \in \mathcal{A}$$ implies that $$A^c \in \mathcal{A}$$.
+
+* Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $S(x)$ be a statement about a point $x \in X$. We say that $S(x)$ is valid <strong> almost everywhere</strong> if there is a set $$N \in \mathcal{A}$$ for which $\mu(N) = 0$ such that $S(x)$ is true for $\forall x \in X \setminus N$. In this case, we write <strong> $S$ $\mu$-a.e.</strong>
+
+* Let $$(X, \mathcal{A})$$ and $$(Y, \mathcal{E})$$ be measurable spaces. A function $f: X \to Y$ is <strong>measurable</strong> if $$\forall E \in \mathcal{E}$$ we have $$f^{-1}(E) \in \mathcal{A}$$.
+
+* Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $1 \le p < \infty$. We define <strong>$$\mathcal{L}_{\mu}^p(X)$$</strong> as the set of all $\mu$-measurable functions $$f:X \to \mathbb{C}$$ such that 
+
+$$\int_{X} |f|^p \mathrm{d}\mu <\infty$$
+
+* We write $f \sim g$ for $f, g \in \mathcal{L}_{\mu}^p(X)$ if $f=g$, $\mu$-a.e. and we note that $\sim$ is an equivalence relation. We define the space <strong>$${L}_{\mu}^p(X)$$</strong> to be the collection of all equivalence classes in $$\mathcal{L}_{\mu}^p(X)$$. Moreover, we set 
+
+$${\lVert f \rVert}_p = \left(\int_{X} |g|^p \mathrm{d}\mu \right)^{\frac{1}{p}}$$
+
+* Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $f : X \to \mathbb{C}$ be measurable. We define  
+
+$$ \mathrm{ess sup}_{x \in X} \lvert f(x) \rvert = {\lVert f \rVert}_{\infty} = \inf \{ M : \mu \left( \{ x : \lvert f(x) \rvert > M \}\right) = 0\}$$
+
+* <strong>$$\mathcal{L}_{\mu}^{\infty}(X)$$</strong> is the set of all measurable functions $f : X \to \mathbb{C}$ such that $$ \lVert f \rVert_{\infty}< \infty$$. Also <strong>$${L}_{\mu}^{\infty}(X)$$</strong>  is the set of equivalence classes defined by the equivalence relation $$\sim$$ on <strong>$$\mathcal{L}_{\mu}^{\infty}(X)$$</strong>. 
+
+## Theorems 
+
+* If $X$ is a Hausdorff space, then a sequence of points $X$ converges to at most one point of $X$. 
+
+* Every closed subspace of a compact space is compact. 
+
+* Every compact subspace of a Hausdorff space is closed. 
+
+* The image of a compact space under a continuous map is compact. 
+
+* Let $f: X \to Y$ be a bijective continuous function. If $X$ is compact and $Y$ is Hausdorff then $f$ is a homeomorphism. 
+
+* Let $X$ be a simply ordered set having the least upper bound property. In the order topology, each closed interval in $X$ is compact. This proves that every closed interval in $\mathbb{R}$ is compact. 
+
+* <strong>Extreme Value Theorem:</strong> Let $f :X \to Y$ be continuous, where $Y$ is an ordered set in the order topology. If $X$ is compact, then there exist points $c$ and $d$ in $X$ such that $f(c) \le f(x) \le f(d)$ for every $x \in X$.
+
+* Let $f:X \to Y$ be a continuous map of the compact metric space $(X, d_x)$ to the metric space $(Y,d_y)$. Then $f$ is uniformly continuous. 
+
+* Let $X$ be a nonempty compact Hausdorff space. If $X$ has no isolated points, then $X$ is uncountable. 
+
+* Compactness implies limit point compactness but not conversely. 
+
+* Let $X$ be a metrizable space. Then the following are equivalent. 
+	- $X$ is compact. 
+	- $X$ is limit point compact.
+	- $X$ is sequentially compact. 
+
+* Every simply ordered set $X$ having the least upper bound property is locally compact. 
+
+* Let $X$ be a Hausdorff space. Then $X$ is locall compact if and only if given $x \in X$ and given a neighborhood $U$ of $x$, there is a neighborhood $V$ of $x$ such that $\bar{V}$ is compact and $\bar{V} \subseteq U$. 
+
+* Let $X$ be a locally compact Hausdorff space and let $A$ be a subspace of $X$. If $A$ is closed in $X$ or open in $X$, then $A$ is locally compact.
+
+* Metric spaces are Hausdorff. 
+
+* <strong> Urysohn Lemma: </strong> Let $X$ be a locally compact Hausdorff space. If $K \subseteq X$ is compact and $U \subseteq X$ is an open set containing $K$, then there is a continuous function $f: X \to [0,1]$ such that $f=1$ on $K$ and $f=0$ on $U^c$.
+
+* Let $(X, \rho)$ be a metric space. A subset $K \subseteq X$ is compact if and only if every sequence has a convergent subsequence. 
+
+* A normed vector space $X$ is a Banach space if and only if every absolutely convergent series is convergent.
+
+* <strong>Cauchy Criterion: </strong>Let $$\{f_n : n = 1, \dots\}$$ be a sequence of real-valued functions on $$X \subseteq \mathbb{R}$$. Then $$\{f_n\}$$ converges uniformly on $X$ (to some function $f$) if and only if $\forall \epsilon >0, \exists N > 0$ such that $\forall m,n > N$ and $\forall x \in X$ we have $$\lvert f_m(x) - f_n(x) \rvert < \epsilon$$.
