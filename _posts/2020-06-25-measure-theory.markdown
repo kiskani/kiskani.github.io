@@ -95,6 +95,26 @@ $$\mathrm{Int} A \subseteq A \subseteq \bar{A} $$
 
 * A ring (or $\sigma$-ring) $$\mathcal{A}$$ over a set $X$ is called an <strong> algebra </strong> (or <strong>$\sigma$-algebra</strong>) if $$X \in \mathcal{A}$$. In this case, $$\emptyset \in \mathcal{A}$$ and $$A \in \mathcal{A}$$ implies that $$A^c \in \mathcal{A}$$.
 
+* The collection $$\mathcal{B}(X)$$ of <strong>Borel sets</strong> in $X \subseteq \mathbb{R}$ is the smallest $\sigma$-algebra in $\mathcal{P}(X)$ containing the open sets in $X$. If $X$ is a topological space, then $$\mathcal{B} = \mathcal{B}(X)$$ is called the <strong>Borel algebra</strong>.
+
+* Let $$\mathcal{A} \subseteq \mathcal{P}(X)$$ and let $\mu: \mathcal{A} \to \mathbb{R}^{+}\cup \{\infty\}$ be a set function. Then $\mu$ is <strong> finitely additive</strong> on $\mathcal{A}$ if for each finite sequence $\{A_n: n=1,\dots, N\} \subseteq \mathcal{A}$ of mutually disjoint sets we have
+
+$$\mu \left( \bigcup_{n=1}^N A_n \right)= \sum_{n=1}^N \mu(A_n)$$
+
+* $\mu$ defined above is <strong>$\sigma$-additive</strong> or <strong>countably additive</strong> on $\mathcal{A}$ if for each sequence $\{A_n: n=1,\dots\} \subseteq \mathcal{A}$ of mutually disjoint sets we have
+
+$$\mu \left( \bigcup_{n=1}^{\infty} A_n \right)= \sum_{n=1}^{\infty} \mu(A_n)$$
+
+* A nonnegative, $\sigma$-additive set function $\mu: \mathcal{A} \to \mathbb{R}^{+}\cup \{\infty\}$ is called a <strong>measure</strong>.
+
+* For any interval $I \subseteq \mathbb{R}$, the <strong>Lebesgue measure</strong> $m(I)$ is the length of $I$. For any set $A \subseteq \mathbb{R}$, the <strong>Lebesgue outer measure</strong> of $A$ is defined as 
+
+$$m^{*}(A) = \inf \left\{ \sum_{n=1}^{\infty} m(I_n) : A \subseteq \bigcup_{n=1}^{\infty} I_n ~ and~ \{I_n\} ~ is ~ a ~ countable ~ family ~ of ~ open ~ intervals \right\}$$
+
+* <strong>Caratheodory approach: </strong> A set $A \subseteq \mathbb{R}$ is <strong>Lebesgue measurable</strong> if $\forall E \subseteq \mathbb{R}$, we have $$m^{*}(E) = m^{*}(E \cap A)+ m^{*}(E \cup A^c)$$ i.e. no matter how you cut it (with any $E$), $$m^{*}$$ is nicely additive. 
+
+* If a set $A$ is Lebesgue measurable as defined above, then its <strong>Lebesgue measure</strong> is defined as $$m(A) = m^{*}(A)$$.
+
 * Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $S(x)$ be a statement about a point $x \in X$. We say that $S(x)$ is valid <strong> almost everywhere</strong> if there is a set $$N \in \mathcal{A}$$ for which $\mu(N) = 0$ such that $S(x)$ is true for $\forall x \in X \setminus N$. In this case, we write <strong> $S$ $\mu$-a.e.</strong>
 
 * Let $$(X, \mathcal{A})$$ and $$(Y, \mathcal{E})$$ be measurable spaces. A function $f: X \to Y$ is <strong>measurable</strong> if $$\forall E \in \mathcal{E}$$ we have $$f^{-1}(E) \in \mathcal{A}$$.
@@ -112,6 +132,14 @@ $${\lVert f \rVert}_p = \left(\int_{X} |g|^p \mathrm{d}\mu \right)^{\frac{1}{p}}
 $$ \mathrm{ess sup}_{x \in X} \lvert f(x) \rvert = {\lVert f \rVert}_{\infty} = \inf \{ M : \mu \left( \{ x : \lvert f(x) \rvert > M \}\right) = 0\}$$
 
 * <strong>$$\mathcal{L}_{\mu}^{\infty}(X)$$</strong> is the set of all measurable functions $f : X \to \mathbb{C}$ such that $$ \lVert f \rVert_{\infty}< \infty$$. Also <strong>$${L}_{\mu}^{\infty}(X)$$</strong>  is the set of equivalence classes defined by the equivalence relation $$\sim$$ on <strong>$$\mathcal{L}_{\mu}^{\infty}(X)$$</strong>. 
+
+* Let $$(X, \mathcal{A}, \mu)$$ be a measure space. We say that $\\{A_n : n=1,\dots, N\\} is a finite collection of <strong>independent sets</strong> if 
+ $$\mu\left(A_{n_1}\cap \dots A_{n_k} \right)= \mu\left(A_{n_1}\right) \dots \mu \left(A_{n_k}\right)$$ for all $k \le N$ and $n_1 < \dots < n_k \le N$. An infinite collection of measurable sets is <strong>independent</strong> of each other if each of its finite subcollections is independent. 
+
+* Let $$(X, \mathcal{A}, \mu)$$ be a measure space. We say that $$(X, \mathcal{A}, \mu)$$ or $X$ is a <strong>finite measure space</strong> and $\mu$ is a <strong> bounded measure</strong> if $\mu(X) < \infty$. We say that $X$ or $\mu$ is <strong>$\sigma$-finite</strong> if $$\exists \{A_n : n=1,\dots\} \subseteq \mathcal{A}$$ such that $\forall n, \mu(A_n) < \infty$ and $$\bigcup_{n=1}^{\infty} A_n = X$$. Clearly, we can always take $$\{A_n : n=1,\dots\}$$ to be a disjoint family. 
+
+* A measure space $$(X, \mathcal{A}, \mu)$$ is <strong>complete</strong> if $$\forall A \in \mathcal{A}$$ for which $$\mu(A)=0$$, and $$\forall B \subseteq A$$, we have $$B \in \mathcal{A}$$ and thus $\mu(B) = 0$. For instance, $$(\mathbb{R}, \mathcal{M}(\mathbb{R}), m)$$ is complete while $$(\mathbb{R}, \mathcal{B}(\mathbb{R}), m)$$ is not complete. 
+
 
 ## Theorems 
 
@@ -155,3 +183,34 @@ $$ \mathrm{ess sup}_{x \in X} \lvert f(x) \rvert = {\lVert f \rVert}_{\infty} = 
 * A normed vector space $X$ is a Banach space if and only if every absolutely convergent series is convergent.
 
 * <strong>Cauchy Criterion: </strong>Let $$\{f_n : n = 1, \dots\}$$ be a sequence of real-valued functions on $$X \subseteq \mathbb{R}$$. Then $$\{f_n\}$$ converges uniformly on $X$ (to some function $f$) if and only if $\forall \epsilon >0, \exists N > 0$ such that $\forall m,n > N$ and $\forall x \in X$ we have $$\lvert f_m(x) - f_n(x) \rvert < \epsilon$$.
+
+* If $$\mathcal{B}(\mathbb{R})$$ is the set of all Borel sets in $$\mathbb{R}$$ and $$\mathcal{M}(\mathbb{R})$$ is the set of all Lebesgue measurable  subsets of $$\mathbb{R}$$, we can prove that
+	- $$\mathcal{M}(\mathbb{R})$$ is a $\sigma$-algebra.
+	- We have $$\mathcal{B}(\mathbb{R}) \subseteq \mathcal{M}(\mathbb{R})$$ 
+	- $$\mathcal{M}(\mathbb{R}) \setminus \mathcal{B}(\mathbb{R}) \neq \emptyset$$. Hence there are measurable sets that are not Borel.  
+	- If $$A \in \mathcal{M}(\mathbb{R})$$, then $$\exists B \in \mathcal{B}(\mathbb{R})$$ and $$\exists E \in \mathcal{M}(\mathbb{R})$$ with $m(E)=0$ such that $A= B \cup E$ and $B \cap E = \emptyset$ and $m(A)=m(B)$. i.e. every Lebesgue measurable set is a Borel set up to a set of measure zero. 
+	- There exists sets that are not Lebesgue measurable and it is very difficult to approximate these nonmeasurable sets with measurable ones. More formally, let $$E \subseteq \mathbb{R}$$ be nonmeasurable. There is $\epsilon > 0$ such that if $E \subseteq A$ and $E^c \subseteq B$ where $A$ and $B$ are measurable, then $m(A \cap B) > \epsilon$.
+
+* Let $$(X, \mathcal{A}, \mu)$$ be a measure space. 
+	- If $A,B \in \mathcal{A}, A \subseteq B$, then $\mu(A) \le \mu(B)$.
+	- For each sequence $\\{A_n : n=1,\dots\\} \subseteq \mathcal{A}$ we have $$\mu \left( \bigcup_{n=1}^{\infty} A_n\right) \le \sum_{n=1}^{\infty} \mu(A_n)$$.
+	- If $\\{A_n : n=1,\dots\\} \subseteq \mathcal{A}$ statisfies the condition that $\mu(A_1) < \infty$ and $A_n \subseteq A_{n-1}$ for each $n \ge 2$, then $$\mu \left( \bigcap_{n=1}^{\infty} A_n\right) = \lim_{n \to \infty} \mu(A_n)$$.
+	- If $\\{A_n : n=1,\dots\\} \subseteq \mathcal{A}$ is a sequence with the property that $A_n \subseteq A_{n+1}$ for each $n \ge 1$, then $$\mu \left( \bigcup_{n=1}^{\infty} A_n\right) = \lim_{n \to \infty} \mu(A_n)$$.
+
+* <strong>First Borel-Cantelli lemma:</strong> Let $$(X, \mathcal{A}, \mu)$$ be a measure space. If $\\{A_n : n=1,\dots\\} \subseteq \mathcal{A}$ statisfies the condition that $\sum_{n=1}^{\infty } \mu(A_n) < \infty$, then the collection of all those $x \in X$ that belong to infinitely many sets $A_n$ has measure 0. Formally, 
+
+$$\mu \left( \bigcap_{m=1}^{\infty} \bigcup_{n=m}^{\infty} \right) = 0$$
+
+* <strong>Second Borel-Cantelli lemma:</strong> Let $$(X, \mathcal{A}, \mu)$$ be a measure space such that $\mu(X) = 1$. If $\\{A_n : n=1,\dots\\} \subseteq \mathcal{A}$ is a sequence of independent sets and $\sum_{n=1}^{\infty } \mu(A_n) = \infty$, then 
+
+$$\mu \left( \bigcap_{m=1}^{\infty} \bigcup_{n=m}^{\infty} \right) = 1$$
+
+* <strong>Kolmogorov zero-one law:</strong>  Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $\\{A_n : n=1,\dots\\} \subseteq \mathcal{A}$ be a sequence of independent sets. Let $$\mathcal{A}_m$$ denote the $\sigma$-algebra generated by $\\{A_n : n=m,\dots\\}$. 	For each $A \in \cap_{m=1}^{\infty}\mathcal{A}_m$, either $\mu(A)=0$ or $\mu(A)=1$. 
+
+* <strong>Measure Completeness Theorem</strong> Let $$(X, \mathcal{A}, \mu)$$ be a measure space. There is a measure space Let $$(X, \mathcal{A}_0, \mu_0)$$, called the complete measure space corresponding to $$(X, \mathcal{A}, \mu)$$ such that
+	- $$\mathcal{A} \subseteq \mathcal{A}_0$$.
+	- $\mu = \mu_0$ on $\mathcal{A}$.
+	- $$A \in \mathcal{A}_0 \Longleftrightarrow A = B \cup E $$ where $B \in \mathcal{A}$ and $E \subseteq{D}$ for some $D \in \mathcal{A}$ that satisfies $\mu(D) = 0$.
+	- If $A \in \mathcal{A}_0, \mu_0(A) = 0$ and $S \subseteq A$, then  $S \subseteq \mathcal{A}_0$ and $\mu_0(S)=0$.
+	
+* 
