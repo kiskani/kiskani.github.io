@@ -1,0 +1,79 @@
+I"ê<p>This is a brief primer on basic definitions and theorems in mathematical analysis. These important results are from <a href="https://www.amazon.com/Integration-Modern-Analysis-John-Benedetto/dp/0817643060">Integration and Modern Analysis</a> and <a href="https://www.amazon.com/Topology-Munkres-International-Economy-James/dp/B01DVPYWG8/">Topology</a>.</p>
+
+<h2 id="definitions">Definitions</h2>
+
+<ul>
+  <li>Limit Superior and Limit Inferior for a sequence $x_n$ are defined as</li>
+</ul>
+
+<script type="math/tex; mode=display">\overline{\lim_{n \to \infty}} x_n \triangleq \inf_n \sup_{k \ge n} x_k</script>
+
+<script type="math/tex; mode=display">\underline{\lim_{n \to \infty}} x_n \triangleq \sup_n \inf_{k \ge n} x_k</script>
+
+<ul>
+  <li>
+    <p>A function $f: A \to B$ is <strong> surjective (onto) </strong> if every element of $B$ is the image of some element $A$ under the function $f$. It is <strong> injective (one-to-one)</strong> if for each pair of distinct points of $A$, their images under $f$ are different. And it is <strong> bijective </strong> if it is both injective and surjective.</p>
+  </li>
+  <li>A <strong>topology</strong> on a set $X$ is a collection $\tau$ of subsets of $X$ having the following properties:
+    <ul>
+      <li>$\emptyset$ and $X$ are in $\tau$.</li>
+      <li>The union of elements of any subcollection of $\tau$ is in $X$.</li>
+      <li>The intersection of the elements of any <em>finite</em> subcollection of $\tau$ is in $X$.</li>
+    </ul>
+  </li>
+  <li>
+    <p>A set $X$ for which topology $\tau$ has been identified is called a <strong> topological space. </strong></p>
+  </li>
+  <li>
+    <p>A subset $U \subseteq X$ is an <strong> open set </strong> of $X$ if $U$ belongs to the collection $\tau$. If $U$ is an open set containing $x$, then $U$ is called to be a <strong>neighborhood</strong> of $x$.</p>
+  </li>
+  <li>
+    <p>If $\tau_1$ and $\tau_2$ are two topologies on a given set $X$, and $\tau_1 \subseteq \tau_2$, then $\tau_2$ is a <strong> finer </strong> topology than $\tau_1$ and $\tau_1$ is <strong> coarser </strong> than $\tau_2$.</p>
+  </li>
+  <li>
+    <p>A topological space $X$ is called a <strong> Hausdorff space</strong> if for every pair $x_1, x_2$ of distinct points of $X$, there exist neighborhoods $U_1$ and $U_2$ of $x_1$ and $x_2$, respectively, that are disjoint. This condition is a relatively strong condition and a looser condition which is called the <strong> $T_1$ axiom </strong> requires that finite point sets be closed. Every finite point set in a Hausdorff space is closed.</p>
+  </li>
+  <li>
+    <p>If $X$ and $Y$ are topological spaces, a function $f: X \to Y$ is said to be <strong>continuous</strong> if for each open subset $V$ of $Y$, the set $f^{-1}(V)$ is an open set of $X$. If $f$ is bijective and both $f$ and $f^{-1}$ are continuous, then $f$ is called a <strong>homeomorphism</strong>.</p>
+  </li>
+  <li>
+    <p>If $X$ is a topological space, it is said to be <strong> metrizable </strong> if there exists a metric $d$ on the set $X$ that induces the topology of $X$. A <strong> metric space</strong> is a metrizable space, together with a specific metric $d$ that gives the topology of $X$.</p>
+  </li>
+  <li>
+    <p>A collection $\mathcal{A}$ of subsets of a space $X$ is said to <strong> cover </strong> $X$ or to be a <strong> covering </strong> of $X$, if the union of the elements of $\mathcal{A}$ is equal to $X$. It is called an <strong> open covering </strong> of $X$ if its elemets are open subsets of $X$.</p>
+  </li>
+  <li>
+    <p>A space $X$ is said to be <strong> compact </strong> if every open covering of $X$ contains a finite subcollection that covers $X$.</p>
+  </li>
+  <li>A function $f$ from the metric space $(X, d_x)$ to the metric space $(Y, d_y)$ is said to be <strong> uniformly continuous </strong> if given $\epsilon &gt; 0$, there exists $\delta &gt; 0$ such that for every pair of points $x_0, x_1$ of $X$ such that $d_x(x_0, x_1) &lt; \delta$ we have $d_y(f(x_0), f(x_1)) &lt; \epsilon$.</li>
+</ul>
+
+<h2 id="theorems">Theorems</h2>
+
+<ul>
+  <li>
+    <p>If $X$ is a Hausdorff space, then a sequence of points $X$ converges to at most one point of $X$.</p>
+  </li>
+  <li>
+    <p>Every closed subspace of a compact space is compact.</p>
+  </li>
+  <li>
+    <p>Every compact subspace of a Hausdorff space is closed.</p>
+  </li>
+  <li>
+    <p>The image of a compact space under a continuous map is compact.</p>
+  </li>
+  <li>
+    <p>Let $f: X \to Y$ be a bijective continuous function. If $X$ is compact and $Y$ is Hausdorff then $f$ is a homeomorphism.</p>
+  </li>
+  <li>
+    <p>Let $X$ be a simply ordered set having the least upper bound property. In the order topology, each closed interval in $X$ is compact. This proves that every closed interval in $\mathbb{R}$ is compact.</p>
+  </li>
+  <li>
+    <p><strong>Extreme Value Theorem</strong> Let $f :X \to Y$ be continuous, where $Y$ is an ordered set in the order topology. If $X$ is compact, then there exist points $c$ and $d$ in $X$ such that $f(c) \le f(x) \le f(d)$ for every $x \in X$.</p>
+  </li>
+  <li>
+    <p>Let $f:X \to Y$ be a continuous map of the compact metric space $(X, d_x)$ to the metric space $(Y,d_y)$. Then $f$ is uniformly continuous.</p>
+  </li>
+</ul>
+:ET

@@ -1,0 +1,14 @@
+I"E<p>This is a brief primer on basic definitions and theorems in measure theory. These important results are from <a href="https://www.amazon.com/Integration-Modern-Analysis-John-Benedetto/dp/0817643060">Integration and Modern Analysis</a>.</p>
+
+<h2 id="definitions">Definitions</h2>
+
+<ul>
+  <li>Limit Superior and Limit Inferior</li>
+</ul>
+
+<p><script type="math/tex">\overline{\lim_{n \to \infty}} x_n \triangleq \inf_n \sup_{k \ge n} x_k</script>
+<script type="math/tex">\underline{\lim}_{n \to \infty} x_n \triangleq \sup_n \inf_{k \ge n} x_k</script></p>
+<ul>
+  <li></li>
+</ul>
+:ET

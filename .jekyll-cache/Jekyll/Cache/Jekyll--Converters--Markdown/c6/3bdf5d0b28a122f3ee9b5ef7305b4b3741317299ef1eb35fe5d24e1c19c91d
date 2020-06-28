@@ -1,0 +1,3 @@
+I"~<p>In this post, I will explain the fundamentals of gradient bandits. First, I will explain the <code class="highlighter-rouge">Log-likelihood trick</code> (or <code class="highlighter-rouge">REINFORCE</code> trick, Williams 1992). Assume that $\theta$ is the parameter
+vector and $R_t$ is the <code class="highlighter-rouge">reward</code> at time t which is a function of $\theta$. Also, let $A_t$ be the <code class="highlighter-rouge">action</code> at time t, $\pi_{\theta}(a)$ be the <code class="highlighter-rouge">policy</code> which is parametrized on $\theta$ and we want to find it directly through gradient updates. Letting</p>
+:ET

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Estimation theory basics</title>
+  <meta name="description" content="In this post, I will explain some of the basic and fundamental theorems and concepts in estimation theory. Mostly, I am putting the summary of the great book...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/estimation/2020/03/29/estimation-theory.html">
+  <link rel="alternate" type="application/rss+xml" title="Topics in Machine Learning." href="http://localhost:4000/feed.xml">
+
+  <!-- <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+          extensions: ["tex2jax.js"],
+          jax: ["input/TeX", "output/HTML-CSS"],
+          tex2jax: {
+              inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+              displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+              processEscapes: true
+          },
+      "HTML-CSS": { availableFonts: ["TeX"] }
+        });
+  </script> -->
+  <script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Topics in Machine Learning.</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Estimation theory basics</h1>
+    <p class="post-meta"><time datetime="2020-03-29T12:17:44-07:00" itemprop="datePublished">Mar 29, 2020</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>In this post, I will explain some of the basic and fundamental theorems and concepts in estimation theory. Mostly, I am putting the summary of the great book of <a href="https://www.amazon.com/Fundamentals-Statistical-Signal-Processing-Estimation/dp/0133457117/">Steven Kay</a> in here.</p>
+
+<h2 id="minimum-variance-unbiased-estimation">Minimum Variance Unbiased Estimation</h2>
+
+<p>Assume that we want to estimate a parameter $\theta$ in a model. An estimation $\hat{\theta}$ is said to be <em>unbiased</em> if</p>
+
+<script type="math/tex; mode=display">\mathbb{E}[\hat{\theta}] = \theta.</script>
+
+<p>If an estimation is not unbiased, then the value of <em>bias</em> for estimation is defined as</p>
+
+<script type="math/tex; mode=display">b(\theta) \triangleq \mathbb{E}[\hat{\theta}] - \theta</script>
+
+<h3 id="minimum-variance-criterion">Minimum variance criterion</h3>
+
+<p>A natural choice for the optimality criterion is <em>Mean Squared Error (MSE)</em> defined as</p>
+
+<script type="math/tex; mode=display">mse(\hat{\theta}) \triangleq \mathbb{E}[(\hat{\theta} - \theta)^2] = var(\hat{\theta}) + b^2(\theta)</script>
+
+<p>Unfortunately, adoption of this natural choice leads to unrealizable estimators, ones that cannot be written solely as a function of data since it depends on bias. Hence, from a practical point of view, MSE estimators are useless. An alternative approach is to constrain the bias to zero and minimize the variance. Such an estimation is called <strong><em>Minimum Variance Unbiased (MVU)</em></strong> estimation. Unfortunately, there is also no guarantee that an MVU exists. If MVU exists, there are a few techniques that could help us find it.</p>
+<ul>
+  <li>Finding the <em>Cramer Rao Lower Bound (CRLB)</em> and checking if some estimator can achieve it.</li>
+  <li>Applying the <em>Rao-Blackwell-Lehmann-Schaffe (RBLS)</em> theorem to an unbiased estimator.</li>
+  <li>Finding the <em>Best Linear Unbiased Estimator (BLUE)</em>.</li>
+</ul>
+
+<p>CRLB is a lower bound for the variance of any unbiased estimator. If an estimator exists whose variance equals to that of CRLB <em>for any value of $\theta$</em>, then it must be the MVU estimator. In this case, the theory of CRLB immediately yields the estimator. It may happen that no estimator exists whose variance equals the bound, yet, MVU estimator may still exist. In such cases, we must resort to RBLS theorem to find the MVU. The third approach, BLUE, only works for particular datasets.</p>
+
+<h2 id="cramer-rao-lower-bound-crlb">Cramer Rao Lower Bound (CRLB)</h2>
+<p>Assume that the PDF function $p(x; \theta)$ satisfies the regularity condition</p>
+
+<script type="math/tex; mode=display">\mathbb{E} \left[\frac{\partial \ln p(x;\theta)}{\partial \theta} \right] = 0,  \quad \forall \theta</script>
+
+<p>where the expectation is taken with respect to $p(x; \theta)$. Then the variance of any unbiased estimator $\hat{\theta}$ must satisfy</p>
+
+<script type="math/tex; mode=display">var(\hat{\theta}) \ge -\frac{1}{\mathbb{E}\left[ \frac{\partial^2 \ln p(x; \theta)}{\partial \theta^2}\right]} = \frac{1}{\mathbb{E}\left[ \left( \frac{\partial \ln p(x;\theta)}{\partial \theta}\right)^2 \right]}</script>
+
+<p>where the derivation is evaluated at the true value of $\theta$ and the expectation is taken with respect to $p(x; \theta)$. Furthermore, an unbiased estimator may be found that attains the bound for all $\theta$ if and only if</p>
+
+<script type="math/tex; mode=display">\frac{\partial \ln p(x; \theta)}{\partial \theta} = I(\theta) (g(x) - \theta)</script>
+
+<p>for some functions $g$ and $I$. The estimator which is the MVU estimator is $\hat{\theta} = g(x)$ and the minimum variance is $1/I(\theta)$.</p>
+
+<p>An estimator which is unbiased and attains the CRLB is said to be <strong><em>efficient</em></strong>. The denominator of the lower bound in CRLB is called <strong><em>Fisher information</em></strong>. If it is desired to find the estimate for</p>
+
+<script type="math/tex; mode=display">\alpha = g(\theta)</script>
+
+<p>then the CRLB is proved to be</p>
+
+<script type="math/tex; mode=display">var(\hat{\alpha}) \ge -\frac{\left(\frac{\partial g}{\partial \theta}\right)^2}{\mathbb{E}\left[ \frac{\partial^2 \ln p(x; \theta)}{\partial \theta^2}\right]}</script>
+
+<p>This shows that the efficiency is destroyed by a non-linear transformation like $g(\theta)$ while it is maintained by linear transformations.</p>
+
+<h2 id="rao-blackwell-lehmann-schaffe-theorem">Rao-Blackwell-Lehmann-Schaffe Theorem</h2>
+
+<p>RBLS Theorem allows us to find MVU estimator by a simple inspection of the PDF function.</p>
+
+<h1 id="sufficient-statistics">Sufficient Statistics</h1>
+
+<p>A reasonable question to ask is which data samples are pertinent to the estimation problem? There may be many sufficient data sets to find the MVU. However, the one with the least number of elements is called the <strong>minimal sufficient statistic</strong>. The Neyman-Fisher theorem which is used to find the sufficient statistics is stated as follows.</p>
+
+<h1 id="neyman-fisher-factorization-theorem">Neyman-Fisher Factorization Theorem</h1>
+
+<p>If we can factor the pdf $p(x; \theta)$ as</p>
+
+<script type="math/tex; mode=display">p(x;\theta) = g(T(x), \theta) h(x)
+\label{eq_fac}</script>
+
+<p>where $g$ is a function depending on $x$ only through $T(x)$ and $h$ is a function depending only on $x$, then $T(x)$ is a sufficient statistic for $\theta$. Conversely, if $T(x)$ is a sufficient statistic for $\theta$, then the pdf can be factored as in \eqref{eq_fac}.</p>
+
+<p>Using the Neyman-Fisher theorem we can find sufficient statistics. Then we will use the RBLS theorem as to find MVU as follows.</p>
+
+<h1 id="rbls-theorem">RBLS Theorem</h1>
+
+<p>If $\check{\theta}$ is an unbiased estimator of $\theta$ and $T(x)$ is a sufficient statistic for $\theta$, then</p>
+
+<script type="math/tex; mode=display">\hat{\theta} = \mathbb{E}\left[ \check{\theta} | T(x) \right]</script>
+
+<p>is</p>
+<ul>
+  <li>a valid estimator for $\theta$ (not depending on $\theta$)</li>
+  <li>unbiased</li>
+  <li>of lesser or equal variance than that of $\check{\theta}$, for all $\theta$.</li>
+</ul>
+
+<p>Additionally, if the sufficient statistic is <strong><em>complete</em></strong>, then $\hat{\theta}$ is the MVU estimator. A statistic is <em>complete</em> if there is only one function of the statistic that is unbiased. The property of completeness depends on the pdf of $x$, which in turn determines the pdf of the sufficient statistic. For many practical cases of interest this property holds. For instance, it holds for the exponential family of distributions.</p>
+
+<h1 id="rao-blackwellization">Rao Blackwellization</h1>
+
+<p>Rao Blackwellization is a procedure to find the MVU estimator using the RBLS theorem. It involves the following steps:</p>
+<ol>
+  <li>Use Neyman-Fisher factorization theorem to find a single sufficient statistic $T(x)$ for $\theta$.</li>
+  <li>Determine if the sufficient statistic is complete and if so, proceed. If not, this approach cannot be used to find MVU.</li>
+  <li>Find a function $g$ of the sufficient statistic that yields an unbiased estimator $\hat{\theta} = g(T(x))$. This will be the MVU estimator.</li>
+</ol>
+
+<p>As an alternative implementation of step 3, we may evaluate 
+<script type="math/tex">\hat{\theta} = \mathbb{E}\left[ \check{\theta} | T(x) \right]</script>, where $\check{\theta}$ is any unbiased estimator.</p>
+
+<h2 id="best-linear-unbiased-estimator-blue">Best Linear Unbiased Estimator (BLUE)</h2>
+
+<p>The BLUE restricts the estimator to be linear in data</p>
+
+<script type="math/tex; mode=display">\hat{\theta} = \sum_{i=0}^{N-1} a_i x[i]</script>
+
+<p>where $a_i$’s are constants yet to be determined. The unbiased constraint is written as</p>
+
+<script type="math/tex; mode=display">\mathbb{E}[\hat{\theta}] = \sum_{i=0}^{N-1} a_i \mathbb{E}[x[i]] = \theta</script>
+
+<p>In order to satisfy this constraint, $\mathbb{E}[x[i]]$ must be linear in $\theta$ or</p>
+
+<script type="math/tex; mode=display">\mathbb{E}[x[i]] = s[i] \theta</script>
+
+<p>where the $s[i]$’s are known. Therefore, the unbiased contraint can be written as</p>
+
+<script type="math/tex; mode=display">\mathbf{a}^T \mathbf{s} = 1
+\label{eq_bias}</script>
+
+<p>We also have</p>
+
+<script type="math/tex; mode=display">var(\hat{\theta}) = \mathbb{E}\left[\mathbf{a}^T (\mathbf{x} - \mathbb{E}[\mathbf{x}])(\mathbf{x} - \mathbb{E}[\mathbf{x}])^T\mathbf{a} \right]= \mathbf{a}^T \mathbf{C} \mathbf{a}
+\label{eq_var}</script>
+
+<p>If we minimize variance in \eqref{eq_var} subject to \eqref{eq_bias}, we can find the optimal coefficients $\mathbf{a}$ as</p>
+
+<script type="math/tex; mode=display">\mathbf{a}_{opt} = \frac{\mathbf{C}^{-1}\mathbf{s}}{\mathbf{s}^T\mathbf{C}^{-1}\mathbf{s}}</script>
+
+<p>Hence, the BLUE is</p>
+
+<script type="math/tex; mode=display">\hat{\theta} = \frac{\mathbf{s}^T\mathbf{C}^{-1}\mathbf{x}}{\mathbf{s}^T\mathbf{C}^{-1}\mathbf{s}}</script>
+
+<p>and the minimum variance is equal to</p>
+
+<script type="math/tex; mode=display">var(\hat{\theta}) = \frac{1}{\mathbf{s}^T\mathbf{C}^{-1}\mathbf{s}}</script>
+
+<h2 id="maximum-likelihood-estimation-mle">Maximum Likelihood Estimation (MLE)</h2>
+
+<p>MLE is an estimation of the value of $\theta$ that maximizes the value of $p(x; \theta)$ the likelihood function for fixed $x$. The maximization is done over the range of all allowable values for $\theta$. It is used in situations that MVU does not exist or cannot be found even if it does exist. It is the most popular “turn-the-crank” estimation procedure. For most cases practical intereste it’s performance is optimal for large enough data records. It is an estimator that is <strong>approximately optimal</strong>. It can be proved that as $N \to \infty$, the proposed estimator is unbiased and efficient. Hence, it is <strong>aymptotically unbiased</strong> and <strong>asymptotically efficient</strong>. More strongly, we can prove that if the pdf $p(x; \theta)$ satisfies some “regularity” conditions, then the MLE of the unknown parameter $\theta$ is asymptotically distributed (for large data records) according to</p>
+
+<script type="math/tex; mode=display">\hat{\theta} \overset{\text{a}}{\sim} \mathcal{N}(\theta, I^{-1}(\theta))</script>
+
+<p>where $I(\theta)$ is the Fisher information evaluated at the true value of the unknown parameter $\theta$. This shows that not only the estimator is asymptotically unbiased and can asymptotically achieve the CRLB (due to law of large numbers) but also it is following a Gaussian distribution.</p>
+
+<p>The MLE estimation also follows <strong>invariance property</strong> which means that the MLE of the transformation of a parameter is found by substituting the MLE of the original parameter into the transformation operation. More precisely, the MLE of the parameter</p>
+
+<script type="math/tex; mode=display">\alpha = g(\theta)</script>
+
+<p>where the pdf $p(x; \theta)$ is parametrized by $\theta$, is given by</p>
+
+<script type="math/tex; mode=display">\hat{\alpha} = g(\hat{\theta})</script>
+
+<p>where $\hat{\theta}$ is the MLE of $\theta$ and $\hat{\theta}$ is found by maximizing $p(x;\theta)$. If $g$ is not a one-to-one function, then $\hat{\alpha}$ maximizes the modified likelihood function</p>
+
+<script type="math/tex; mode=display">p_T(x; \alpha) \triangleq \max_{\{\theta: \alpha = g(\theta)\}} p(x;\theta)</script>
+
+<p>Another very important property of MLE estimation is that MLE is equivalent to minimizing the KL distance between our estimate and the real data distribution. For a proof of this important fact, see <a href="https://wiseodd.github.io/techblog/2017/01/26/kl-mle/">here</a>.</p>
+
+<!---
+## Bayesian Estimation 
+
+In situations when MVU estimator cannot be found, we can use a Bayesian approach in which $\theta$ is considered to be a random variable as opposed to a deterministic value that we are interested in finding. 
+
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"> 
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s">'display.max_rows'</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span></code></pre></figure>
+
+
+Useful resources:
+
+[https://readthedocs.org/projects/pandas-datareader/downloads/pdf/latest/](https://readthedocs.org/projects/pandas-datareader/downloads/pdf/latest/)
+--->
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Topics in Machine Learning.</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Topics in Machine Learning.</li>
+          <li><a href="mailto:mohsen.kiskani@gmail.com">mohsen.kiskani@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/kiskani"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">kiskani</span></a>
+
+          </li>
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>This page is dedicated to some interesting ideas in statistics and machine learning. I will try to scratch the surface about some interesting ideas. Mainly for my own benefit and access but maybe helpful for others too.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

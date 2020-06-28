@@ -167,6 +167,19 @@ $$ \mathrm{ess sup}_{x \in X} \lvert f(x) \rvert = {\lVert f \rVert}_{\infty} = 
 
 * The outer measure $\mu^{*}$ can be constructed from measure $\mu$ as $$\mu^{*}(E) = \inf \left\{\sum_{j=1}^{\infty} \mu(A_j) \right\}$$ for $\forall E \in \mathcal{P}(X)$ where the infimum is taken over all the collections $$\{A_j : j=1,\dots\} \subseteq \mathcal{A}$$ that cover $E$.
 
+* For a given measure space $$(X, \mathcal{A}, \mu)$$, a function $f:X \to \mathbb{R}$ is <strong>simple </strong> if it can be written in the form 
+$$f = \sum_{j=1}^n a_j \mathbb{1}_{A_j}$$ where $a_j \in \mathbb{R}$ and $A_j \in \mathcal{A}$.
+
+* Let $X$ be a locally compact Hausdorff space and let $(X, \mathcal{A}, \mu)$ be a measure space for which $\mathcal{B} \subseteq \mathcal{A}$. Then $\mu$ is a <strong>Borel measure</strong> and $$(X, \mathcal{A}, \mu)$$ is a <strong>Borel measure space</strong>. The measure $\mu$ is a <strong>regular Borel measure</strong> and $$(X, \mathcal{A}, \mu)$$ is a <strong> regular Borel measure space</strong> if 
+	- $\forall F \subseteq X,$ compact, $\mu(F) < \infty$
+	- $\forall A \in \mathcal{A}$, we have $$\mu(A) = \inf \left \{ \mu(U) : A \subseteq U ~and~ U ~ is ~ open ~\right\}$$
+	- $\forall U \subseteq X$, open, or $\mu(U) < \infty$, we have $$\mu(U) = \sup \left \{ \mu(F) : F \subseteq U ~and~ F ~ is ~ compact ~\right\}$$
+
+&nbsp; &nbsp; &nbsp; Another way to define regular measures is that $\forall A \in \mathcal{A}, \forall \epsilon > 0$, we can find a closed set $F$ and an open set $G$ such that $F \subseteq A \subseteq G$ such that $\mu (G \setminus F) \le \epsilon$.
+
+* A locally compact Hausdorff space is <strong>$\sigma$-compact</strong> if it is the countable union of compact sets. 
+
+
 ## Theorems 
 
 * If $X$ is a Hausdorff space, then a sequence of points $X$ converges to at most one point of $X$. 
@@ -277,3 +290,20 @@ $$\mu \left( \bigcap_{m=1}^{\infty} \bigcup_{n=m}^{\infty} \right) = 1$$
 * If $X$ is a topological space and $$(X, \mathcal{A}, \mu)$$ is a measure space, assuming that $\mathcal{B}(X) \subseteq \mathcal{A}$, every continuous function $f : X \to \mathbb{R}$ is $\mathcal{B}(X)$ measurable. 
 
 * There exists a perfect symmetric set having positive Lebesgue measure with a subset that is not Lebesgue measurable. 
+
+* Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $\\{f_n : n=1,...\\}: X \to \mathbb{R}^*$ be a sequence of measurable functions such that $\lim_{n \to \infty} f_n(x) = f(x)$ exists pointwise for each $x \in X$. Then $f$ is a measurable function. 
+
+* Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $\\{f_n : n=1,...\\}: X \to \mathbb{R}^*$ be a sequence of measurable functions each defined $\mu$-a.e. on $X$. If $f$ is defined $\mu$-a.e. on $X$ and $\lim_{n \to \infty} f_n = f$ pointwise $\mu$-a.e. then $f$ is a measurable function. 
+
+* Let $f$ be a measurable function on $$(X, \mathcal{A}, \mu)$$ be a measure space. There is a sequence $\\{f_n : n=1,...\\}$ of simple functions such that 
+	- $\forall j, \forall x \in X$, we have $\lvert f_j(x) \rvert \le lvert f_{j+1}(x) \rvert$.
+	- $\forall x \in X$ we have $\lim_{j \to \infty} f_j(x) = f(x)$.
+
+&nbsp; &nbsp; &nbsp; &nbsp; If f is a bounded function on $X$, then the convergence is uniform. 
+
+* <strong>Vitali-Luzin Theorem</strong> Let $$(X, \mathcal{A}, \mu)$$ be a measure space, where $X$ is a locally compact Hausdorff space and $\mu$ is regular. Choose $A \in \mathcal{A}$ for which $\mu(A) < \infty$ and take a measurable function $f:X \to \mathbb{R}^*$ that vanishes on $A^c$. For each $\epsilon > 0$ there is a continuous function $g:X \to \mathbb{R}$ that vanishes outside of a compact set such that $$\mu \left( \left\{ x: f(x) \neq g(x) \right\} \right) < \epsilon$$.
+
+* Let $$(X, \mathcal{A}, \mu)$$ be a measure space, where $X$ is a locally compact Hausdorff space and $\mu$ is regular. A function $f:X \to \mathbb{R}^*$ that is finite $\mu$-a.e. is measurable if and only if for every compact set $K \subseteq X$ and $\forall \epsilon > 0, \exists F \subseteq K$, compact, such that $\mu(K \setminus F) < \epsilon$.
+
+* Let $$(X, \mathcal{A}, \mu)$$ be a measure space, where $X$ is a locally compact Hausdorff space and $\mu$ is regular. A function $f:X \to \mathbb{R}^*$ that is finite $\mu$-a.e. is measurable if and only if there is a sequence of continuous functions $f_n : X \to \mathbb{R}$ such that $f_n \to f$, $\mu$-a.e. 
+
