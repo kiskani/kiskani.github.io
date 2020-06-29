@@ -9,6 +9,8 @@ This is a brief primer on basic definitions and theorems in mathematical analysi
 
 ## Definitions
 
+* The <strong>axiom of choice</strong> states that for every family $\mathcal{A}$ of disjoint nonempty sets there exists a set $B$ that has exactly one element in common with each set in $\mathcal{A}$.
+ 
 * A <strong> group </strong> is a set $G$ along with a rule $$\odot$$ for combining elements $a, b$ of $G$ such that 
 	- <em>Closure</em>: For all $a, b$ in $G$ we have $a \odot b \in G$. 
 	- <em>Associativity</em>: For all $a, b, c$ in $G$ we have $(a \odot b) \odot c = a \odot (b \odot c)$.
@@ -179,6 +181,8 @@ $$f = \sum_{j=1}^n a_j \mathbb{1}_{A_j}$$ where $a_j \in \mathbb{R}$ and $A_j \i
 
 * A locally compact Hausdorff space is <strong>$\sigma$-compact</strong> if it is the countable union of compact sets. 
 
+* If $$(X, \mathcal{A}, \mu)$$ is a measure space, and $$f = \sum_{j=1}^{n}a_j \mathbb{1}_{A_j}$$ for $A_j \in \mathcal{A}$ and $a_j \in \mathbb{R}^{+}$, then the <strong>integral</strong> of $f$ is defined as $$\int_X f \mathrm{d}\mu = \sum_{j=1}^n a_j \mu(A_j)$$. Since, it can be proved that for every nonngeative function $f \ge 0$, there exists a sequence of simple functions $f_n$ that are increasing and they converge to $f$, one can define the integral of such a function as the limit of the integrals of the simple functions in the sequence. This limit is proved to be exist. This definition can then be extended to all funtions by considering their positive and negative parts and defining their integrals. The function $f$ is said to be <strong>$\mu$-integrable</strong> if $\int_X f \mathrm{d} \mu < \infty$.
+
 
 ## Theorems 
 
@@ -295,8 +299,10 @@ $$\mu \left( \bigcap_{m=1}^{\infty} \bigcup_{n=m}^{\infty} \right) = 1$$
 
 * Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $\\{f_n : n=1,...\\}: X \to \mathbb{R}^*$ be a sequence of measurable functions each defined $\mu$-a.e. on $X$. If $f$ is defined $\mu$-a.e. on $X$ and $\lim_{n \to \infty} f_n = f$ pointwise $\mu$-a.e. then $f$ is a measurable function. 
 
+* Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $$\{f_n : n=1,...\}: X \to \mathbb{R}^*$$ be a sequence of measurable functions, then $$\inf \{f_n\}, \sup \{f_n\}, \mathrm{liminf} \{f_n\}, \mathrm{limsup} \{f_n\} $$ are all measurable functions. Notice that these results are only valid for countable sets and they may not be valid for uncountable sets. 
+
 * Let $f$ be a measurable function on $$(X, \mathcal{A}, \mu)$$ be a measure space. There is a sequence $\\{f_n : n=1,...\\}$ of simple functions such that 
-	- $\forall j, \forall x \in X$, we have $\lvert f_j(x) \rvert \le lvert f_{j+1}(x) \rvert$.
+	- $\forall j, \forall x \in X$, we have $\lvert f_j(x) \rvert \le \lvert f_{j+1}(x) \rvert$.
 	- $\forall x \in X$ we have $\lim_{j \to \infty} f_j(x) = f(x)$.
 
 &nbsp; &nbsp; &nbsp; &nbsp; If f is a bounded function on $X$, then the convergence is uniform. 
@@ -307,3 +313,33 @@ $$\mu \left( \bigcap_{m=1}^{\infty} \bigcup_{n=m}^{\infty} \right) = 1$$
 
 * Let $$(X, \mathcal{A}, \mu)$$ be a measure space, where $X$ is a locally compact Hausdorff space and $\mu$ is regular. A function $f:X \to \mathbb{R}^*$ that is finite $\mu$-a.e. is measurable if and only if there is a sequence of continuous functions $f_n : X \to \mathbb{R}$ such that $f_n \to f$, $\mu$-a.e. 
 
+* Let $$(X, \mathcal{A}, \mu)$$ be a complete finite measure space and let $f:X \to \mathrm{R}$ be a bounded function. The function $f$ is $\mu$-measurable if and only if 
+
+$$\inf \left\{ \int_X h \mathrm{d}\mu : f \le h ~and~ h ~is~simple \right\} = \sup \left\{ \int_X g \mathrm{d}\mu : f \ge g ~and~ g ~is~simple \right\}$$
+
+&nbsp; &nbsp; &nbsp; &nbsp; because of this theorem, we can also define the $\mu$-integral of a $\mu$-measurable bounded function 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  $f:X \to \mathbb{R}, \mu(X) < \infty$ as 
+
+$$\int_X f \mathrm{d}\mu = \inf \left\{ \int_X h \mathrm{d}\mu : f \ge h ~and~ h ~is~simple \right\}$$
+
+* Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $f$ be a $\mu$-measurable function that is nonnegative $\mu$-a.e. then $\int_X f \mathrm{d} \mu = 0  \Longleftrightarrow f=0$ $\mu$-a.e.
+
+* If $$(X, \mathcal{A}, \mu)$$ is a measure space and $f$ is $\mu$-integrable, then $\lvert f \rvert$ is bounded $\mu$-a.e.
+
+* If $$(X, \mathcal{A}, \mu)$$ is a measure space and $f=g$ $\mu$-a.e. then  $\int_X f \mathrm{d} \mu = \int_X g \mathrm{d} \mu$.
+
+* If $$(X, \mathcal{A}, \mu)$$ is a measure space and $h: X \to \mathbb{R}^*$ is a measurable function such that the absolute value of $h$ is bounded by a $\mu$-integrable function $f$, i.e. $\lvert h \rvert \le f$, then $h$ is a $\mu$-integrable function.
+
+* If $$(X, \mathcal{A}, \mu)$$ is a measure space and $f: X \to \mathbb{R}^*$ is a measurable function and $\exists E \in \mathcal{A}$ such that $\mu(E) < \infty$, $\lvert f \rvert \le c$ on $E$ and $\lvert f \rvert = 0$ on $E^c$, then $f$ is $\mu$-integrable. 
+
+* Let $$(X, \mathcal{A}, \mu)$$ be a finite measure space and let $\\{f_n : n=1,\dots\\}$ be a sequence of measurable functions $f_n : X \to \mathbb{R}^*$ for which $$\sup_{n \in \mathbb{N}} \lVert f_n \rVert_{\infty} = M < \infty$$. If $f_n \to f$ pointwise on $X$ then $f \in L_{\mu}^1(X), \lVert f \rVert_{\infty} \le M$, and $$\lim_{n \to \infty} \lVert f_n - f \rVert_1 = 0$$ and in particular $$\lim_{n \to \infty} \int_X f_n \mathrm{d}\mu = \int_X f \mathrm{d}\mu$$. This is a special case of Lebesgue dominated convergence theorem. 
+
+* <strong>Lebesgue Dominated Convergence (LDC):</strong> Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $\\{f_n : n=1,\dots\\}$ be a sequence of $\mu$-measurable functions each of which is complex valued $\mu$-a.e. Assume that $f_n \to f$ $\mu$-a.e., that $f$ is $\mu$-measurable, and that there is an element $g \in L_{\mu}^1(X)$ such that $\forall n=1,\dots, \lvert f_n \rvert \le g$ $\mu$-a.e. Then $f \in L_{\mu}^1(X)$ and $$\lim_{n \to \infty} \lVert f_n - f \rVert_1 = 0$$ and in particular $$\lim_{n \to \infty} \int_X f_n \mathrm{d}\mu = \int_X f \mathrm{d}\mu$$. 
+
+* <strong>Fatou lemma:</strong> Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $\\{f_n : n=1,\dots\\}$ be a sequence of $\mu$-measurable functions $f_n : X \to \mathbb{R}^*$. Assume that $\\{f_n : n =1,\dots\\}$ is bounded below by some $g \in L_{\mu}^1(X)$, $f_n \to f$ $\mu$-a.e., and $f$ is $\mu$-measurable, then $$ \int_X f \mathrm{d}\mu \le \underline{\lim_{n \to \infty}} \int_X f_n \mathrm{d}\mu$$. 
+
+* <strong>Levi-Lebesgue theorem (monotone convergence theorem): </strong> Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $\\{f_n : n=1,\dots\\}$ be a sequence of $\mu$-measurable functions $f_n : X \to \mathbb{R}^*$. Assume that $\\{f_n : n =1,\dots\\}$ is bounded below some $g \in L_{\mu}^1(X)$ and that  $\\{f_n : n =1,\dots\\}$ converges $\mu$-a.e. to a $\mu$-measurable function $f$. If $\forall n=1,\dots, f_n \le f$ $\mu$-a.e. then $$\lim_{n \to \infty} \int_X f_n \mathrm{d}\mu = \int_X f \mathrm{d}\mu$$.
+
+* <strong>A general LDC: </strong> Let $$(X, \mathcal{A})$$ be a measurable space and let $\\{\mu_n : n=1,\dots\\}$ be a sequence of measures on $\mathcal{A}$ such that $\forall A \in \mathcal{A}, \lim_{n \to \infty} \mu_n(A) = \mu(A)$, where $\mu$ is a measure on $\mathcal{A}$. Assume that the sequence $$\{g, g_n: n=1,\dots \} \subseteq L^1_{\mu}(X)$$ satisfies the condition that $g_n \to g$ pointwise and $$\lim_{n \to \infty} \int_X g_n \mathrm{d}\mu_n = \int_X g \mathrm{d}\mu$$. If $\\{f_n : n =1,\dots\\}$ is a sequence of functions with the properties that $f_n \to f$ pointwise, each $f_n$ is $\mu_n$-measurable, and $\forall n, \lvert f_n \rvert \le g_n$, then $f \in L^1_{\mu}(X)$ and $$\lim_{n \to \infty} \lVert f_n - f \rVert_1 = 0$$ and in particular $$\lim_{n \to \infty} \int_X f_n \mathrm{d}\mu_n = \int_X f \mathrm{d}\mu$$. 
+
+* Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $f \in L^1_{\mu}(X)$, then for $\forall \epsilon > 0, \exists \delta > 0$ such that $\forall A \in \mathcal{A}$ for which $\mu(A) < \delta$ we have $\int_X \lvert f \rvert \mathrm{d} \mu < \epsilon$.
