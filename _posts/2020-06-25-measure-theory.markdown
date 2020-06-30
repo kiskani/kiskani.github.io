@@ -177,12 +177,24 @@ $$f = \sum_{j=1}^n a_j \mathbb{1}_{A_j}$$ where $a_j \in \mathbb{R}$ and $A_j \i
 	- $\forall A \in \mathcal{A}$, we have $$\mu(A) = \inf \left \{ \mu(U) : A \subseteq U ~and~ U ~ is ~ open ~\right\}$$
 	- $\forall U \subseteq X$, open, or $\mu(U) < \infty$, we have $$\mu(U) = \sup \left \{ \mu(F) : F \subseteq U ~and~ F ~ is ~ compact ~\right\}$$
 
-&nbsp; &nbsp; &nbsp; Another way to define regular measures is that $\forall A \in \mathcal{A}, \forall \epsilon > 0$, we can find a closed set $F$ and an open set $G$ such that $F \subseteq A \subseteq G$ such that $\mu (G \setminus F) \le \epsilon$.
+&nbsp; &nbsp; &nbsp; Another way to define regular measures is that $\forall A \in \mathcal{A}, \forall \epsilon > 0$, we can find a closed set $F$ and &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; an open set $G$ such that $F \subseteq A \subseteq G$ such that $\mu (G \setminus F) \le \epsilon$.
 
 * A locally compact Hausdorff space is <strong>$\sigma$-compact</strong> if it is the countable union of compact sets. 
 
 * If $$(X, \mathcal{A}, \mu)$$ is a measure space, and $$f = \sum_{j=1}^{n}a_j \mathbb{1}_{A_j}$$ for $A_j \in \mathcal{A}$ and $a_j \in \mathbb{R}^{+}$, then the <strong>integral</strong> of $f$ is defined as $$\int_X f \mathrm{d}\mu = \sum_{j=1}^n a_j \mu(A_j)$$. Since, it can be proved that for every nonngeative function $f \ge 0$, there exists a sequence of simple functions $f_n$ that are increasing and they converge to $f$, one can define the integral of such a function as the limit of the integrals of the simple functions in the sequence. This limit is proved to be exist. This definition can then be extended to all funtions by considering their positive and negative parts and defining their integrals. The function $f$ is said to be <strong>$\mu$-integrable</strong> if $\int_X f \mathrm{d} \mu < \infty$.
 
+* Let $$(X, \mathcal{A}, \mu)$$ be a measure space. 
+	- A measurable function $f$ on $X$ is <strong>absolutely continuous</strong> with respect to $\mu$, if for $\forall \epsilon > 0, \exists \delta > 0$ such that for $\forall A \in \mathcal{A}$ for which $\mu(A) < \delta$, we have $\int_X \lvert f \rvert \mathrm{d} \mu < \epsilon$.
+
+	- A collection of measurable functions $\\{f_{\alpha}\\} \subseteq L^1_{\mu}$ is <strong>uniformly absolutely continuous</strong> with respect to $\mu$, if for $\forall \epsilon > 0, \exists \delta > 0$ such that for $\forall A \in \mathcal{A}$ for which $\mu(A) < \delta$ and for $\forall \alpha$, we have $\int_X \lvert f \rvert \mathrm{d} \mu < \epsilon$.
+
+	- A sequence $\\{\nu_m: m=1,\dots\\}$ of scalar-valued functions on $\mathcal{A}$ is <strong>uniformly absolutely continuous</strong> if for $\forall \epsilon > 0, \exists \delta > 0$ such that for $\forall A \in \mathcal{A}$ for which $\mu(A) < \delta$ and for $\forall m$, we have $\ \lvert \nu_m(A) \rvert < \epsilon$.
+
+* If $\mathcal{F} \subseteq \mathcal{P}(X)$ and $\nu$ is a scalar-valued function on $\mathcal{F}$, we say that $\nu$ is <strong>Vitali continuous</strong> if, for each decreasing sequence $\\{A_n : n=1,...\\} \subseteq \mathcal{F}$ for which $\bigcap_{n}A_n = \emptyset$ we can conclude that $\lim_{n \to \infty} \nu(A_n) = 0$.
+
+* A sequence of Vitali continuous functions $\nu_m$ on $\mathcal{F}$ is <strong>Vitali equicontinuous</strong> if, for each decreasing sequence $\\{A_n : n=1,...\\} \subseteq \mathcal{F}$ for which $\bigcap_{n}A_n = \emptyset$ we have $\forall \epsilon > 0, \exists N$ such that $\forall n \ge N$ and $\forall m, ~ \lvert \nu_m(A_n) \rvert < \epsilon$.
+
+* 
 
 ## Theorems 
 
@@ -336,10 +348,25 @@ $$\int_X f \mathrm{d}\mu = \inf \left\{ \int_X h \mathrm{d}\mu : f \ge h ~and~ h
 
 * <strong>Lebesgue Dominated Convergence (LDC):</strong> Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $\\{f_n : n=1,\dots\\}$ be a sequence of $\mu$-measurable functions each of which is complex valued $\mu$-a.e. Assume that $f_n \to f$ $\mu$-a.e., that $f$ is $\mu$-measurable, and that there is an element $g \in L_{\mu}^1(X)$ such that $\forall n=1,\dots, \lvert f_n \rvert \le g$ $\mu$-a.e. Then $f \in L_{\mu}^1(X)$ and $$\lim_{n \to \infty} \lVert f_n - f \rVert_1 = 0$$ and in particular $$\lim_{n \to \infty} \int_X f_n \mathrm{d}\mu = \int_X f \mathrm{d}\mu$$. 
 
-* <strong>Fatou lemma:</strong> Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $\\{f_n : n=1,\dots\\}$ be a sequence of $\mu$-measurable functions $f_n : X \to \mathbb{R}^*$. Assume that $\\{f_n : n =1,\dots\\}$ is bounded below by some $g \in L_{\mu}^1(X)$, $f_n \to f$ $\mu$-a.e., and $f$ is $\mu$-measurable, then $$ \int_X f \mathrm{d}\mu \le \underline{\lim_{n \to \infty}} \int_X f_n \mathrm{d}\mu$$. 
+* <strong>Fatou lemma:</strong> Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $\\{f_n : n=1,\dots\\}$ be a sequence of $\mu$-measurable functions $f_n : X \to \mathbb{R}^*$. Assume that $\\{f_n : n =1,\dots\\}$ is bounded below by some $g \in L_{\mu}^1(X)$, $f_n \to f$ $\mu$-a.e., and $f$ is $\mu$-measurable, then 
+
+$$ \int_X f \mathrm{d}\mu \le \underline{\lim_{n \to \infty}} \int_X f_n \mathrm{d}\mu$$
+
+* <strong>Fatou lemma:</strong> Let $$(X, \mathcal{A})$$ be a measurable space and let $\\{f_n : n=1,\dots\\}$ be a sequence of $\mu$-measurable functions $f_n : X \to \mathbb{R}^*$.
+	- If there exists a non-negative $\mu$-integrable function $g$ such that $f_n \le g$ for all $n$, then
+	
+	$$ \mathrm{lim~ sup}_{n \to \infty}  \int_X f_n \mathrm{d}\mu \le  \int_X \mathrm{lims ~sup}_{n \to \infty} f_n \mathrm{d}\mu$$
+
+	- If there exists a non-negative $\mu$-integrable function $g$ such that $f_n \ge -g$ for all $n$, then
+
+	$$ \mathrm{lim ~inf}_{n \to \infty}  \int_X f_n \mathrm{d}\mu \ge  \int_X \mathrm{lim ~inf}_{n \to \infty} f_n \mathrm{d}\mu$$
 
 * <strong>Levi-Lebesgue theorem (monotone convergence theorem): </strong> Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $\\{f_n : n=1,\dots\\}$ be a sequence of $\mu$-measurable functions $f_n : X \to \mathbb{R}^*$. Assume that $\\{f_n : n =1,\dots\\}$ is bounded below some $g \in L_{\mu}^1(X)$ and that  $\\{f_n : n =1,\dots\\}$ converges $\mu$-a.e. to a $\mu$-measurable function $f$. If $\forall n=1,\dots, f_n \le f$ $\mu$-a.e. then $$\lim_{n \to \infty} \int_X f_n \mathrm{d}\mu = \int_X f \mathrm{d}\mu$$.
 
 * <strong>A general LDC: </strong> Let $$(X, \mathcal{A})$$ be a measurable space and let $\\{\mu_n : n=1,\dots\\}$ be a sequence of measures on $\mathcal{A}$ such that $\forall A \in \mathcal{A}, \lim_{n \to \infty} \mu_n(A) = \mu(A)$, where $\mu$ is a measure on $\mathcal{A}$. Assume that the sequence $$\{g, g_n: n=1,\dots \} \subseteq L^1_{\mu}(X)$$ satisfies the condition that $g_n \to g$ pointwise and $$\lim_{n \to \infty} \int_X g_n \mathrm{d}\mu_n = \int_X g \mathrm{d}\mu$$. If $\\{f_n : n =1,\dots\\}$ is a sequence of functions with the properties that $f_n \to f$ pointwise, each $f_n$ is $\mu_n$-measurable, and $\forall n, \lvert f_n \rvert \le g_n$, then $f \in L^1_{\mu}(X)$ and $$\lim_{n \to \infty} \lVert f_n - f \rVert_1 = 0$$ and in particular $$\lim_{n \to \infty} \int_X f_n \mathrm{d}\mu_n = \int_X f \mathrm{d}\mu$$. 
 
 * Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $f \in L^1_{\mu}(X)$, then for $\forall \epsilon > 0, \exists \delta > 0$ such that $\forall A \in \mathcal{A}$ for which $\mu(A) < \delta$ we have $\int_X \lvert f \rvert \mathrm{d} \mu < \epsilon$.
+
+* A function $f:\mathbb{R} \to \mathbb{R}$ is continuous $m$-a.e. if and only if $\forall V \subseteq \mathbb{R}$, open, we have $f^{-1}(V) = U \cup A$ where $U$ is open and $A \in \mathcal{M}(\mathbb{R})$ has Lebesgue measure $m(A)=0$.
+
+* Let $f: [a, b] \to \mathbb{R}$ be a bounded function. Then it is Riemann integrable if and only if $f$ is continuous $m$-a.e.
