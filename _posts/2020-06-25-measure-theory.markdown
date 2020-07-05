@@ -194,7 +194,67 @@ $$f = \sum_{j=1}^n a_j \mathbb{1}_{A_j}$$ where $a_j \in \mathbb{R}$ and $A_j \i
 
 * A sequence of Vitali continuous functions $\nu_m$ on $\mathcal{F}$ is <strong>Vitali equicontinuous</strong> if, for each decreasing sequence $\\{A_n : n=1,...\\} \subseteq \mathcal{F}$ for which $\bigcap_{n}A_n = \emptyset$ we have $\forall \epsilon > 0, \exists N$ such that $\forall n \ge N$ and $\forall m, ~ \lvert \nu_m(A_n) \rvert < \epsilon$.
 
-* 
+* The <strong>product measure</strong> of two measures $$(X, \mathcal{A}_1, \mu)$$ and $$(Y, \mathcal{A}_2, \nu)$$ is defined on the space $X \times Y$. It can be proved that its $\sigma$-algebra contains all the sets $A \times B$ where $A \in \mathcal{A}_1$ and $B \in \mathcal{A}_2$. The <strong>product measure</strong> $\omega$ is defined as $\omega(A \times B) = \mu(A) \nu(B)$.
+
+* A real- or complex-valued function $f$ defined on an interval $[a, b]$ is of <strong>bounded variation</strong> on $[a, b]$, in which case we write $f \in \mathrm{BV}([a, b])$ if 
+
+$$V(f, [a, b]) \triangleq \sup \left\{ \sum_{j=1}^n \lvert f(x_j) - f(x_{j-1}) \rvert : a \le x_0 \le ... \le x_n \le b\right\} < \infty$$ 
+
+* If $f \in \mathrm{BV}([a, b])$ then $V(f, [a, b])$ is called the <strong>total variation</strong> of $f$ on $[a, b]$. The <strong>variation function</strong> of $f$ is defined as 
+
+$$V(f)(x) = 
+\begin{cases} f(0) + V(f, [0, x]), \qquad if ~ x \ge 0 \\ f(0) - V(f, [x, 0]), \qquad if ~ x \le 0 \end{cases}
+$$
+
+* The space of functions of <strong>bounded variation</strong> on $\mathbb{R}$, denoted by $BV(\mathbb{R})$, is defined as the space of all functions $f$ for which $V(f) = V(f, \mathbb{R}) < \infty$. Given $f : \mathbb{R} \to \mathbb{R}$, then $f \in BV(\mathbb{R})$ if and only if $f = f_1 - f_2$ where $f_1, f_2$ are bounded increasing functions on $\mathbb{R}$. 
+
+* A collection $\nu$ (possibly uncountable) of intervals is a <strong>Vitali covering</strong> of $X \\subseteq \mathrm{R}$ if $\forall \epsilon >0$ and $\forall x \in X, \exists I \in \nu$ for which $m(I) < \epsilon$, such that $x \in I$.  
+
+* A function $F$ is <strong>singular</strong> if it is continuous and $F^{\prime} = 0$ $m$-a.e. 
+
+* Let $$(X, \mathcal{A})$$ be a measurable space. A function $\mu : \mathcal{A} \to \mathbb{R}^{*}$, respectively, $\mathbb{C}$ is a <strong>signed measure</strong>, respectively, <strong>complex measure</strong> if $\mu(\emptyset) = 0$ and for every disjoint sequence $\\{A_n : n = , \dots\\} \subseteq \mathcal{A}$ we have
+
+$$\mu \left( \bigcup_{n=1}^{\infty} A_n \right) = \sum_{n=1}^{\infty} \mu(A_n)$$
+
+* Let $$(X, \mathcal{A}, \mu)$$ be a signed measurable space. A set $A \in \mathcal{A}$ is <strong>nonnegative</strong>, respectively, <strong>nonpositive</strong> if $\forall E \subseteq A$, for which $E \in \mathcal{A}$, we have $\mu(E) \ge 0$, respectively, $\mu(E) \le 0$. For each $A \in \mathcal{A}$, we define the <strong>positive and negative variation</strong> of $\mu$ as 
+
+$$\mu^{+}(A) = \sup \left\{ \mu(E) : E \subseteq A, E \in \mathcal{A}\right\}$$
+
+$$\mu^{-}(A) = \sup \left\{ -\mu(E) : E \subseteq A, E \in \mathcal{A}\right\}$$
+
+ &nbsp; &nbsp; &nbsp; &nbsp; we also define the <strong>total variation</strong>, $\lvert \mu \rvert$ as $\lvert \mu \rvert(A) = \mu^+(A)+\mu^{-}(A)$. It can be proved that
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $$(X, \mathcal{A}, \mu^+)$$ and $$(X, \mathcal{A}, \mu^-)$$ and $$(X, \mathcal{A}, \lvert \mu \rvert)$$ are measure spaces. If $$(X, \mathcal{A})$$ be a measurable 
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  space and $M_b(X)$ denotes the set of complex measure spaces, then $M_b(X)$ is a Banach space
+  &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp;   with norm $$\lVert \mu \rVert = \lVert \mu \rVert_1 = \lvert \mu \rvert(X)$$.
+
+* <strong>Dini derivatives</strong> of a function $f: \mathbb{R} \to \mathbb{R}$ are defined as 
+
+$$ D^+f(x) = \mathrm{lim sup}_{h \to 0^+} \frac{f(x+h)-f(x)}{h} $$
+
+$$ D_+f(x) = \mathrm{lim inf}_{h \to 0^+} \frac{f(x+h)-f(x)}{h} $$ 
+
+$$ D^-f(x) = \mathrm{lim sup}_{h \to 0^-} \frac{f(x+h)-f(x)}{h} $$ 
+
+$$ D_-f(x) = \mathrm{lim inf}_{h \to 0^-} \frac{f(x+h)-f(x)}{h}$$
+
+* We say that a function $f$ is <strong>differentiable</strong> at point $x$ if $$D^+f(x) = D_+f(x) = D^-f(x) = D_-f(x)$$. This value will be equal to $f^{\prime}(x)$.
+
+* A function $F : [a, b] \to \mathbb{R}$ is <strong>absolutely continuous on [a, b]</strong> if $\forall \epsilon > 0, \exists \delta > 0$ such that for any collection of disjoint intervals in $[a, b]$, i.e. $\forall \\{ (x_j, y_j) \subseteq [a, b] : j =1, \dots, n\\}$ for which $\sum_{j=1}^n (y_j - x_j) < \delta$ we have $\sum_{j=1}^n \lvert F(y_j) - F(x_j) \rvert < \epsilon$.
+
+* Let $$(X, \mathcal{A})$$ be a measurable space. A complex measure $\mu \in M_b(X)$ is <strong>continuous</strong> denoted by $\mu \in M_c(X)$ if $\forall x \in X$ we have $\mu(\\{x\\})=0$.
+
+* Let $$(X, \mathcal{A})$$ be a measurable space. A complex measure $\mu \in M_b(X)$ is <strong>discrete</strong> denoted by $\mu \in M_d(X)$ if $\mu = \sum_{x \in D} a_x \delta_x$ where $D \subseteq X$ is countable, $\sum_{x \in D} \lvert a_x \rvert < \infty$ and $\forall A \in \mathcal{A}$, $\delta_x(A) = 1$ if $x \in A$ and is zero otherwise. 
+
+* We say that $\mu \in M_b(X)$ is <strong>absolutely continuous</strong> with respect to $\nu \in M_b(X)$ denoted by $\mu << \nu$, if $\forall A \in \mathcal{A}$, $\lvert \nu \rvert(A) = 0 \Longrightarrow \mu(A) = 0$. Notationally, we write $M_{ac}(X, \nu) = \\{\mu \in M_b(X) : \mu << \nu\\}$.
+
+* We say that $\eta \in M_b(X)$ is <strong>concentrated</strong> on $A \in \mathcal{A}$ if $\forall B \in \mathcal{A}$ we have $\eta(B) = \eta(A \cap B)$. Concentration sets are not unique but they are unique up to sets of measure 0. 
+
+* A complex measure $\mu \in M_b(X)$ is <strong>singular</strong> with respect to $\nu \in M_b(X)$, denoted by $\mu \perp \nu$, if there are disjoint sets $C_{\mu}, C_{\nu} \in \mathcal{A}$ such that $\mu$, respectively, $\nu$ is concentrated on $C_{\mu}$, respectively, $C_{\nu}$. Obviously,   $\mu \perp \nu$ if and only if $\nu \perp \mu$, and we say that $\mu$ and $\nu$ are <strong>mutually singular</strong>. Notationally, we write $M_s(X,\nu) = \\{\mu \in M_b(X) : \mu \perp \nu \\}$. 
+
+* Another way to define a singular function for a nonnegative measures is as follows. We say that $\nu \perp \mu$ if there exists a set $E \in \mathcal{A}$ such that $\mu(E) = 0$ and $\nu(E^c) = 0$. As an example of singular measures, let $\nu = \sum_{j=1}^{\infty} c_j \delta_{q_j}$ for all $q_j \in \mathbb{Q}$ where $\delta(.)$ represents the delta function and let $\lambda$ be the Lebesgue measure. Since $\lambda(\mathbb{Q}) = 0$ and $\nu(\mathbb{Q}^c) = 0$ we can conclude that $\nu$ and $\lambda$ are singular measures. 
+
+* For any functions $f, g \in L_{\mu}^p(X)$, it can be proved using the Minkowski inequality that the metric $d(f,g) = \lVert f- g \rVert_p$ is a distance. Using this distance, we can define the notion of convergence in $L_{\mu}^p$. A sequence of functions $f_n \in L_{\mu}$ for $n=1,\dots$ is said to <strong>converge to $f$ in $L_{\mu}^p(X)$</strong> and notationally represented as $$f_n \xrightarrow{\mathcal{L}_{\mu}^p} f$$ if $$\lim_{n \to \infty} d(f_n, f) = \lim_{n \to \infty} \lVert f_n -f \rVert = 0$$. A sequence can converge uniformly or converge in measure but may not converge in $L_{\mu}^p$. It can be proved that the space $L_{\mu}^p$ is complete since for every Cauchy sequence $f_n$ in $L_{\mu}^p$, there exists a function $f$ such that $$f_n \xrightarrow{\mathcal{L}_{\mu}^p} f$$.
+
 
 ## Theorems 
 
@@ -370,3 +430,103 @@ $$ \int_X f \mathrm{d}\mu \le \underline{\lim_{n \to \infty}} \int_X f_n \mathrm
 * A function $f:\mathbb{R} \to \mathbb{R}$ is continuous $m$-a.e. if and only if $\forall V \subseteq \mathbb{R}$, open, we have $f^{-1}(V) = U \cup A$ where $U$ is open and $A \in \mathcal{M}(\mathbb{R})$ has Lebesgue measure $m(A)=0$.
 
 * Let $f: [a, b] \to \mathbb{R}$ be a bounded function. Then it is Riemann integrable if and only if $f$ is continuous $m$-a.e.
+
+* Let $f : \mathbb{R} \to \mathbb{R}$ be an increasing right continuous function. It can be proved that the set function $\mu_f$ defined by $\mu_f((a, b]) = f(b) - f(a)$ is a measure on the set of half open intervals in $\mathbb{R}$ which is called the <strong>Lebesgue-Stieltjes measure</strong>.
+
+* The product measure of two finite ($\sigma$-finite) measures is finite ($\sigma$-finite) while the the product meaure of two complete $\sigma$-finite measure spaces is not necessarily complete. 
+
+* <strong>Fubini theorem </strong>for integrable functions: Let $$(X, \mathcal{A}_1, \mu)$$ and $$(Y, \mathcal{A}_2, \nu)$$ be $\sigma$-finite measure spaces and let $h : X \times Y \to \mathbb{R}^{*}$ be an element of $L^1_{\mu \times \nu}(X \times Y)$.
+	- For $\mu$-a.e. $x \in X, h_x \in L_{\nu}^1(Y)$ and $\int_Y h_x \mathrm{d}\nu \in L_{\mu}^1(X)$.
+	- Similarly, for $\nu$-a.e. $y \in Y$, $h^y \in L_{\mu}^1(X)$ and $\int_X h^y \mathrm{d}\mu \in L_{\nu}^1(Y)$.
+	- We have,
+
+	$$\int \int_{X \times Y} h(x,y) \mathrm{d}(\mu \times \nu)(x,y) = \int_X \left( \int_Y h(x,y) \mathrm{d}\nu(y) \right) \mathrm{d} \mu(x) = \int_Y \left( \int_X h(x,y) \mathrm{d}\mu(x) \right) \mathrm{d} \nu(y) \label{eq_fubini}$$ 
+
+* <strong>Tonelli theorem</strong> for nonnegative functions: Let $$(X, \mathcal{A}_1, \mu)$$ and $$(Y, \mathcal{A}_2, \nu)$$ be $\sigma$-finite measure spaces and let $h : X \times Y \to \mathbb{R}^{+}$ be a $(\mu \times \nu)$-measurable function. Then $\int_Y h_x \mathrm{d} \nu$ is $\mu$-measurable and $\int_X h^y \mathrm{d}y$ is $\nu$-measurable. Moreover, the equations \eqref{eq_fubini} are valid. 
+
+* <strong>Vitali covering lemma:</strong> Let $X \subseteq \mathbb{R}$ with $$m^*(X) < \infty$$ and let $\nu$ be a Vitali covering of $X$. Then, there is a disjoint family $\\{I_n : n=1,...,N\\} \subseteq \nu$ such that $m^*(X \setminus \bigcup_{n=1}^N I_n) = 0$.
+
+* If $F \in BV([a, b])$ then $V(F, [a, b]) \ge \int_a^b \lvert F^{\prime} \rvert$, Moreover, if $F: [a, b] \to \mathbb{C}$ is absolutely continuous, then $V(F, [a, b]) = \int_a^b \lvert F^{\prime} \rvert$.
+
+* <strong>Hahn decomposition theorem</strong> Let $$(X, \mathcal{A}, \mu)$$ be a signed measure space. There is a nonnegative set $P \in \mathcal{A}$ such that $N = X \setminus P$ is nonpositive. 
+
+* <strong>Jordan decomposition theorem</strong> Let $$(X, \mathcal{A}, \mu)$$ be a signed measure space. Then $\mu = \mu^+ - \mu^-$. In particular, either $\mu^+$ or $\mu^-$ is bounded. 
+
+* Using Vitali covering lemma we can prove that if we have an increasing function, it will be differentiable a.e.  
+
+* If the function $f:\mathbb{R} \to \mathbb{R}$ is an element of $BV([a, b])$ for each interval $[a, b] \subseteq \mathbb{R}$, then it can be written as the difference of two increasing functions defined as 
+
+$$P(x) = \frac{1}{2} \left( V(f)(x) + f(x)\right)$$
+
+$$N(x) = \frac{1}{2} \left( V(f)(x) - f(x)\right)$$
+
+&nbsp; &nbsp; &nbsp; &nbsp; Since we know that any increasing function is differentiable a.e. then this shows that 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; any function of bounded variations is differentiable a.e.
+
+* <strong>Lebesgue differentiation theorem:</strong> If $f \in BV([a, b])$, then 
+	- $f^{\prime}$ exists $m$-a.e.
+	- $f^{\prime} \in L_m^1([a, b])$
+	- If $f$ is increasing then $$\int_a^bf^{\prime} \le f(b) - f(a)$$. And there exists examples where this inequality is strict. 
+
+* If $f \in L_m^1([a, b])$ and we define $F(x) = \int_a^x f$ for $\forall x \in [a, b]$, then 
+	- $F$ is a continuous function of bounded variation. 
+	- If $F$ is identially 0, then $f=0$ $m$-a.e.
+
+* <strong>Fundamental Theorem of Calculus I: </strong> Let $f \in L_m^1([a, b])$ and take $r \in \mathbb{R}$. Define the function $F:[a,b] \to \mathbb{R}$ as $F(x) = r + \int_a^x f$ (so that $F(a)=r$), then $F^{\prime} = f$ $m$-a.e.
+
+* Let $f \in L_m^1([a, b])$ and set $F(x) = r + \int_a^x f$ for $x \in [a, b]$. Then $r = F(a)$ and $F$ is absolutely continuous on $[a, b]$.
+
+* If $G:[a, b] \to \mathbb{R}$ is absolutely continuous on $[a, b]$, then $G$ is a continuous function of bounded variation and in particular $G^{\prime}$ exists $m$-a.e. and is an element of $L_m^1([a, b])$.
+
+* Let $F$ be absolutely continuous on $[a, b]$ and assume that $F^{\prime} = 0$ $m$-a.e. then $F$ is a constant. 
+
+* <strong>Fundamental Theorem of Calculus II: </strong> A function $F : [a, b] \to \mathbb{R}$ is absolutely continuous on $[a, b]$ if and only if there is an element $f \in L_m^1([a, b])$ such that $\forall x \in [a, b]$ we have $F(x) - F(a) = \int_a^x f$.
+
+* Let $F:[a, b] \to \mathbb{R}$ be an everywhere differentiable function. If $F^{\prime} \in L_m^1([a, b])$ then $F$ is absolutely continuous on $[a, b]$.
+
+* <strong>Banach-Zaretsky theorem:</strong> Let $F \in BV([a, b])$ be a continuous function. Then $F$ is absolutely continuous on $[a,b]$ if and only if 
+
+$$m(A) = 0 \Longrightarrow m(F(A)) = 0$$
+
+* Let $F : [a, b] \to \mathbb{R}$ be a function and assume that $F^{\prime}$ exists on $A \subseteq [a, b]$. Then $F^{\prime} = 0$ $m$-a.e. on $A$ if and only if $m(F(A))=0$. 
+
+* If a function is discrete, then it is singular. If a function is absolutely continuous then it is continuous. 
+
+* <strong>Continuous and discrete decomposition: </strong> Let $\mu \in M_b(X)$. There is a unique decomposition $\mu = \mu_c + \mu_d$ where $\mu_c \in M_c(X)$ and $\mu_d \in M_d(X)$.
+
+* Let $$(X, \mathcal{A}, \nu)$$ be a measure space and let $\mu \in M_b(X)$. If $\mu ~<< ~\nu$ and $\mu \perp \nu$ then $\mu=0$. 
+
+* Let $$(X, \mathcal{A})$$ be a measurable space and let $$SM(X)$$ denotes the set of all signed measures on $X$. If $\mu \in SM(X)$, then $\mu^+ \perp \mu^-$, and if $P, N$ is the Hahn decomposition for $\mu$ then we can take $C_{\mu^+} = P$ and $C_{\mu}^- = N$.
+
+* <strong>Lebesgue decomposition theorem: </strong> Let $$(X, \mathcal{A}, \nu)$$ be a measure space, and assume that $\mu$ satisfies one of the following conditions: 
+	1. $$(X, \mathcal{A}, \mu)$$  is a $\sigma$-finite measure space,
+	2. $\mu \in M_b(X)$.
+
+&nbsp; &nbsp; &nbsp; &nbsp;  Then there is a unique pair, $\mu_1$ and $\mu_2$, of $\sigma$-finite measures in the case of condition (1) or elements &nbsp; &nbsp; &nbsp; &nbsp;  in $M_b(X)$ in case of condition (2) such that $\mu = \mu_1 + \mu_2$, $\mu_1 \perp \nu$ and $\mu_2 ~<<~ \nu$. 
+
+* A measure $\mu$ is Lebesgue measurable and is absolutely continuous with respect to the lebesgue measure if and only if the function $F_{\mu}(x) = \mu((-\infty, x))$ is absolutely continuous. This theorem shows how the the absolutely continuous functions and measures are related to each other. 
+
+* If $F \in BV([a, b])$, then it can be proved that $F = F_a + F_s$ where $F_a$ is absolutely continuous and $F_s$ is singular. 
+
+* A measure $\mu$ is monotonic and singular with respect to the Lebesgue measure if and only if $F_{\mu}(x) = \mu((-\infty, x))$ is singular. This theorem shows how the the singular functions and measures are related to each other.
+
+* <strong>Radon-Nikodym theorem for bounded measures: </strong> Let $\mu$ and $\nu$ be bounded measures on a measurable space $$(X, \mathcal{A})$$. Assume that $\mu ~<<~ \nu$. There is a unique element $f \in L_{\nu}^1(X)$ such that $\forall A \in \mathcal{A}$ we have $\mu(A) = \int_A f \mathrm{d}\nu$.  
+
+* <strong>Radon-Nikodym theorem: </strong> Let $$(X, \mathcal{A})$$ be a measurable space, let $\mu \in M_b(X)$, and assume that $(X, \mathcal{A} , \mu)$ is $\sigma$-finite measure space. If $\mu ~<<~ \nu$, then there is a unique element $f \in L_{\nu}^1(X)$ such that $\forall A \in \mathcal{A}$ we have $\mu(A) = \int_A f \mathrm{d}\nu$. 
+
+* <strong>Radon-Nikodym theorem: </strong> Let $$(X, \mathcal{A}, \mu)$$ be a $\sigma$-finite measure space and let $\nu$ be a $\sigma$-finite signed measure that can take the values in the range $(-\infty, +\infty]$. There exists unique measures $\nu_1$ and $\nu_2$ such that $\nu = \nu_1 + \nu_2$,  $\nu_1 ~<<~ \mu$ and $\nu_2 \perp \mu$ and there exists a measurable function $f$ with respect to $\mathcal{A}$ such that $\forall A \in \mathcal{A}$ we have $\nu_1(A) = \int_A f \mathrm{d}\mu$. Function $f$ is called the <strong>Radon-Nikodym derivative of $\mu$ with respect to $\nu$</strong>.
+
+* <strong>Radon-Nikodym theorem as a bijection on $L_{\nu}^1(X)$: </strong> Let $$(X, \mathcal{A}, \mu)$$ be a $\sigma$-finite measure space. There is a natural bijective mapping $L_{\nu}^1(X) \to M_{ac}(X, \nu)$, $f \to \mu_f$, where for $\forall A \in \mathcal{A}$, $\mu_f(A) = \int_A f \mathrm{d} \nu$.
+
+* Radon-Nikodym theorem (R-N) is a natural generalization of Fundamental Theorem of Calculus (FTC) in the sense that FTC characterizes absolutely continuous functions $g$ as those for which we have $g(x) - g(a) = \int_a^x g^{\prime}$ and R-N characterizes absolutely continuous measures $\mu ~<<~ \nu$ as those for which we have $\mu(A) = \int_A f \mathrm{d} \nu$.
+
+* <strong> The decomposition $\mu = \mu_a + \mu_s + \mu_d$: </strong> Let $$(X, \mathcal{A})$$ be a measurable space. 
+	- If $\mu, \nu \in M_b(X)$ and $\mu \perp \nu$, then $\lvert \mu + \nu \rvert = \lvert \mu \rvert + \lvert \nu \rvert$.
+	- If $\mu \in M_b(X)$ and $\nu$ is a measure on $X$, then $\mu = \mu_a + \mu_s + \mu_d$ where $\mu_d \in M_d(X), \mu_a ~<<~ \nu, \mu_s \perp \nu$ and $\mu_a, \mu_s \in M_c(X)$. Also, $(\mu_a + \mu_s) \perp \mu_d$ and $ \lvert \mu \rvert= \lvert \mu_a \rvert+  \lvert \mu_s \rvert +  \lvert \mu_d \rvert$. 
+
+* <strong>Equivalence of decomposition of measures and elements of $BV(\mathbb{R})$: </strong> Let $(\mathbb{R}, \mathcal{B}(\mathbb{R}), \mu)$ be a regular measure space. Then $\mu$ has the unique decomposition $\mu = \mu_a + \mu_s + \mu_d$ into regular Borel measures, where $\mu_d$ is discrete, $\mu_a ~<<~ m, \mu_s \perp m$ and $\mu_s$ is continuous. Further, there are unique increasing functions $f, f_a, f_s, f_d$ corresponding to $\mu, \mu_a, \mu_s, \mu_d$ such that $f = f_a + f_s + f_d$, where $f_a$ is absolutely continuous on every compact interval, $f_s$ is continuous and $f^{\prime}_s = 0$ $m$-a.e., $f^{\prime}_d=0$ $m$-a.e., and $f_d$ has at most countably many discontinuities $x_n, n=1,\dots$ each of the form $f_d(x_n^{+}) - f_d(x_n^{-})$. Finally, $\forall B \in \mathcal{B}(\mathbb{R})$, $\mu_a(B) = \int_B f_a$, and $\forall y \ge x$, $f_a(y) - f_a(x) = \int_x^y f^{\prime}$.
+
+* Let $$(X, \mathcal{A}, \mu)$$ be a measure space and take $1 \le p \le \infty$ and let $\frac{1}{p}+\frac{1}{q} = 1$,
+	- $L^p_{\mu}(X)$ is a Banach space with norm $\lVert f \rVert_p$.
+	- <strong>Holder inequality: </strong> If $f \in L_{\mu}^p(X)$ and $g \in L_{\mu}^q(X)$, then $fg \in L_{\mu}^1(X)$ then $$\int_X \lvert fg \rvert \mathrm{d}\mu \le \lVert f \rVert_p \lVert g \rVert_q$$. 
+	- <strong>Minkowski inequality: </strong> $\forall f, g \in L_{\mu}^p(X)$ we have  $$ \lVert f+g \rVert_{p} \le  \lVert f \rVert_p +  \lVert g \rVert_p$$.
