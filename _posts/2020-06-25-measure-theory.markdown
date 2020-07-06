@@ -255,6 +255,7 @@ $$ D_-f(x) = \mathrm{lim inf}_{h \to 0^-} \frac{f(x+h)-f(x)}{h}$$
 
 * For any functions $f, g \in L_{\mu}^p(X)$, it can be proved using the Minkowski inequality that the metric $d(f,g) = \lVert f- g \rVert_p$ is a distance. Using this distance, we can define the notion of convergence in $L_{\mu}^p$. A sequence of functions $f_n \in L_{\mu}$ for $n=1,\dots$ is said to <strong>converge to $f$ in $L_{\mu}^p(X)$</strong> and notationally represented as $$f_n \xrightarrow{\mathcal{L}_{\mu}^p} f$$ if $$\lim_{n \to \infty} d(f_n, f) = \lim_{n \to \infty} \lVert f_n -f \rVert = 0$$. A sequence can converge uniformly or converge in measure but may not converge in $L_{\mu}^p$. It can be proved that the space $L_{\mu}^p$ is complete since for every Cauchy sequence $f_n$ in $L_{\mu}^p$, there exists a function $f$ such that $$f_n \xrightarrow{\mathcal{L}_{\mu}^p} f$$.
 
+* Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $f, f_n, n=1, \dots$ be a sequence of measurable functions. We say that the sequence $f_n$ <strong>converges to $f$ in measure</strong> and we denote it by $f_n \xrightarrow{\mu} f$ if $\forall \epsilon > 0$ we have $$\lim_{n \to \infty} \mu \left(\{x : \lvert f_n(x) - f(x) \rvert > \epsilon \}\right) = 0$$. Notice that convergence in measure does not imply pointwise convergence. 
 
 ## Theorems 
 
@@ -530,3 +531,17 @@ $$m(A) = 0 \Longrightarrow m(F(A)) = 0$$
 	- $L^p_{\mu}(X)$ is a Banach space with norm $\lVert f \rVert_p$.
 	- <strong>Holder inequality: </strong> If $f \in L_{\mu}^p(X)$ and $g \in L_{\mu}^q(X)$, then $fg \in L_{\mu}^1(X)$ then $$\int_X \lvert fg \rvert \mathrm{d}\mu \le \lVert f \rVert_p \lVert g \rVert_q$$. 
 	- <strong>Minkowski inequality: </strong> $\forall f, g \in L_{\mu}^p(X)$ we have  $$ \lVert f+g \rVert_{p} \le  \lVert f \rVert_p +  \lVert g \rVert_p$$.
+
+* Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $f, g, f_n, n=1, \dots$ be a sequence of measurable functions. If $f_n \xrightarrow{\mu} f$ and $f_n \xrightarrow{\mu} g$ then $f=g$ $\mu$-a.e.
+
+* Notice that convergence in measure is a property of class. This means that if $f_n \xrightarrow{\mu} f$  and $f_n \sim g_n$ and $f \sim g$ then $g_n \xrightarrow{\mu} g$. 
+
+* Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $\\{ f_n, n=1, \dots \\}$ be a sequence of measurable functions that converge to a function $f$ in measure i.e. $f_n \xrightarrow{\mu} f$,  then we can find a subsequence $\\{ f_{n_k} \dots \\} \subseteq \\{ f_n, n=1, \dots \\} $ which converges to $f$ $\mu$-a.e. in other words, $f_{n_k} \xrightarrow{\mu-a.e.} f$.
+
+* Let $$(X, \mathcal{A}, \mu)$$ be a finite measure space and let $\\{ f_n, n=1, \dots \\}$ be a sequence of measurable functions that converge to a function $f$ $\mu$-a.e. then it will converges to $f$ in measure. In other words, $f_{n_k} \xrightarrow{\mu} f$.
+
+* Let $(X, \mathcal{A})$ be a measurable space and let $$\{\nu_n : n=1,\dots\}$$ be a family of measures which are Vitali equicontinuous at the empty set and which are absolutely continuous with respect to some measure $\mu$, then this family is uniformly absolutely continuous. 
+
+* Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $\\{ f_n, n=1, \dots \\}$ be a sequence of measurable functions that belong to $L_{\mu}^p(X)$. For $\forall A \in \mathcal{A}$ we define $\nu_n(A) = \int_A \lvert f_n \rvert^p \mathrm{d} \mu$ and we assume that this family of measures is Vitali equicontinuous at the empty set and assume that $f_n$ converges to $f$ in measure, i.e. $f_n \xrightarrow{\mu} f$, then  $f_{n} \xrightarrow{\mathcal{L}_{\mu}^p} f$.
+
+* Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $\\{ f_n, n=1, \dots \\}$ be a sequence of measurable functions that belong to $L_{\mu}^p(X)$. If $\exists h \in L_1$ such that $\lvert f_n \rvert^P \le h$ then the family $\nu_n(A) = \int_A \lvert f_n \rvert^p \mathrm{d} \mu$ will be Vitali equicontinuous at the empty set.
