@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Notes on Mathematical Analysis"
+title:  "A Recap of Mathematics"
 date:   2020-06-25 10:57:12 -0800
 categories: analysis
 ---
@@ -256,6 +256,10 @@ $$ D_-f(x) = \mathrm{lim inf}_{h \to 0^-} \frac{f(x+h)-f(x)}{h}$$
 * For any functions $f, g \in L_{\mu}^p(X)$, it can be proved using the Minkowski inequality that the metric $d(f,g) = \lVert f- g \rVert_p$ is a distance. Using this distance, we can define the notion of convergence in $L_{\mu}^p$. A sequence of functions $f_n \in L_{\mu}$ for $n=1,\dots$ is said to <strong>converge to $f$ in $L_{\mu}^p(X)$</strong> and notationally represented as $$f_n \xrightarrow{\mathcal{L}_{\mu}^p} f$$ if $$\lim_{n \to \infty} d(f_n, f) = \lim_{n \to \infty} \lVert f_n -f \rVert = 0$$. A sequence can converge uniformly or converge in measure but may not converge in $L_{\mu}^p$. It can be proved that the space $L_{\mu}^p$ is complete since for every Cauchy sequence $f_n$ in $L_{\mu}^p$, there exists a function $f$ such that $$f_n \xrightarrow{\mathcal{L}_{\mu}^p} f$$.
 
 * Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $f, f_n, n=1, \dots$ be a sequence of measurable functions. We say that the sequence $f_n$ <strong>converges to $f$ in measure</strong> and we denote it by $f_n \xrightarrow{\mu} f$ if $\forall \epsilon > 0$ we have $$\lim_{n \to \infty} \mu \left(\{x : \lvert f_n(x) - f(x) \rvert > \epsilon \}\right) = 0$$. Notice that convergence in measure does not imply pointwise convergence. 
+
+* A transformation (or operator) $T(f)$ over $\mathcal{L}^p$ is <strong>linear</strong> if $\forall \alpha, \beta$ we have $T(\alpha f_1 + \beta f_2) = \alpha T(f_1) + \beta (f_2)$. We say that $T$ if <strong>bounded</strong> if $\exists c < \infty$ such that  $\lvert T(f) \rvert \le c \lVert f \rVert$ for $\forall f \in \mathcal{L}^p$. The <strong>norm</strong> of $T$ will be the smallest constant $c$ that satisfied the previous bound. In other words, 
+
+$$\lVert T \rVert = \sup_{f \neq 0} \frac{\lvert T(f) \rvert}{\lVert f \rVert} = \sup_{f \in \mathcal{L}^p, \lVert f \rVert = 1} \lvert T(f) \rvert$$
 
 ## Theorems 
 
@@ -545,3 +549,7 @@ $$m(A) = 0 \Longrightarrow m(F(A)) = 0$$
 * Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $\\{ f_n, n=1, \dots \\}$ be a sequence of measurable functions that belong to $L_{\mu}^p(X)$. For $\forall A \in \mathcal{A}$ we define $\nu_n(A) = \int_A \lvert f_n \rvert^p \mathrm{d} \mu$ and we assume that this family of measures is Vitali equicontinuous at the empty set and assume that $f_n$ converges to $f$ in measure, i.e. $f_n \xrightarrow{\mu} f$, then  $f_{n} \xrightarrow{\mathcal{L}_{\mu}^p} f$.
 
 * Let $$(X, \mathcal{A}, \mu)$$ be a measure space and let $\\{ f_n, n=1, \dots \\}$ be a sequence of measurable functions that belong to $L_{\mu}^p(X)$. If $\exists h \in L_1$ such that $\lvert f_n \rvert^P \le h$ then the family $\nu_n(A) = \int_A \lvert f_n \rvert^p \mathrm{d} \mu$ will be Vitali equicontinuous at the empty set.
+
+* Let $p$ and $q$ be a conjugate pair such that $1 \le p < \infty$, $\frac{1}{p} + \frac{1}{q} = 1$ and let $f \in \mathcal{L}^p$ and $g \in \mathcal{L}^q$. Using Holder inquality we can then prove that $fg \in \mathcal{L}^1$. If $T_g ~:~ \mathcal{L}^p \to \mathbb{R}$ is a linear operator that assigns $\int ~ fg ~\mathrm{d}\mu$ to function $f \in \mathcal{L}^p$, then $T_g$ is a bounded linear operator and $$\lVert T_g \rVert = \lVert g \rVert_q$$.
+
+* <strong>Dual space of $\mathcal{L}^p$: </strong> Let $p$ and $q$ be a conjugate pair such that $1 \le p < \infty$, $\frac{1}{p} + \frac{1}{q} = 1$ and let $T ~:~ \mathcal{L}^p \to \mathbb{R}$ be a bounded linear operator in $\mathbb{R}$. Then there exists a function $g \in \mathcal{L}^q$ such that $\forall f \in \mathcal{L}^p$ we have $T(f) = \int f g ~ \mathrm{d}\mu$.
