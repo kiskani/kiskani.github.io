@@ -49,10 +49,6 @@ $$\mathcal{D}_\phi(\mathbf{a}|\mathbf{b}) = \sum_{i \in \mathrm{Supp}(\mathbf{b}
 
 * Many divergences can be written as $\phi$-divergence. Here are a few examples:
 
-
-
-
-
 | Name        | $$D_f(P \lVert Q)$$ | Generator $\phi$     | 
 | :---        |    :----:   |          :---: | 
 | KL-divergence      | $\int p(x) \log \left( \frac{p(x)}{q(x)} \right) \mathrm{d}x$      | ${\displaystyle t\log t}$  | 
@@ -60,5 +56,14 @@ $$\mathcal{D}_\phi(\mathbf{a}|\mathbf{b}) = \sum_{i \in \mathrm{Supp}(\mathbf{b}
 |squared Hellinger distance | $\int \left( \sqrt{p(x)} - \sqrt{q(x)} \right) ^2 \mathrm{d} x$ | $({\sqrt  {t}}-1)^{2},\,2(1-{\sqrt  {t}})$ |
 |Total variation distance | $\frac{1}{2} \int \lvert p(x) - q(x) \rvert \mathrm{d} x$ | $\frac{1}{2} \lvert t - 1 \rvert$ |
 |Pearson $\chi ^{2}$-divergence | $\int \frac{(p(x) - q(x))^2}{p(x)}\mathrm{d} x$ | ${\displaystyle (t-1)^{2},\,t^{2}-1,\,t^{2}-t}$ |
-| Neyman $\chi ^{2}$-divergence (reverse Pearson) | $\int \frac{(p(x) - q(x))^2}{q(x)}\mathrm{d} x$  |	${\displaystyle {\frac {1}{t}}-1,\,{\frac {1}{t}}-t}$ |
+| Neyman $\chi ^{2}$-divergence | $\int \frac{(p(x) - q(x))^2}{q(x)}\mathrm{d} x$  |	${\displaystyle {\frac {1}{t}}-1,\,{\frac {1}{t}}-t}$ |
+| Jensen-Shannon divergence | $$\frac{1}{2} \int p(x) \log \left( \frac{2p(x)}{p(x) + q(x)} \right) +   q(x) \log \left( \frac{2q(x)}{p(x) + q(x)} \right)\mathrm{d} x$$ | $-(1+t)\log \left( \frac{1+t}{2} \right) + t \log(t) $ |
 {:.td}
+
+
+
+* A few more resources to read about $\phi$-divergences:
+	- [Yale university lecture notes on information-theoretic methods for high-dimensional statistics](http://www.stat.yale.edu/~yw562/teaching/it-stats.pdf)
+	- [MIT notes on f-divergences](http://people.lids.mit.edu/yp/homepage/data/LN_fdiv.pdf)
+
+* [<strong>Renyi divergence</strong>](https://en.wikipedia.org/wiki/R%C3%A9nyi_entropy) is a generalization of KL-divergence by using the Renyi-entropy function which is a generalization of Shannon-entropy. 
