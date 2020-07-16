@@ -49,11 +49,9 @@ $$\mathcal{D}_\phi(\mathbf{a}|\mathbf{b}) = \sum_{i \in \mathrm{Supp}(\mathbf{b}
 
 * Many divergences can be written as $\phi$-divergence. Here are a few examples:
 
-<style>
-.tablelines table, .tablelines td, .tablelines th {
-        border: 1px solid black;
-        }
-</style>
+
+
+
 
 | Name        | $$D_f(P \lVert Q)$$ | Generator $\phi$     | 
 | :---        |    :----:   |          :---: | 
@@ -63,4 +61,4 @@ $$\mathcal{D}_\phi(\mathbf{a}|\mathbf{b}) = \sum_{i \in \mathrm{Supp}(\mathbf{b}
 |Total variation distance | $\frac{1}{2} \int \lvert p(x) - q(x) \rvert \mathrm{d} x$ | $\frac{1}{2} \lvert t - 1 \rvert$ |
 |Pearson $\chi ^{2}$-divergence | $\int \frac{(p(x) - q(x))^2}{p(x)}\mathrm{d} x$ | ${\displaystyle (t-1)^{2},\,t^{2}-1,\,t^{2}-t}$ |
 | Neyman $\chi ^{2}$-divergence (reverse Pearson) | $\int \frac{(p(x) - q(x))^2}{q(x)}\mathrm{d} x$  |	${\displaystyle {\frac {1}{t}}-1,\,{\frac {1}{t}}-t}$ |
-{:.mbtablestyle}
+{:.td}
