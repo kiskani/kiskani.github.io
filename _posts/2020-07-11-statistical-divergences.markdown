@@ -49,6 +49,12 @@ $$\mathcal{D}_\phi(\mathbf{a}|\mathbf{b}) = \sum_{i \in \mathrm{Supp}(\mathbf{b}
 
 * Many divergences can be written as $\phi$-divergence. Here are a few examples:
 
+<style>
+.tablelines table, .tablelines td, .tablelines th {
+        border: 1px solid black;
+        }
+</style>
+
 | Name        | $$D_f(P \lVert Q)$$ | Generator $\phi$     | 
 | :---        |    :----:   |          :---: | 
 | KL-divergence      | $\int p(x) \log \left( \frac{p(x)}{q(x)} \right) \mathrm{d}x$      | ${\displaystyle t\log t}$  | 
