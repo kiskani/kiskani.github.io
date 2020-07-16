@@ -47,29 +47,14 @@ $$\mathcal{D}_\phi(\mathbf{a}|\mathbf{b}) = \sum_{i \in \mathrm{Supp}(\mathbf{b}
 
 &nbsp; &nbsp; &nbsp; &nbsp; where $$\mathrm{Supp}(b) \triangleq \{i \in \mathbb{[} n \mathbb{]} ~:~ b_i \neq 0 \}$$.
 
-* This is a 
+* Many divergences can be written as $\phi$-divergence. Here are a few examples:
 
-| s | s | s | s | s |
-| :----: | :----: | :----: | :----: | :----: |
-| s | S  |  S | S  | s |
-| s |  S | S  |  S | s |
-| s | d | s | d | s |
-
-HELLO
-
-| Syntax      | Description | Test Text     | 
-| :---        |    :----:   |          ---: | 
-| Header      | Title       | Here's this   | 
-| Paragraph   | Text        | And more      |
-
-| Left-aligned | Center-aligned | Right-aligned |
-| :---         |     :---:      |          ---: |
-| git status   | git status     | git status    |
-| git diff     | git diff       | git diff      |
-
-
-| Priority apples | Second priority | Third priority |
-|-------|--------|---------|
-| ambrosia | gala | red delicious |
-| pink lady | jazz | macintosh |
-| honeycrisp | granny smith | fuji |
+| Name        | $$D_f(P \lVert Q)$$ | Generator $\phi$     | 
+| :---        |    :----:   |          :---: | 
+| KL-divergence      | $\int p(x) \log \left( \frac{p(x)}{q(x)} \right) \mathrm{d}x$      | ${\displaystyle t\log t}$  | 
+| reverse KL-divergence   | $\int q(x) \log \left( \frac{p(x)}{q(x)} \right) \mathrm{d}x$         | ${\displaystyle -\log t}$     |
+|squared Hellinger distance | $\int \left( \sqrt{p(x)} - \sqrt{q(x)} \right) ^2 \mathrm{d} x$ | $({\sqrt  {t}}-1)^{2},\,2(1-{\sqrt  {t}})$ |
+|Total variation distance | $\frac{1}{2} \int \lvert p(x) - q(x) \rvert \mathrm{d} x$ | $\frac{1}{2} \lvert t - 1 \rvert$ |
+|Pearson $\chi ^{2}$-divergence | $\int \frac{(p(x) - q(x))^2}{p(x)}\mathrm{d} x$ | ${\displaystyle (t-1)^{2},\,t^{2}-1,\,t^{2}-t}$ |
+| Neyman $\chi ^{2}$-divergence (reverse Pearson) | $\int \frac{(p(x) - q(x))^2}{q(x)}\mathrm{d} x$  |	${\displaystyle {\frac {1}{t}}-1,\,{\frac {1}{t}}-t}$ |
+{:.mbtablestyle}
