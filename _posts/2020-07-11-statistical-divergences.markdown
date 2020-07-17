@@ -67,3 +67,6 @@ $$\mathcal{D}_\phi(\mathbf{a}|\mathbf{b}) = \sum_{i \in \mathrm{Supp}(\mathbf{b}
 	- [MIT notes on f-divergences](http://people.lids.mit.edu/yp/homepage/data/LN_fdiv.pdf)
 
 * [<strong>Renyi divergence</strong>](https://en.wikipedia.org/wiki/R%C3%A9nyi_entropy) is a generalization of KL-divergence by using the Renyi-entropy function which is a generalization of Shannon-entropy. 
+
+* The following diagram shows some of the inequalities that hold between different divergences:
+![Comparing divergences](divergences-comparison.png)
