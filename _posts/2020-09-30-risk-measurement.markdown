@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "Python Finance Calculations"
-date:   2020-01-03 15:52:14 -0800
+title:  "Methods of measuring risk in finance"
+date:   2020-09-30 10:16:34 -0800
 categories: finance
 ---
 <!---
