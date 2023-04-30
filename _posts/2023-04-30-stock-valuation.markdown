@@ -4,7 +4,7 @@ title:  "Stock Valuation"
 date:   2023-04-30 12:03:43 -0800
 categories: finance
 ---
-In this post, I will explain some methods of valuating stock prices.
+In this post, I will explain some methods of valuating stock prices. First, let's see how we can calculate the terminal value of a company based on its 
  
 
 $$C_y = 12 C_m$$
