@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Python Finance Calculations</title>
+  <meta name="description" content="&lt;!—A tribute to a great man who died on this day but whose legacy would never die.">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/finance/2020/01/03/finance-calculations.html">
+  <link rel="alternate" type="application/rss+xml" title="Topics in Machine Learning." href="http://localhost:4000/feed.xml">
+
+  <!-- <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+          extensions: ["tex2jax.js"],
+          jax: ["input/TeX", "output/HTML-CSS"],
+          tex2jax: {
+              inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+              displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+              processEscapes: true
+          },
+      "HTML-CSS": { availableFonts: ["TeX"] }
+        });
+  </script> -->
+  <script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Topics in Machine Learning.</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Python Finance Calculations</h1>
+    <p class="post-meta"><time datetime="2020-01-03T15:52:14-08:00" itemprop="datePublished">Jan 3, 2020</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <!---
+A tribute to a great man who died on this day but whose legacy would never die. 
+
+<img src="rose.jpeg" align="middle" width="256">
+--->
+<p>In this post, I will explain the methods of measuring risk in finance. One of the widely used concepts to measue the risk of an asset is the <a href="https://en.wikipedia.org/wiki/Sharpe_ratio">Sharpe Ratio</a>. I have implemented a code in Python to compute the Sharpe Ratio for some assets.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">pandas_datareader</span> <span class="kn">import</span> <span class="n">data</span>  <span class="c1"># You will need to run "pip install pandas_datareader"
+</span><span class="kn">import</span> <span class="nn">holidays</span>   <span class="c1"># You will need to run "pip install holidays"
+</span><span class="kn">import</span> <span class="nn">datetime</span> 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">pandas.plotting</span> <span class="kn">import</span> <span class="n">register_matplotlib_converters</span>
+<span class="n">register_matplotlib_converters</span><span class="p">()</span>
+<span class="n">pd</span><span class="p">.</span><span class="n">set_option</span><span class="p">(</span><span class="s">'display.max_columns'</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<span class="n">pd</span><span class="p">.</span><span class="n">set_option</span><span class="p">(</span><span class="s">'display.max_rows'</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span></code></pre></figure>
+
+<p>Useful resources:</p>
+
+<p><a href="https://readthedocs.org/projects/pandas-datareader/downloads/pdf/latest/">https://readthedocs.org/projects/pandas-datareader/downloads/pdf/latest/</a></p>
+
+<p><a href="https://www.investopedia.com/terms/c/consumerpriceindex.asp">https://www.investopedia.com/terms/c/consumerpriceindex.asp</a></p>
+
+<p><a href="https://www.investopedia.com/insights/understanding-consumer-confidence-index/">https://www.investopedia.com/insights/understanding-consumer-confidence-index/</a></p>
+
+<p><a href="https://fred.stlouisfed.org/series">https://fred.stlouisfed.org/series</a></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">ONE_DAY</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">HOLIDAYS_US</span> <span class="o">=</span> <span class="n">holidays</span><span class="p">.</span><span class="n">US</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">previous_business_day</span><span class="p">(</span><span class="n">specific_date</span><span class="p">):</span>
+    <span class="n">previous_day</span> <span class="o">=</span> <span class="n">specific_date</span> 
+    <span class="k">while</span> <span class="n">previous_day</span><span class="p">.</span><span class="n">weekday</span><span class="p">()</span> <span class="ow">in</span> <span class="n">holidays</span><span class="p">.</span><span class="n">WEEKEND</span> <span class="ow">or</span> <span class="n">previous_day</span> <span class="ow">in</span> <span class="n">HOLIDAYS_US</span><span class="p">:</span>
+        <span class="n">previous_day</span> <span class="o">-=</span> <span class="n">ONE_DAY</span>
+    <span class="k">return</span> <span class="n">previous_day</span>
+
+<span class="k">def</span> <span class="nf">next_business_day</span><span class="p">(</span><span class="n">specific_date</span><span class="p">):</span>
+    <span class="n">next_day</span> <span class="o">=</span> <span class="n">specific_date</span>
+    <span class="k">while</span> <span class="n">next_day</span><span class="p">.</span><span class="n">weekday</span><span class="p">()</span> <span class="ow">in</span> <span class="n">holidays</span><span class="p">.</span><span class="n">WEEKEND</span> <span class="ow">or</span> <span class="n">next_day</span> <span class="ow">in</span> <span class="n">HOLIDAYS_US</span><span class="p">:</span>
+        <span class="n">next_day</span> <span class="o">+=</span> <span class="n">ONE_DAY</span>
+    <span class="k">return</span> <span class="n">next_day</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">get_historical_data</span><span class="p">(</span><span class="n">share</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'2019-01-01'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2020-01-01'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s">'yahoo'</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">panel_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">DataReader</span><span class="p">(</span><span class="n">share</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span> 
+        <span class="n">panel_data</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">panel_data</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">compute_average_annual_return</span><span class="p">(</span><span class="n">share</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'2019-01-02'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2019-12-31'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s">'yahoo'</span><span class="p">):</span>
+    <span class="n">panel_data</span> <span class="o">=</span> <span class="n">get_historical_data</span><span class="p">(</span><span class="n">share</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">panel_data</span><span class="p">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span>
+    
+    <span class="n">adj_close</span> <span class="o">=</span> <span class="n">panel_data</span><span class="p">[</span><span class="s">'Adj Close'</span><span class="p">]</span>
+    
+    <span class="n">start_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">start_date</span><span class="p">,</span> <span class="s">'%Y-%m-%d'</span><span class="p">)</span>
+    <span class="n">end_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">end_date</span><span class="p">,</span> <span class="s">'%Y-%m-%d'</span><span class="p">)</span>
+    
+    <span class="k">while</span> <span class="n">start_date</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">'%Y-%m-%d'</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">adj_close</span><span class="p">.</span><span class="n">index</span><span class="p">:</span> 
+        <span class="n">start_date</span> <span class="o">=</span> <span class="n">next_business_day</span><span class="p">(</span><span class="n">start_date</span><span class="p">)</span>
+    
+    <span class="k">while</span> <span class="n">end_date</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">'%Y-%m-%d'</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">adj_close</span><span class="p">.</span><span class="n">index</span><span class="p">:</span> 
+        <span class="n">end_date</span> <span class="o">=</span> <span class="n">previous_business_day</span><span class="p">(</span><span class="n">end_date</span><span class="p">)</span>
+    
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">end_date</span> <span class="o">-</span> <span class="n">start_date</span>
+    <span class="n">years</span> <span class="o">=</span> <span class="n">delta</span><span class="p">.</span><span class="n">days</span> <span class="o">/</span> <span class="mi">365</span>
+    
+    <span class="n">start_price</span> <span class="o">=</span> <span class="n">adj_close</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">start_date</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">'%Y-%m-%d'</span><span class="p">)]</span>
+    <span class="n">end_price</span> <span class="o">=</span> <span class="n">adj_close</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">end_date</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">'%Y-%m-%d'</span><span class="p">)]</span>
+    
+    <span class="n">return_value</span> <span class="o">=</span> <span class="p">(</span><span class="n">end_price</span><span class="o">/</span><span class="n">start_price</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">years</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">return_value</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">years</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">compute_daily_return_std_per_year</span><span class="p">(</span><span class="n">share</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'2019-01-02'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2020-01-02'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s">'yahoo'</span><span class="p">):</span>
+    <span class="n">panel_data</span> <span class="o">=</span> <span class="n">get_historical_data</span><span class="p">(</span><span class="n">share</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">panel_data</span><span class="p">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+    <span class="n">last_day_price</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">daily_returns</span> <span class="o">=</span> <span class="p">[]</span> 
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">panel_data</span><span class="p">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">last_day_price</span><span class="p">:</span>
+            <span class="n">daily_returns</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s">'Adj Close'</span><span class="p">]</span><span class="o">/</span><span class="n">last_day_price</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">last_day_price</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s">'Adj Close'</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">std</span><span class="p">(</span><span class="n">daily_returns</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">252</span><span class="p">),</span> <span class="mi">4</span><span class="p">)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">compute_sharpe</span><span class="p">(</span><span class="n">share</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'2019-01-02'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2020-01-02'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s">'yahoo'</span><span class="p">):</span>
+    <span class="n">avg</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">compute_average_annual_return</span><span class="p">(</span><span class="n">share</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+    <span class="n">std</span> <span class="o">=</span> <span class="n">compute_daily_return_std_per_year</span><span class="p">(</span><span class="n">share</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">avg</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">std</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">avg</span><span class="o">/</span><span class="n">std</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">SP_500</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s">'SP_500.xlsx'</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">SP_500_symbol_list</span> <span class="o">=</span> <span class="n">SP_500</span><span class="p">.</span><span class="n">index</span><span class="p">.</span><span class="n">to_list</span><span class="p">()[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">iTickers</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">iTickers</span><span class="p">[</span><span class="s">"SPY"</span><span class="p">]</span> <span class="o">=</span> <span class="s">"SPDR S&amp;P 500 ETF Trust"</span>
+<span class="n">iTickers</span><span class="p">[</span><span class="s">"VOO"</span><span class="p">]</span> <span class="o">=</span> <span class="s">"Vanguard S&amp;P 500 ETF"</span>
+<span class="n">iTickers</span><span class="p">[</span><span class="s">"VTI"</span><span class="p">]</span> <span class="o">=</span> <span class="s">"Vanguard Total Stock Market ETF"</span>
+<span class="n">iTickers</span><span class="p">[</span><span class="s">"BRK-B"</span><span class="p">]</span> <span class="o">=</span> <span class="s">"Berkshire Hathaway Inc."</span>
+<span class="n">iTickers</span><span class="p">[</span><span class="s">"AAPL"</span><span class="p">]</span> <span class="o">=</span> <span class="s">"Apple Inc."</span>
+<span class="n">iTickers</span><span class="p">[</span><span class="s">"BAC"</span><span class="p">]</span> <span class="o">=</span> <span class="s">"Bank of America"</span>
+<span class="n">iTickers</span><span class="p">[</span><span class="s">"MSFT"</span><span class="p">]</span> <span class="o">=</span> <span class="s">"Microsoft"</span>
+<span class="n">iTickers</span><span class="p">[</span><span class="s">"IVV"</span><span class="p">]</span> <span class="o">=</span> <span class="s">"iShares Core S&amp;P 500 ETF"</span>
+<span class="n">iTickers</span><span class="p">[</span><span class="s">"NFLX"</span><span class="p">]</span> <span class="o">=</span> <span class="s">"Netflix"</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">for</span> <span class="n">symb</span> <span class="ow">in</span> <span class="n">SP_500_symbol_list</span><span class="p">:</span>  
+    <span class="k">print</span><span class="p">(</span><span class="s">"---------------</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">symb</span><span class="p">)</span>
+    <span class="n">sharpe_ratio</span> <span class="o">=</span> <span class="n">compute_sharpe</span><span class="p">(</span><span class="n">symb</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">SP_500</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">symb</span><span class="p">][</span><span class="s">'Name'</span><span class="p">],</span> <span class="n">sharpe_ratio</span><span class="p">)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">start_date</span><span class="o">=</span><span class="s">'2000-01-31'</span> 
+<span class="k">for</span> <span class="n">symb</span> <span class="ow">in</span> <span class="n">iTickers</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">iTickers</span><span class="p">[</span><span class="n">symb</span><span class="p">])</span>
+    <span class="n">daa</span> <span class="o">=</span> <span class="n">get_historical_data</span><span class="p">(</span><span class="n">symb</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="n">start_date</span><span class="p">)</span>
+    <span class="n">sharpe_ratio</span> <span class="o">=</span> <span class="n">compute_sharpe</span><span class="p">(</span><span class="n">symb</span><span class="p">)</span>
+    <span class="c1">#print(SP_500.loc[symb]['Name'], sharpe_ratio)
+</span>    <span class="k">print</span><span class="p">(</span><span class="n">iTickers</span><span class="p">[</span><span class="n">symb</span><span class="p">],</span> <span class="n">sharpe_ratio</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">daa</span><span class="p">[</span><span class="s">'Adj Close'</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">'g'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">'-.'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">([</span><span class="n">iTickers</span><span class="p">[</span><span class="n">sym</span><span class="p">]</span> <span class="k">for</span> <span class="n">sym</span> <span class="ow">in</span> <span class="n">iTickers</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">'well-known-tickers.png'</span><span class="p">)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">SPDR S&amp;P 500 ETF Trust
+SPDR S&amp;P 500 ETF Trust 2.5004
+Vanguard S&amp;P 500 ETF
+Vanguard S&amp;P 500 ETF 2.5269
+Vanguard Total Stock Market ETF
+Vanguard Total Stock Market ETF 2.4393
+Berkshire Hathaway Inc.
+Berkshire Hathaway Inc. 0.7833
+Apple Inc.
+Apple Inc. 3.42
+Bank of America
+Bank of America 1.9287
+Microsoft
+Microsoft 2.9596
+iShares Core S&amp;P 500 ETF
+iShares Core S&amp;P 500 ETF 2.5012
+Netflix
+Netflix 0.6069</code></pre></figure>
+
+<p><img src="well-known-tickers.png" alt="Some SP 500 tickers" /></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">start_date</span><span class="o">=</span><span class="s">'2010-01-02'</span> 
+<span class="n">end_date</span><span class="o">=</span><span class="s">'2020-01-07'</span> 
+<span class="k">for</span> <span class="n">symb</span> <span class="ow">in</span> <span class="p">[</span><span class="s">'BRK-B'</span><span class="p">,</span><span class="s">'SPY'</span><span class="p">]:</span>
+    <span class="n">daa</span> <span class="o">=</span> <span class="n">get_historical_data</span><span class="p">(</span><span class="n">symb</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="n">end_date</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">daa</span><span class="p">[</span><span class="s">'Adj Close'</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">'g'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">'-.'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">([</span><span class="s">'BRK-B'</span><span class="p">,</span><span class="s">'SPY'</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">'BRK_vs_SPY.png'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="BRK_vs_SPY.png" alt="Berkshire Hathaway vs SP 500" /></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">plot_stock_price</span><span class="p">(</span><span class="n">stock</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'2019-01-02'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2019-12-31'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s">'yahoo'</span><span class="p">):</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+    <span class="n">daa</span> <span class="o">=</span> <span class="n">get_historical_data</span><span class="p">(</span><span class="n">stock</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="n">end_date</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
+    <span class="n">sharpe_ratio</span> <span class="o">=</span> <span class="n">compute_sharpe</span><span class="p">(</span><span class="n">stock</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">daa</span><span class="p">[</span><span class="s">'Adj Close'</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">'g'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">'-.'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">([</span><span class="n">stock</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">'{}_{}_{}.png'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">stock</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">))</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_stock_price</span><span class="p">(</span><span class="s">'GOOG'</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'2007-01-02'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2010-01-02'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="GOOG_2007-01-02_2010-01-02.png" alt="Google" />
+AT&amp;T</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_stock_price</span><span class="p">(</span><span class="s">'T'</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'1980-01-01'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2020-01-01'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="T_1980-01-01_2020-01-01.png" alt="T" /></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_stock_price</span><span class="p">(</span><span class="s">'VTIP'</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'1990-01-01'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2020-01-01'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="VTIP_1990-01-01_2020-01-01.png" alt="VTIP" />
+Vanguard 500 Index Fund Admiral Shares</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_stock_price</span><span class="p">(</span><span class="s">'VFIAX'</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'1990-01-01'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2020-01-01'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="VFIAX_1990-01-01_2020-01-01.png" alt="VFIAX" />
+iShares 20+ Year Treasury Bond ETF (TLT)</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_stock_price</span><span class="p">(</span><span class="s">'TLT'</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'1900-01-01'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2020-01-01'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="TLT_1900-01-01_2020-01-01.png" alt="TLT" />
+13 Week treasury bill</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_stock_price</span><span class="p">(</span><span class="s">'^IRX'</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'1900-01-01'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2020-01-01'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="^IRX_1900-01-01_2020-01-01.png" alt="IRX" />
+30 Year Treasury bill</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_stock_price</span><span class="p">(</span><span class="s">'^TYX'</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'2000-01-01'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2020-01-01'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="^TYX_2000-01-01_2020-01-01.png" alt="TYX" />
+Vanguard Target Retirement 2045 Fund Investor Shares</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_stock_price</span><span class="p">(</span><span class="s">'VTIVX'</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'2000-01-01'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2020-01-01'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="VTIVX_2000-01-01_2020-01-01.png" alt="VTIVX" /></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">compute_avg_annual_return_between_2_periods</span><span class="p">(</span><span class="n">shares</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'2000-01-02'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2019-12-31'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s">'yahoo'</span><span class="p">):</span>
+    <span class="n">shares_data</span> <span class="o">=</span> <span class="n">get_historical_data</span><span class="p">(</span><span class="n">shares</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="n">end_date</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
+    <span class="n">adj_close</span> <span class="o">=</span> <span class="n">shares_data</span><span class="p">[</span><span class="s">'Adj Close'</span><span class="p">]</span>
+    
+    <span class="n">start_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">start_date</span><span class="p">,</span> <span class="s">'%Y-%m-%d'</span><span class="p">)</span>
+    <span class="n">end_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">end_date</span><span class="p">,</span> <span class="s">'%Y-%m-%d'</span><span class="p">)</span>
+    
+    <span class="k">while</span> <span class="n">start_date</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">'%Y-%m-%d'</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">adj_close</span><span class="p">.</span><span class="n">index</span><span class="p">:</span> 
+        <span class="n">start_date</span> <span class="o">=</span> <span class="n">next_business_day</span><span class="p">(</span><span class="n">start_date</span><span class="p">)</span>
+    
+    <span class="k">while</span> <span class="n">end_date</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">'%Y-%m-%d'</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">adj_close</span><span class="p">.</span><span class="n">index</span><span class="p">:</span> 
+        <span class="n">end_date</span> <span class="o">=</span> <span class="n">previous_business_day</span><span class="p">(</span><span class="n">end_date</span><span class="p">)</span>
+    
+    <span class="n">start_prices</span> <span class="o">=</span> <span class="n">adj_close</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">start_date</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">'%Y-%m-%d'</span><span class="p">)]</span>
+    <span class="n">end_prices</span> <span class="o">=</span> <span class="n">adj_close</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">end_date</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">'%Y-%m-%d'</span><span class="p">)]</span>
+    <span class="c1">#print(end_prices, start_prices)
+</span>    <span class="k">return</span> <span class="p">(</span><span class="n">end_prices</span><span class="o">/</span><span class="n">start_prices</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">end_date</span><span class="p">.</span><span class="n">year</span> <span class="o">-</span> <span class="n">start_date</span><span class="p">.</span><span class="n">year</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">SP500_rate_of_return_all</span> <span class="o">=</span> <span class="n">compute_avg_annual_return_between_2_periods</span><span class="p">(</span><span class="n">SP_500_symbol_list</span><span class="p">)</span>
+<span class="n">SP500_rate_of_return</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="nb">round</span><span class="p">(</span><span class="n">SP500_rate_of_return_all</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">x</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">SP500_rate_of_return_all</span><span class="p">.</span><span class="n">index</span> \
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">pd</span><span class="p">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">SP500_rate_of_return_all</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">x</span><span class="p">])}</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">SP500_rate_of_return_clean</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">SP500_rate_of_return</span><span class="p">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])}</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">compute_avg_annual_return_between_2_periods</span><span class="p">(</span><span class="s">'BRK-B'</span><span class="p">)</span></code></pre></figure>
+
+<p>0.10278063728967202</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_stock_price</span><span class="p">(</span><span class="s">'NVDA'</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'2000-01-02'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2019-12-31'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="NVDA_2000-01-02_2019-12-31.png" alt="NVDA" /></p>
+<h2 id="overall-economic-indicators">Overall economic indicators</h2>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">plot_us_gdp</span><span class="p">(</span><span class="n">start_date</span> <span class="o">=</span> <span class="s">'1900-01-01'</span><span class="p">,</span> <span class="n">end_date</span> <span class="o">=</span> <span class="s">'2020-01-01'</span><span class="p">):</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+    <span class="n">gdp_data</span> <span class="o">=</span> <span class="n">get_historical_data</span><span class="p">(</span><span class="s">'GDP'</span><span class="p">,</span> <span class="n">start_date</span> <span class="o">=</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span> <span class="o">=</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">source</span> <span class="o">=</span> <span class="s">'fred'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gdp_data</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">'g'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">'-.'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">([</span><span class="s">'US GDP'</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">'us_gdp.png'</span><span class="p">)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">plot_us_inflation</span><span class="p">(</span><span class="n">start_date</span><span class="o">=</span><span class="s">'1940-01-01'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2020-01-01'</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span><span class="s">'CPILFESL'</span><span class="p">):</span>
+    <span class="n">CPI</span>  <span class="o">=</span> <span class="n">get_historical_data</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">start_date</span> <span class="o">=</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span> <span class="o">=</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">source</span> <span class="o">=</span> <span class="s">'fred'</span><span class="p">)</span>
+    <span class="n">CPI</span><span class="p">[</span><span class="s">'CPI_Diff_monthly'</span><span class="p">]</span> <span class="o">=</span> <span class="n">CPI</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="n">diff</span><span class="p">()</span>
+    <span class="n">CPI</span><span class="p">[</span><span class="s">'CPI_Diff_yearly'</span><span class="p">]</span> <span class="o">=</span> <span class="n">CPI</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="n">diff</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">CPI</span><span class="p">[</span><span class="s">'CPI_monthly_inflation_rate'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">CPI</span><span class="p">[</span><span class="s">'CPI_Diff_monthly'</span><span class="p">]</span><span class="o">/</span><span class="n">CPI</span><span class="p">[</span><span class="n">index</span><span class="p">])</span><span class="o">*</span><span class="mi">100</span>
+    <span class="n">CPI</span><span class="p">[</span><span class="s">'CPI_yearly_inflation_rate_pp'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">CPI</span><span class="p">[</span><span class="s">'CPI_Diff_yearly'</span><span class="p">]</span><span class="o">/</span><span class="n">CPI</span><span class="p">[</span><span class="n">index</span><span class="p">])</span><span class="o">*</span><span class="mi">100</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">CPI</span><span class="p">[</span><span class="s">'CPI_monthly_inflation_rate'</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">CPI</span><span class="p">[</span><span class="s">'CPI_yearly_inflation_rate_pp'</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">'g'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">'-.'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">([</span><span class="s">'US monthly inflation rate'</span><span class="p">,</span> <span class="s">'US yearly point to point inflation rate'</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">'us_inflation_data_{}.png'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">CPI</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">plot_index</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">start_date</span> <span class="o">=</span> <span class="s">'2010-01-02'</span><span class="p">,</span> <span class="n">end_date</span> <span class="o">=</span> <span class="s">'2020-01-02'</span><span class="p">,</span> <span class="n">source</span> <span class="o">=</span> <span class="s">'fred'</span><span class="p">):</span>
+    <span class="n">indx</span>  <span class="o">=</span> <span class="n">get_historical_data</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">indx</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">'g'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">'-.'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">index_meaning</span> <span class="o">=</span> <span class="p">{</span><span class="s">'DGS30'</span><span class="p">:</span> <span class="s">'30-Year Treasury Constant Maturity Rate'</span><span class="p">,</span>
+                     <span class="s">'DGS20'</span><span class="p">:</span> <span class="s">'20-Year Treasury Constant Maturity Rate'</span><span class="p">,</span>
+                     <span class="s">'DGS10'</span><span class="p">:</span> <span class="s">'10-Year Treasury Constant Maturity Rate'</span><span class="p">,</span> 
+                     <span class="s">'DGS7'</span><span class="p">:</span> <span class="s">'7-Year Treasury Constant Maturity Rate'</span><span class="p">,</span>
+                     <span class="s">'DGS5'</span><span class="p">:</span> <span class="s">'5-Year Treasury Constant Maturity Rate'</span><span class="p">,</span>
+                     <span class="s">'DGS3'</span><span class="p">:</span> <span class="s">'3-Year Treasury Constant Maturity Rate'</span><span class="p">,</span>
+                     <span class="s">'DGS2'</span><span class="p">:</span> <span class="s">'2-Year Treasury Constant Maturity Rate'</span><span class="p">,</span>
+                     <span class="s">'DGS1'</span><span class="p">:</span> <span class="s">'1-Year Treasury Constant Maturity Rate'</span><span class="p">,</span>
+                     <span class="s">'DGS6MO'</span><span class="p">:</span> <span class="s">'6-Month Treasury Constant Maturity Rate'</span><span class="p">,</span>
+                     <span class="s">'DGS3MO'</span><span class="p">:</span> <span class="s">'3-Month Treasury Constant Maturity Rate'</span><span class="p">,</span>
+                     <span class="s">'DGS1MO'</span><span class="p">:</span> <span class="s">'1-Month Treasury Constant Maturity Rate'</span><span class="p">,</span> 
+                     <span class="s">'FEDFUNDS'</span><span class="p">:</span> <span class="s">'US Effective Federal Funds Rate'</span><span class="p">,</span>
+                     <span class="s">'LIBOR'</span><span class="p">:</span> <span class="s">'3-Month London Interbank Offered Rate'</span><span class="p">,</span>
+                     <span class="s">'NIKKEI225'</span><span class="p">:</span> <span class="s">'Nikkei Stock Average, Nikkei 225'</span><span class="p">,</span>
+                     <span class="s">'UNRATE'</span><span class="p">:</span> <span class="s">'US Civilian Unemployment Rate'</span><span class="p">,</span>
+                     <span class="s">'GFDEGDQ188S'</span><span class="p">:</span> <span class="s">'Federal Debt: Total Public Debt as Percent of Gross Domestic Product'</span><span class="p">,</span>
+                     <span class="s">'GDPC1'</span><span class="p">:</span> <span class="s">'Real Gross Domestic Product percent change'</span><span class="p">,</span>
+                     <span class="s">'A191RL1Q225SBEA'</span><span class="p">:</span> <span class="s">'Real Gross Domestic Product dollars'</span><span class="p">,</span>
+                     <span class="s">'CPIAUCSL'</span><span class="p">:</span> <span class="s">'Consumer Price Index for All Urban Consumers: All Items'</span><span class="p">,</span>
+                     <span class="s">'IRLTLT01JPM156N'</span><span class="p">:</span> <span class="s">'Long-Term Government Bond Yields: 10-year: Japan'</span>
+                    <span class="p">}</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">([</span><span class="n">index_meaning</span><span class="p">[</span><span class="n">index</span><span class="p">]])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">'index_{}_{}_{}.png'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">))</span></code></pre></figure>
+
+<h1 id="plotting-the-yield-maturity-curve">Plotting the yield maturity curve</h1>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">plot_yield_curve</span><span class="p">(</span><span class="n">specific_date</span><span class="p">):</span>
+    <span class="n">next_date</span> <span class="o">=</span> <span class="n">next_business_day</span><span class="p">(</span><span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">specific_date</span><span class="p">,</span> <span class="s">'%Y-%m-%d'</span><span class="p">))</span>
+    <span class="n">specific_date</span> <span class="o">=</span> <span class="n">next_date</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">'%Y-%m-%d'</span><span class="p">)</span>
+    <span class="n">syms</span> <span class="o">=</span> <span class="p">[</span><span class="s">'DGS1MO'</span><span class="p">,</span> <span class="s">'DGS3MO'</span><span class="p">,</span> <span class="s">'DGS6MO'</span><span class="p">,</span> <span class="s">'DGS1'</span><span class="p">,</span> <span class="s">'DGS2'</span><span class="p">,</span> <span class="s">'DGS3'</span><span class="p">,</span> <span class="s">'DGS5'</span><span class="p">,</span> <span class="s">'DGS7'</span><span class="p">,</span> <span class="s">'DGS10'</span><span class="p">,</span> <span class="s">'DGS20'</span><span class="p">,</span> <span class="s">'DGS30'</span><span class="p">]</span>
+    <span class="n">yc</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">DataReader</span><span class="p">(</span><span class="n">syms</span><span class="p">,</span> <span class="s">'fred'</span><span class="p">,</span> <span class="n">specific_date</span><span class="p">,</span> <span class="n">specific_date</span><span class="p">)</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">syms</span><span class="p">,</span> <span class="p">[</span><span class="s">'1m'</span><span class="p">,</span> <span class="s">'3m'</span><span class="p">,</span> <span class="s">'6m'</span><span class="p">,</span> <span class="s">'1yr'</span><span class="p">,</span> <span class="s">'2yr'</span><span class="p">,</span> <span class="s">'3yr'</span><span class="p">,</span> <span class="s">'5yr'</span><span class="p">,</span> <span class="s">'7yr'</span><span class="p">,</span> <span class="s">'10yr'</span><span class="p">,</span> <span class="s">'20yr'</span><span class="p">,</span> <span class="s">'30yr'</span><span class="p">]))</span>
+    <span class="n">yc</span> <span class="o">=</span> <span class="n">yc</span><span class="p">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">names</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+    <span class="c1">#plt.plot([1, 3, 6, 12, 24, 36, 60, 84, 120, 240, 360], yc.loc[specific_date])
+</span>    <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">yc</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">specific_date</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">'g'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">'-.'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">([</span><span class="s">'US Yield Curve on {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">specific_date</span><span class="p">)])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">'yield_curve_{}.png'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">specific_date</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">yc</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">specific_date</span><span class="p">]</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">yields</span> <span class="o">=</span> <span class="n">plot_yield_curve</span><span class="p">(</span><span class="s">'2019-02-11'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="yield_curve_2019-02-11.png" alt="yield_curve" /></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">yields</span> <span class="o">=</span> <span class="n">plot_yield_curve</span><span class="p">(</span><span class="s">'2019-12-11'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="yield_curve_2019-12-11.png" alt="yield_curve" /></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_index</span><span class="p">(</span><span class="s">'DGS6MO'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="index_DGS6MO_2010-01-02_2020-01-02.png" alt="DGS6MO" /></p>
+<h1 id="sp-500-index-plots-over-different-decades">SP-500 index plots over different decades.</h1>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_stock_price</span><span class="p">(</span><span class="s">'^GSPC'</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'1900-01-01'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'1960-01-01'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="^GSPC_1900-01-01_1960-01-01.png" alt="SP500_1900_1960" /></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_stock_price</span><span class="p">(</span><span class="s">'^GSPC'</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'1960-01-01'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'1970-01-01'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="^GSPC_1960-01-01_1970-01-01.png" alt="SP500_1960_1970" /></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_stock_price</span><span class="p">(</span><span class="s">'^GSPC'</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'1970-01-01'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'1980-01-01'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="^GSPC_1970-01-01_1980-01-01.png" alt="SP500_1970_1980" /></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_stock_price</span><span class="p">(</span><span class="s">'^GSPC'</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'1980-01-01'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'1990-01-01'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="^GSPC_1980-01-01_1990-01-01.png" alt="SP500_1980_1990" /></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_stock_price</span><span class="p">(</span><span class="s">'^GSPC'</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'1990-01-01'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2000-01-01'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="^GSPC_1990-01-01_2000-01-01.png" alt="SP500_1990_2000" /></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_stock_price</span><span class="p">(</span><span class="s">'^GSPC'</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'2000-01-01'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2010-01-01'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="^GSPC_2000-01-01_2010-01-01.png" alt="SP500_2000_2010" /></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_stock_price</span><span class="p">(</span><span class="s">'^GSPC'</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'2010-01-01'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2020-01-01'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="^GSPC_2010-01-01_2020-01-01.png" alt="SP500_2010_2020" /></p>
+<h1 id="consumer-price-index-plot">Consumer Price Index plot</h1>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_stock_price</span><span class="p">(</span><span class="s">'CPI'</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'1990-01-01'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2020-01-01'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="CPI_1990-01-01_2020-01-01.png" alt="CPI" /></p>
+<h1 id="us-gdp">US GDP</h1>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">gdp</span> <span class="o">=</span> <span class="n">plot_us_gdp</span><span class="p">()</span></code></pre></figure>
+
+<p><img src="us_gdp.png" alt="usgdp" /></p>
+<h1 id="us-inflation-plots">US inflation plots</h1>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">cpi_u_inflation_data</span> <span class="o">=</span> <span class="n">plot_us_inflation</span><span class="p">(</span><span class="n">index</span> <span class="o">=</span> <span class="s">'CPILFESL'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="us_inflation_data_CPILFESL.png" alt="CPILFESL" /></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">cpi_u_inflation_data</span> <span class="o">=</span> <span class="n">plot_us_inflation</span><span class="p">(</span><span class="n">index</span> <span class="o">=</span> <span class="s">'CPIAUCSL'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="us_inflation_data_CPIAUCSL.png" alt="CPIAUCSL" /></p>
+<h1 id="consumer-confidence-index-plot">Consumer Confidence Index plot</h1>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_stock_price</span><span class="p">(</span><span class="s">'CCI'</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'1960-01-01'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2020-01-01'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="CCI_1960-01-01_2020-01-01.png" alt="CCI" /></p>
+<h1 id="dow-jones-industrial-average">Dow Jones Industrial Average</h1>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_stock_price</span><span class="p">(</span><span class="s">'^DJI'</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'1940-01-01'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'1990-01-01'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="^DJI_1940-01-01_1990-01-01.png" alt="Dow Jones 1940" /></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_stock_price</span><span class="p">(</span><span class="s">'^DJI'</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'1990-01-01'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2020-01-01'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="^DJI_1990-01-01_2020-01-01.png" alt="Dow Jones 1990" /></p>
+<h1 id="plot-of-10-year-treasury-bond-interest-rate">Plot of 10 year treasury bond interest rate</h1>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_index</span><span class="p">(</span><span class="s">'DGS10'</span><span class="p">,</span> <span class="n">start_date</span> <span class="o">=</span> <span class="s">'1950-01-02'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="index_DGS10_1950-01-02_2020-01-02.png" alt="Yield 1950" /></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_index</span><span class="p">(</span><span class="s">'DGS10'</span><span class="p">,</span> <span class="n">start_date</span> <span class="o">=</span> <span class="s">'2010-01-02'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="index_DGS10_2010-01-02_2020-01-02.png" alt="Yield 2010" /></p>
+<h1 id="us-effective-federal-funds-rate">US Effective Federal Funds Rate</h1>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_index</span><span class="p">(</span><span class="s">'FEDFUNDS'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="index_FEDFUNDS_2010-01-02_2020-01-02.png" alt="Federal Funds" /></p>
+<h1 id="us-unemployment-rate">US unemployment rate</h1>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_index</span><span class="p">(</span><span class="s">'UNRATE'</span><span class="p">,</span> <span class="n">start_date</span> <span class="o">=</span> <span class="s">'1910-01-02'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="index_UNRATE_1910-01-02_2020-01-02.png" alt="US Unemployment Rate" /></p>
+<h1 id="nikkei-index">NIKKEI Index</h1>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_index</span><span class="p">(</span><span class="s">'NIKKEI225'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="index_NIKKEI225_2010-01-02_2020-01-02.png" alt="NIKKEI" /></p>
+<h1 id="us-debtgdp-percentage-plot">US Debt/GDP percentage plot</h1>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_index</span><span class="p">(</span><span class="s">'GFDEGDQ188S'</span><span class="p">,</span> <span class="n">start_date</span> <span class="o">=</span> <span class="s">'1910-01-02'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="index_GFDEGDQ188S_1910-01-02_2020-01-02.png" alt="Debt to GDP" /></p>
+<h1 id="us-gdp-1">US GDP</h1>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_index</span><span class="p">(</span><span class="s">'GDPC1'</span><span class="p">,</span> <span class="n">start_date</span> <span class="o">=</span> <span class="s">'1910-01-02'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="index_GDPC1_1910-01-02_2020-01-02.png" alt="US GDP" /></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_index</span><span class="p">(</span><span class="s">'A191RL1Q225SBEA'</span><span class="p">,</span> <span class="n">start_date</span> <span class="o">=</span> <span class="s">'2010-01-02'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="index_A191RL1Q225SBEA_2010-01-02_2020-01-02.png" alt="US GDP Dollars" /></p>
+<h1 id="japenese-interest-rate-plot">Japenese interest rate plot</h1>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plot_index</span><span class="p">(</span><span class="s">'IRLTLT01JPM156N'</span><span class="p">,</span> <span class="n">start_date</span> <span class="o">=</span> <span class="s">'1940-01-02'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="index_IRLTLT01JPM156N_1940-01-02_2020-01-02.png" alt="Japanese interest rate" /></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">nasdaq</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">get_nasdaq_symbols</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">nasdaq</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">nasdaq</span><span class="p">.</span><span class="n">head</span><span class="p">()</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">compute_stats</span><span class="p">(</span><span class="n">symb</span><span class="p">):</span>
+    <span class="n">ticker</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">get_quote_yahoo</span><span class="p">(</span><span class="n">symb</span><span class="p">)</span> 
+    <span class="n">ticker</span><span class="p">[</span><span class="s">'c1_marketCap_bn_calc'</span><span class="p">]</span> <span class="o">=</span> <span class="n">ticker</span><span class="p">[</span><span class="s">'price'</span><span class="p">]</span> <span class="o">*</span> <span class="n">ticker</span><span class="p">[</span><span class="s">'sharesOutstanding'</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1e9</span>
+    <span class="n">ticker</span><span class="p">[</span><span class="s">'c2_marketCap_bn_orig'</span><span class="p">]</span> <span class="o">=</span> <span class="n">ticker</span><span class="p">[</span><span class="s">'marketCap'</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1e9</span>
+    <span class="n">ticker</span><span class="p">[</span><span class="s">'c3_price_calc'</span><span class="p">]</span> <span class="o">=</span> <span class="n">ticker</span><span class="p">[</span><span class="s">'epsForward'</span><span class="p">]</span> <span class="o">*</span> <span class="n">ticker</span><span class="p">[</span><span class="s">'trailingPE'</span><span class="p">]</span>
+    <span class="n">ticker</span><span class="p">[</span><span class="s">'c4_earnings_bn_calc'</span><span class="p">]</span> <span class="o">=</span> <span class="n">ticker</span><span class="p">[</span><span class="s">'epsForward'</span><span class="p">]</span> <span class="o">*</span> <span class="n">ticker</span><span class="p">[</span><span class="s">'sharesOutstanding'</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1e9</span>
+    <span class="k">return</span> <span class="n">ticker</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">compute_stats</span><span class="p">([</span><span class="s">'EXPE'</span><span class="p">,</span> <span class="s">'GOOG'</span><span class="p">,</span> <span class="s">'MSFT'</span><span class="p">,</span> <span class="s">'AAPL'</span><span class="p">,</span> <span class="s">'BB'</span><span class="p">,</span> <span class="s">'JNPR'</span><span class="p">,</span> <span class="s">'BRK-B'</span><span class="p">,</span> <span class="s">'BRK-A'</span><span class="p">])</span></code></pre></figure>
+
+<h1 id="getting-historic-stock-dividends">Getting historic stock dividends</h1>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">get_historical_data</span><span class="p">(</span><span class="s">'AAPL'</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s">'2019-01-02'</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s">'2019-12-31'</span><span class="p">,</span> <span class="n">source</span> <span class="o">=</span> <span class="s">'yahoo-dividends'</span><span class="p">)</span></code></pre></figure>
+
+<p>A summary of this code is available in <a href="https://github.com/kiskani/kiskani.github.io/blob/master/finance/2020/01/03/Finance-Notebook-1.ipynb">this notebook</a>.</p>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Topics in Machine Learning.</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Topics in Machine Learning.</li>
+          <li><a href="mailto:mohsen.kiskani@gmail.com">mohsen.kiskani@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/kiskani"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">kiskani</span></a>
+
+          </li>
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>This page is dedicated to some interesting ideas in statistics and machine learning. I will try to scratch the surface about some interesting ideas. Mainly for my own benefit and access but maybe helpful for others too.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

@@ -1,0 +1,103 @@
+<p>In this post, I will try to explain some interesting ideas around multi-armed bandits. I will implement the greedy exploitation algorithm along with the Upper Confidence Bound algorithm in Python for a simple multi-armed bandit problem.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">math</span> 
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span></code></pre></figure>
+
+<p>Defining a simple multi-armed bandit as follows</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">multiArmedBandit</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">()</span><span class="o">+</span><span class="mi">2</span>
+    <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span> </code></pre></figure>
+
+<p>It is clear that arm 1 has the largest expected value of reward which is equal to 2. Hence, the optimal value <code class="highlighter-rouge">v*</code> is equal to 2. This value will be used to compute the regret. Also we have</p>
+<ul>
+  <li>q(0) = 1    =&gt;  regret = 1</li>
+  <li>q(1) = 2    =&gt;  regret = 0</li>
+  <li>q(2) = 0    =&gt;  regret = 2</li>
+  <li>q(3) = 0    =&gt;  regret = 2</li>
+</ul>
+
+<p>The following piece of code can be used to plot the distribution of different arms</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">N</span> <span class="o">=</span> <span class="mi">100000</span> 
+<span class="n">arm0</span> <span class="o">=</span> <span class="p">[</span><span class="n">multiArmedBandit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+<span class="n">arm1</span> <span class="o">=</span> <span class="p">[</span><span class="n">multiArmedBandit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+<span class="n">arm2</span> <span class="o">=</span> <span class="p">[</span><span class="n">multiArmedBandit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+<span class="n">arm3</span> <span class="o">=</span> <span class="p">[</span><span class="n">multiArmedBandit</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+<span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">N</span><span class="o">/</span><span class="mi">500</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">hist</span><span class="p">(</span><span class="n">arm0</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'arm 0'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">hist</span><span class="p">(</span><span class="n">arm1</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'arm 1'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">hist</span><span class="p">(</span><span class="n">arm2</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'arm 2'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">hist</span><span class="p">(</span><span class="n">arm3</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'arm 3'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">'upper right'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
+
+<p>This is a histogram of the distribution of different arms
+<img src="arm_distributions.png" alt="Arm distributions" />
+This plot clearly shows that the best action to take would be action 1 which is equivalent to taking the second arm. However, this distribution is unkown to the 
+agent and therefore, they cannot choose the optimal action. But they can try to sample from different actions. If they follow a greedy approach as below</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">full_exploitation</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="c1"># Greedy approach: full exploitation and no exploration 
+</span>    <span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="n">multiArmedBandit</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span>
+    <span class="n">max_idx</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="c1">#print("arm0 :{:.2f}  arm1 :{:.2f}  arm2 :{:.2f}  arm3 :{:.2f}\t ==&gt; Selected Arm: {}".format(\
+</span>    <span class="c1">#    A[0], A[1], A[2], A[3], max_idx))
+</span>    <span class="n">qa</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">regrets</span> <span class="o">=</span> <span class="p">[</span><span class="n">qa</span><span class="p">[</span><span class="n">max_idx</span><span class="p">]]</span><span class="o">*</span><span class="n">t</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">multiArmedBandit</span><span class="p">(</span><span class="n">max_idx</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">t</span><span class="p">)],</span> <span class="n">regrets</span><span class="p">,</span> <span class="p">[</span><span class="n">max_idx</span><span class="p">]</span><span class="o">*</span><span class="n">t</span></code></pre></figure>
+
+<p>Then, the regret bound grows linearly with time <code class="highlighter-rouge">t</code> but if they follow the <a href="https://www.youtube.com/watch?v=eM6IBYVqXEA&amp;t=3494s">Upper Confidence Bound algorithm</a> as</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">ucb_algorithm</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">t</span><span class="o">&gt;</span><span class="mi">3</span><span class="p">,</span> <span class="s">"t should be greater than the number of arms"</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:[</span><span class="n">multiArmedBandit</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)}</span>
+    <span class="n">rewards</span> <span class="o">=</span> <span class="p">[</span><span class="n">counts</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">counts</span><span class="p">]</span>
+    <span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">qa</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">regrets</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="p">[</span><span class="n">counts</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">math</span><span class="p">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="p">.</span><span class="n">log</span><span class="p">(</span><span class="n">step</span><span class="p">)</span><span class="o">/</span><span class="n">counts</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">counts</span><span class="p">]</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">actions</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">action</span><span class="p">)</span> 
+        <span class="n">rewards</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">multiArmedBandit</span><span class="p">(</span><span class="n">action</span><span class="p">))</span>
+        <span class="n">counts</span><span class="p">[</span><span class="n">action</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">counts</span><span class="p">[</span><span class="n">action</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">rewards</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">counts</span><span class="p">[</span><span class="n">action</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="n">action</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">regrets</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">qa</span><span class="p">[</span><span class="n">action</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">regrets</span><span class="p">,</span> <span class="n">actions</span></code></pre></figure>
+
+<p>then the regret bound increases logarithmically with <code class="highlighter-rouge">t</code>. Here is the code to see the results,</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">compute_list_cumulative</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span> 
+        <span class="k">return</span> <span class="p">[]</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="p">[</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)):</span>
+        <span class="n">B</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">B</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">T</span> <span class="o">=</span> <span class="mi">100000</span>
+<span class="n">steps</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">ucb_rewards</span><span class="p">,</span> <span class="n">ucb_regrets</span><span class="p">,</span> <span class="n">ucb_actions</span> <span class="o">=</span> <span class="n">ucb_algorithm</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+<span class="n">greedy_rewards</span><span class="p">,</span> <span class="n">greedy_regrets</span><span class="p">,</span> <span class="n">greedy_actions</span> <span class="o">=</span> <span class="n">full_exploitation</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+<span class="n">greedy_regrets_cumul</span> <span class="o">=</span> <span class="n">compute_list_cumulative</span><span class="p">(</span><span class="n">greedy_regrets</span><span class="p">)</span>
+<span class="n">ucb_regrets_cumul</span> <span class="o">=</span> <span class="n">compute_list_cumulative</span><span class="p">(</span><span class="n">ucb_regrets</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">steps</span><span class="p">,</span> <span class="n">greedy_regrets_cumul</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">'Greedy regrets'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">steps</span><span class="p">,</span> <span class="n">ucb_regrets_cumul</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">'UCB regrets'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">'right'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
+
+<p>And this plot shows the regret bounds.
+<img src="regret_bounds.png" alt="Regret Bounds" />
+A summary of this code is available in <a href="https://github.com/kiskani/kiskani.github.io/blob/master/multi-armed-bandits/2019/12/29/multi-armed-bandit.ipynb">this notebook.</a></p>

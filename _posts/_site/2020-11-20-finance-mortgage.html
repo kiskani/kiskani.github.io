@@ -1,0 +1,91 @@
+<p>In this post, I will explain the fundamentals behind fixed-rate mortgage loans which could give insights on some financial decisions. Asstme that we have a fixed-rate mortgage loan of principal amount $P$ with yearly interest rate $r$ that amortizes in $T$ years. Further, denote the total monthly payment coupons for this loan by $C_m$ and the total yearly payment coupons by $C_y$. Since we assume that the loan is not a negative amortization loan, its total yearly coupon payment should be higher than its interest to reduce the loan balance over time. Hence, $C_y &gt; rP \Rightarrow C_y - rP &gt; 0$. Notice that</p>
+
+\[C_y = 12 C_m\]
+
+<p>The total amount paid by the mortgagor or borrower at the end of $n$-th year is</p>
+
+\[C_n = n C_y\]
+
+<p>We can easily prove that the remaining mortgator debt at the end of $n$-th year is</p>
+
+\[D_n = P(1+r)^n - C_y \frac{(1+r)^n-1}{r} = \frac{1}{r} \left( C_y - (C_y-rP)(1+r)^n \right)\]
+
+<p>The accumulated equity of the mortgagor or the borrower at the end of $n$-th year is</p>
+
+\[E_n = \left(C_y - r P  \right) \frac{(1+r)^n-1}{r}\]
+
+<p>The borrower’s yearly interest paid at the end of year $n$ is</p>
+
+\[I_n = r P \left(1+ r \right)^{n-1} - C_y \left((1+r)^{n-1}-1 \right) = C_y - (C_y -r P)(1+r)^{n-1}\]
+
+<p>and the total interest paid by the borrower at the end of year $n$ is</p>
+
+\[T_n = n C_y - \left(C_y - r P  \right) \frac{(1+r)^n-1}{r}\]
+
+<p>Further, notice that</p>
+
+\[C_n = n C_y = T_n + E_n\]
+
+<p>and</p>
+
+\[P = D_n + E_n\]
+
+<p>Now, as a case study, consider a 30 year fixed rate mortgage with an interest rate of 2.875 which is not difficult to secure these days. For now ignore tax, insurance, maintenance and other costs. Assume that the loan value is $741750 (i.e. the conforming loan value limit for King county). The yearly coupon value is calculated as</p>
+
+\[C_y = P \frac{r(1+r)^T}{(1+r)^T-1} = 741750 \frac{0.02875 (1.02875^{30})}{1.02875^{30} -1} = \$37234.63\]
+
+<p>Roughly speaking, the monthly coupon will be equal to \(\$37234.63 /12 = \$3102.89\).</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">P</span> <span class="o">=</span> <span class="mi">741750</span>
+<span class="n">r</span> <span class="o">=</span> <span class="mf">0.02875</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">30</span> 
+<span class="n">Cy</span> <span class="o">=</span> <span class="n">P</span><span class="o">*</span><span class="n">r</span><span class="o">*</span><span class="p">((</span><span class="mi">1</span><span class="o">+</span><span class="n">r</span><span class="p">)</span><span class="o">**</span><span class="n">T</span><span class="p">)</span><span class="o">/</span><span class="p">((</span><span class="mi">1</span><span class="o">+</span><span class="n">r</span><span class="p">)</span><span class="o">**</span><span class="n">T</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">Cm</span> <span class="o">=</span> <span class="n">Cy</span><span class="o">/</span><span class="mi">12</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="n">years</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+<span class="n">debt</span>  <span class="o">=</span> <span class="p">[</span><span class="n">P</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">r</span><span class="p">)</span><span class="o">**</span><span class="n">i</span> <span class="o">-</span> <span class="n">Cy</span> <span class="o">*</span><span class="p">((</span><span class="mi">1</span><span class="o">+</span><span class="n">r</span><span class="p">)</span><span class="o">**</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">r</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+<span class="n">equity</span> <span class="o">=</span> <span class="p">[(</span><span class="n">Cy</span> <span class="o">-</span> <span class="n">r</span><span class="o">*</span><span class="n">P</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="mi">1</span><span class="o">+</span><span class="n">r</span><span class="p">)</span><span class="o">**</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">r</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+<span class="n">yearly_interest</span> <span class="o">=</span> <span class="p">[</span><span class="n">Cy</span> <span class="o">-</span> <span class="p">(</span><span class="n">Cy</span><span class="o">-</span><span class="n">r</span><span class="o">*</span><span class="n">P</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="mi">1</span><span class="o">+</span><span class="n">r</span><span class="p">)</span><span class="o">**</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+<span class="n">total_interest</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">Cy</span> <span class="o">-</span> <span class="p">(</span><span class="n">Cy</span> <span class="o">-</span> <span class="n">r</span><span class="o">*</span><span class="n">P</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="mi">1</span><span class="o">+</span><span class="n">r</span><span class="p">)</span><span class="o">**</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">r</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+<span class="n">principal</span> <span class="o">=</span> <span class="p">[</span><span class="n">P</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+<span class="n">linear_equity_growth_line</span> <span class="o">=</span> <span class="p">[</span><span class="n">P</span><span class="o">/</span><span class="n">T</span><span class="o">*</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+<span class="n">linear_debt_decline_line</span> <span class="o">=</span> <span class="p">[</span><span class="n">P</span> <span class="o">-</span> <span class="n">P</span><span class="o">/</span><span class="n">T</span><span class="o">*</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">debt</span><span class="p">,</span> <span class="s">'-r'</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">"Remainig Debt"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">equity</span><span class="p">,</span> <span class="s">'-b'</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">"Accumulated Equity"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">principal</span><span class="p">,</span> <span class="s">'-k'</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">"Principal"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">linear_equity_growth_line</span><span class="p">,</span> <span class="s">'-.b'</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">"Hypothetical Linear Equity Growth Line"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">linear_debt_decline_line</span><span class="p">,</span> <span class="s">'-.r'</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">"Hypothetical Linear Debt Decline Line"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Year passed.'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Dollar amount'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Debt/Equity/Principal plot'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
+
+<p><img src="equity-debt.png" alt="equity-debt" /></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">total_interest</span><span class="p">,</span> <span class="s">'-g'</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">"Accumulated Interest Paid"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Year passed.'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Dollar amount'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Accumulated Interest plot'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s">"upper left"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
+
+<p><img src="total-interest.png" alt="total-interest" /></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">yearly_interest</span><span class="p">,</span> <span class="s">'-k'</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">"Yearly Interest Paid"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Year passed.'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Dollar amount'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Yearly Interest plot'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s">"upper right"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
+
+<p><img src="yearly-interest.png" alt="yearly-interest" /></p>
+

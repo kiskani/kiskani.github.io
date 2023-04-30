@@ -1,0 +1,813 @@
+I"�<p>This is a brief primer on basic definitions and theorems in mathematical analysis. These important results are from <a href="https://www.amazon.com/Integration-Modern-Analysis-John-Benedetto/dp/0817643060">Integration and Modern Analysis</a> and <a href="https://www.amazon.com/Topology-Munkres-International-Economy-James/dp/B01DVPYWG8/">Topology</a>.</p>
+
+<h2 id="definitions">Definitions</h2>
+
+<ul>
+  <li>
+    <p>The <strong>axiom of choice</strong> states that for every family $\mathcal{A}$ of disjoint nonempty sets there exists a set $B$ that has exactly one element in common with each set in $\mathcal{A}$.</p>
+  </li>
+  <li>A <strong> group </strong> is a set $G$ along with a rule \(\odot\) for combining elements $a, b$ of $G$ such that
+    <ul>
+      <li><em>Closure</em>: For all $a, b$ in $G$ we have $a \odot b \in G$.</li>
+      <li><em>Associativity</em>: For all $a, b, c$ in $G$ we have $(a \odot b) \odot c = a \odot (b \odot c)$.</li>
+      <li><em>Identity element</em>: There exists a unique element $e$ in $G$ such that, for every element $a$ in $G$, the equation $e \odot a = a \odot e = a$ holds.</li>
+      <li><em>Inverse</em>: For each $a$ in $G$, there exists an element $b$ in $G$, commonly denoted $a^{-1}$ such that $a \odot b = b \odot a = e$, where $e$ is the identity element.</li>
+    </ul>
+  </li>
+  <li>A <strong> field </strong> is a set $F$ together with two binary operations on $F$ called <em>addition (+)</em> and <em>multiplication (.)</em>. A binary operation on $F$ is a mapping $F \times F \to F$, that is, a correspondence that associates with each ordered pair of elements of $F$ a uniquely determined element of $F$. These operations are required to satisfy the following properties, referred to as <strong>field axioms</strong>. In these axioms, $a, b$, and $c$ are arbitrary elements of the field $F$.
+    <ul>
+      <li><em>Associativity of addition and multiplication:</em> $a + (b + c) = (a + b) + c$, and $a · (b · c) = (a · b) · c$.</li>
+      <li><em>Commutativity of addition and multiplication:</em> $a + b = b + a$, and $a · b = b · a$.</li>
+      <li><em>Additive and multiplicative identity:</em> there exist two different elements 0 and 1 in $F$ such that $a + 0 = a$ and $a · 1 = a$.</li>
+      <li><em>Additive inverses:</em> for every a in $F$, there exists an element in $F$, denoted $−a$, called the additive inverse of $a$, such that $a + (−a) = 0$.</li>
+      <li><em>Multiplicative inverses:</em> for every $a \neq 0$ in $F$, there exists an element in $F$, denoted by $a^{−1}$, called the multiplicative inverse of $a$, such that $a · a^{-1} = 1$.</li>
+      <li><em>Distributivity of multiplication over addition:</em> a · (b + c) = (a · b) + (a · c).</li>
+    </ul>
+  </li>
+  <li>A <strong> vector space</strong> $V$ over a field $F$ is a set together with two laws of composition.
+    <ul>
+      <li><em> addition:</em> $V \times V \to V$, written as $v, w \rightsquigarrow v+w$ for $v$ and $w$ in $V$.</li>
+      <li><em> scalar multiplication by elements of the field:</em> $F \times V \to V$ written as $c, w \rightsquigarrow cw$ for $c \in F$ and $w \in V$.</li>
+    </ul>
+  </li>
+  <li>Let $X$ be a vector space over $\mathbb{F}$ where $\mathbb{F} = \mathbb{R}$ or $\mathbb{F} = \mathbb{C}$. We call $X$ a <strong>normed vector space   </strong> if there is a function \(\lVert .\rVert: X \to \mathbb{R}^{+}\) such that
+    <ul>
+      <li>\(\forall x \in X, ~ \lVert x \rVert = 0 \Longleftrightarrow x = 0\).</li>
+      <li>\(\forall x, y \in X, ~ \lVert x + y \rVert \le \lVert x \rVert + \lVert y \rVert\).</li>
+      <li>\(\forall a \in F, \forall x \in X, ~ \lVert a x \rVert = \lvert a \rvert \lVert x \rVert\).</li>
+    </ul>
+  </li>
+  <li>Limit Superior and Limit Inferior for a sequence $x_n$ are defined as</li>
+</ul>
+
+\[\overline{\lim_{n \to \infty}} x_n \triangleq \inf_n \sup_{k \ge n} x_k\]
+
+\[\underline{\lim_{n \to \infty}} x_n \triangleq \sup_n \inf_{k \ge n} x_k\]
+
+<ul>
+  <li>
+    <p>A function $f: A \to B$ is <strong> surjective (onto) </strong> if every element of $B$ is the image of some element $A$ under the function $f$. It is <strong> injective (one-to-one)</strong> if for each pair of distinct points of $A$, their images under $f$ are different. And it is <strong> bijective </strong> if it is both injective and surjective.</p>
+  </li>
+  <li>A <strong>topology</strong> on a set $X$ is a collection $\tau$ of subsets of $X$ having the following properties:
+    <ul>
+      <li>$\emptyset$ and $X$ are in $\tau$.</li>
+      <li>The union of elements of any subcollection of $\tau$ is in $X$.</li>
+      <li>The intersection of the elements of any <em>finite</em> subcollection of $\tau$ is in $X$.</li>
+    </ul>
+  </li>
+  <li>
+    <p>A set $X$ for which topology $\tau$ has been identified is called a <strong> topological space. </strong></p>
+  </li>
+  <li>
+    <p>A subset $U \subseteq X$ is an <strong> open set </strong> of $X$ if $U$ belongs to the collection $\tau$. If $U$ is an open set containing $x$, then $U$ is called to be a <strong>neighborhood</strong> of $x$.</p>
+  </li>
+  <li>
+    <p>If $\tau_1$ and $\tau_2$ are two topologies on a given set $X$, and $\tau_1 \subseteq \tau_2$, then $\tau_2$ is a <strong> finer </strong> topology than $\tau_1$ and $\tau_1$ is <strong> coarser </strong> than $\tau_2$.</p>
+  </li>
+  <li>
+    <p>A topological space $X$ is called a <strong> Hausdorff space</strong> if for every pair $x_1, x_2$ of distinct points of $X$, there exist neighborhoods $U_1$ and $U_2$ of $x_1$ and $x_2$, respectively, that are disjoint. This condition is a relatively strong condition and a looser condition which is called the <strong> $T_1$ axiom </strong> requires that finite point sets be closed. Every finite point set in a Hausdorff space is closed.</p>
+  </li>
+  <li>
+    <p>If $X$ and $Y$ are topological spaces, a function $f: X \to Y$ is said to be <strong>continuous</strong> if for each open subset $V$ of $Y$, the set $f^{-1}(V)$ is an open set of $X$. If $f$ is bijective and both $f$ and $f^{-1}$ are continuous, then $f$ is called a <strong>homeomorphism</strong>.</p>
+  </li>
+  <li>
+    <p>If $X$ is a topological space, it is said to be <strong> metrizable </strong> if there exists a metric $d$ on the set $X$ that induces the topology of $X$. A <strong> metric space</strong> is a metrizable space, together with a specific metric $d$ that gives the topology of $X$.</p>
+  </li>
+  <li>
+    <p>A collection $\mathcal{A}$ of subsets of a space $X$ is said to <strong> cover </strong> $X$ or to be a <strong> covering </strong> of $X$, if the union of the elements of $\mathcal{A}$ is equal to $X$. It is called an <strong> open covering </strong> of $X$ if its elemets are open subsets of $X$.</p>
+  </li>
+  <li>
+    <p>A space $X$ is said to be <strong> compact </strong> if every open covering of $X$ contains a finite subcollection that covers $X$.</p>
+  </li>
+  <li>
+    <p>A function $f$ from the metric space $(X, d_x)$ to the metric space $(Y, d_y)$ is said to be <strong> uniformly continuous </strong> if given $\epsilon &gt; 0$, there exists $\delta &gt; 0$ such that for every pair of points $x_0, x_1$ of $X$ such that $d_x(x_0, x_1) &lt; \delta$ we have $d_y(f(x_0), f(x_1)) &lt; \epsilon$.</p>
+  </li>
+  <li>
+    <p>If $X$ is a space, a point $x \in X$ is said to be an <strong> isolated point </strong> of $X$ if the one-point set $\{x\}$ is open in $X$.</p>
+  </li>
+  <li>Given a subset $A$ of a topological space $X$, the <strong> interior </strong> of $A$ denoted by <strong>Int $A$</strong> is defined as the union of all open sets contained in $A$. The <strong>closure</strong> of $A$ denoted by <strong> CI $A$ </strong> or $\bar{A}$ is defined as the intersection of all closed sets containing A. We have</li>
+</ul>
+
+\[\mathrm{Int} A \subseteq A \subseteq \bar{A}\]
+
+<ul>
+  <li>
+    <p>A space $X$ is said to be <strong> limit point compact </strong> if every infinite subset of $X$ has a limit point.</p>
+  </li>
+  <li>
+    <p>A space $X$ is said to be <strong> sequentially compact </strong> if every sequence of points of $X$ has a convergent subsequence.</p>
+  </li>
+  <li>
+    <p>A space $X$ is said to be <strong> locally compact at point $x$ </strong> if there is some compact subspace $C$ of $X$ that contains a neighborhood of $x$. If space $X$ is locally compact at each of its points, $X$ is said to be <strong> locally compact.</strong> The real line $\mathbb{R}$ is locally compact while the subspace $\mathbb{Q}$ of rational numbers is not locally compact. Also $\mathbb{R}^n$ is locally compact.</p>
+  </li>
+  <li>
+    <p>A sequence $\{x_n : n = 1, \dots \} \subseteq X$ where $X$ is a metric space with metric $\rho$ is called <strong>Cauchy</strong> if $\forall \epsilon &gt; 0, \exists N$ such that $\forall m,n &gt; N$, we have $\rho(x_m, x_n) &lt; \epsilon$.</p>
+  </li>
+  <li>
+    <p>If $X$ is a metric space in which every Cauchy sequence $\{x_n: n=1,\dots\}$ converges to some element $x \in X$, i.e. $\rho(x_n,x) \to 0$, then $X$ is called <strong>complete</strong>.</p>
+  </li>
+  <li>
+    <p>A complete normed vector space is called a <strong> Banach space</strong>.</p>
+  </li>
+  <li>Let \(\mathbb{F} = \mathbb{R}\) or \(\mathbb{F} = \mathbb{C}\). A <strong>Hilbert space</strong> $H$ is a Banach space with a function $\langle .,. \rangle : H \times H \to \mathbb{F}$ that satisfies the following conditions:
+    <ul>
+      <li>$\forall x,y \in H$, we have $\langle x,y \rangle = \langle y,x \rangle$</li>
+      <li>$\forall x,y,z \in H$, we have $\langle x+y,z \rangle = \langle x, z \rangle + \langle y, z \rangle$</li>
+      <li>$\forall a \in \mathbb{F}, \forall x,y \in H$, we have $\langle ax,y \rangle = a\langle x,Y \rangle$</li>
+      <li>$\forall x \in H$, we have $\lVert x \rVert = \sqrt{\langle x,x \rangle}$</li>
+    </ul>
+  </li>
+  <li>
+    <p>If \(\mathcal{P}(X)\) denotes the power set of a set $X$, then a collection of sets \(\mathcal{R} \subseteq \mathcal{P}(X)\) is called a <strong>ring</strong> if \(\forall A, B \in \mathcal{R}\) we have that \(A \cap B \in \mathcal{R}\), \(A \cup B \in \mathcal{R}\) and \(A \setminus B \in \mathcal{R}\).</p>
+  </li>
+  <li>
+    <p>A ring is a <strong>$\sigma$-ring</strong> if for any sequence \(\{A_n : n=1,\dots\}\) we have that \(\bigcap_{n=1}^{\infty} A_n \in \mathcal{R}\) and \(\bigcup_{n=1}^{\infty} A_n \in \mathcal{R}\).</p>
+  </li>
+  <li>
+    <p>A ring (or $\sigma$-ring) \(\mathcal{A}\) over a set $X$ is called an <strong> algebra </strong> (or <strong>$\sigma$-algebra</strong>) if \(X \in \mathcal{A}\). In this case, \(\emptyset \in \mathcal{A}\) and \(A \in \mathcal{A}\) implies that \(A^c \in \mathcal{A}\).</p>
+  </li>
+  <li>We say that a collection \(\mathcal{S} \subseteq \mathcal{P}(X)\) is a <strong>semiring</strong> if,
+    <ul>
+      <li>$\forall A, B \in \mathcal{S}$, we have $A \cap B \in \mathcal{S}$.</li>
+      <li>$\forall A, B \in \mathcal{S}$, we have \(A \setminus B = \bigcup_{n=1}^{n} A_j\) for some pairwise disjoint sequence \(\{A_1,\dots, A_n\} \subseteq \mathcal{S}\). This condition is equivalent to saying that $\forall A \in \mathcal{S}$, $A^c$ can be written as a finite union of disjoint elements of $\mathcal{S}$, i.e. \(A^c = \bigcup_{j=1}^{n} A_j\).</li>
+    </ul>
+  </li>
+  <li>
+    <p>If \(\mathcal{S} \subseteq \mathcal{P}(X)\) is a semiring and $X \in \mathcal{S}$, then $\mathcal{S}$ is called a <strong>semialgebra</strong>. Notice that if $\mathcal{Q}$ is an algebra, then it is also a semialgebra.</p>
+  </li>
+  <li>
+    <p>For a collection $\mathcal{C} \in \mathcal{P}(X)$, the <strong>  algebra (or $\sigma$-algebra) generated by $\mathcal{C}$</strong> is the smallest algebra (or $\sigma$-algebra) that contains  $\mathcal{C}$. This algebra (or $\sigma$-algebra) always exists.</p>
+  </li>
+  <li>
+    <p>We say that a sequence of sets $\{A_j : j=1,…\}$ is a <strong> decreasing sequence </strong> denoted by \(A_n \downarrow A\), if $A_j \subseteq A_{j-1}$ for each $j \ge 2$. Similarly, it is said to be an <strong> increasing sequence </strong> and denoted by \(A_n \uparrow A\) if $A_j \subseteq A_{j+1}$ for each $j \ge 1$.</p>
+  </li>
+  <li>
+    <p>Let \(\mathcal{G} \subseteq \mathcal{P}(X)\) be a collections of sets. Then \(\mathcal{G}\) is called a <strong> monotone class </strong>if it is closed for every increasing or decreasing sequence of sets. Meaning that If \(A_n \uparrow A\) or \(A_n \downarrow A\) then $A \in \mathcal{G}$. Notice that the intersection of any arbitrary collection of monotone classes is a monotone class. Hence, we can think of the notion that of a monotone class being generated by any collection of sets.</p>
+  </li>
+  <li>
+    <p>We say that a set function $\mu$ is <strong>continuous from above</strong> if it converges for all decreasing sequences i.e. $\mu \left( \bigcap_{j=1}^{\infty}A_j \right) = \lim_{n \to \infty} \mu(A_n)$. We say that $\mu$ is <strong>continuous from below</strong> if it converges for all increasing sequences i.e. $\mu \left( \bigcup_{j=1}^{\infty}A_j \right) = \lim_{n \to \infty} \mu(A_n)$. We say that it is <strong>continuous</strong> if it is both continuous from below and above.</p>
+  </li>
+  <li>
+    <p>The collection \(\mathcal{B}(X)\) of <strong>Borel sets</strong> in $X \subseteq \mathbb{R}$ is the smallest $\sigma$-algebra in $\mathcal{P}(X)$ containing the open sets in $X$. If $X$ is a topological space, then \(\mathcal{B} = \mathcal{B}(X)\) is called the <strong>Borel algebra</strong>.</p>
+  </li>
+  <li>Let \(\mathcal{A} \subseteq \mathcal{P}(X)\) and let $\mu: \mathcal{A} \to \mathbb{R}^{+}\cup {\infty}$ be a set function. Then $\mu$ is <strong> finitely additive</strong> on $\mathcal{A}$ if for each finite sequence ${A_n: n=1,\dots, N} \subseteq \mathcal{A}$ of mutually disjoint sets we have</li>
+</ul>
+
+\[\mu \left( \bigcup_{n=1}^N A_n \right)= \sum_{n=1}^N \mu(A_n)\]
+
+<ul>
+  <li>$\mu$ defined above is <strong>$\sigma$-additive</strong> or <strong>countably additive</strong> on $\mathcal{A}$ if for each sequence ${A_n: n=1,\dots} \subseteq \mathcal{A}$ of mutually disjoint sets we have</li>
+</ul>
+
+\[\mu \left( \bigcup_{n=1}^{\infty} A_n \right)= \sum_{n=1}^{\infty} \mu(A_n)\]
+
+<ul>
+  <li>
+    <p>A nonnegative, $\sigma$-additive set function $\mu: \mathcal{A} \to \mathbb{R}^{+}\cup {\infty}$ is called a <strong>measure</strong>.</p>
+  </li>
+  <li>
+    <p>For any interval $I \subseteq \mathbb{R}$, the <strong>Lebesgue measure</strong> $m(I)$ is the length of $I$. For any set $A \subseteq \mathbb{R}$, the <strong>Lebesgue outer measure</strong> of $A$ is defined as</p>
+  </li>
+</ul>
+
+\[m^{*}(A) = \inf \left\{ \sum_{n=1}^{\infty} m(I_n) : A \subseteq \bigcup_{n=1}^{\infty} I_n ~ and~ \{I_n\} ~ is ~ a ~ countable ~ family ~ of ~ open ~ intervals \right\}\]
+
+<ul>
+  <li>
+    <p><strong>Caratheodory approach: </strong> A set $A \subseteq \mathbb{R}$ is <strong>Lebesgue measurable</strong> if $\forall E \subseteq \mathbb{R}$, we have \(m^{*}(E) = m^{*}(E \cap A)+ m^{*}(E \cup A^c)\) i.e. no matter how you cut it (with any $E$), \(m^{*}\) is nicely additive.</p>
+  </li>
+  <li>
+    <p>If a set $A$ is Lebesgue measurable as defined above, then its <strong>Lebesgue measure</strong> is defined as \(m(A) = m^{*}(A)\).</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A}, \mu)\) be a measure space and let $S(x)$ be a statement about a point $x \in X$. We say that $S(x)$ is valid <strong> almost everywhere</strong> if there is a set \(N \in \mathcal{A}\) for which $\mu(N) = 0$ such that $S(x)$ is true for $\forall x \in X \setminus N$. In this case, we write <strong> $S$ $\mu$-a.e.</strong></p>
+  </li>
+  <li>
+    <p>Let $f, f_n : X \to \mathbb{R}$ be functions on $X \subseteq \mathbb{R}$. The sequence $f_n$ <strong> converges pointwise</strong> to $f$ if $\forall x \in X, \forall \epsilon &gt;0, \exists N &gt; 0$ such that $\forall n \ge N$, we have $\lvert f_n(x) - f(x) \rvert &lt; \epsilon$. We say that $f_n$ <strong> converges uniformly</strong> on $X$ to $f$ if $\forall \epsilon &gt; 0, \exists N &gt; 0$ such that $\forall n \ge N$ and $\forall x \in X$ we have $\lvert f_n(x) - f(x) \rvert &lt; \epsilon$.</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A})\) and \((Y, \mathcal{E})\) be measurable spaces. A function $f: X \to Y$ is <strong>measurable</strong> if \(\forall E \in \mathcal{E}\) we have \(f^{-1}(E) \in \mathcal{A}\).</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A}, \mu)\) be a measure space and let $1 \le p &lt; \infty$. We define <strong>\(\mathcal{L}_{\mu}^p(X)\)</strong> as the set of all $\mu$-measurable functions \(f:X \to \mathbb{C}\) such that</p>
+  </li>
+</ul>
+
+\[\int_{X} |f|^p \mathrm{d}\mu &lt;\infty\]
+
+<ul>
+  <li>We write $f \sim g$ for $f, g \in \mathcal{L}_{\mu}^p(X)$ if $f=g$, $\mu$-a.e. and we note that $\sim$ is an equivalence relation. We define the space <strong>\({L}_{\mu}^p(X)\)</strong> to be the collection of all equivalence classes in \(\mathcal{L}_{\mu}^p(X)\). Moreover, we set</li>
+</ul>
+
+\[{\lVert f \rVert}_p = \left(\int_{X} |g|^p \mathrm{d}\mu \right)^{\frac{1}{p}}\]
+
+<ul>
+  <li>Let \((X, \mathcal{A}, \mu)\) be a measure space and let $f : X \to \mathbb{C}$ be measurable. We define</li>
+</ul>
+
+\[\mathrm{ess sup}_{x \in X} \lvert f(x) \rvert = {\lVert f \rVert}_{\infty} = \inf \{ M : \mu \left( \{ x : \lvert f(x) \rvert &gt; M \}\right) = 0\}\]
+
+<ul>
+  <li>
+    <p>Let \((X, \mathcal{A}, \mu)\) be a measure space and let $f, g : X \to \mathbb{C}$ be measurable functions. We can prove that \(d(f,g) =  \mathrm{ess sup}_{x \in X} \lvert f(x) - g(x) \rvert\) is a distance.</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A}, \mu)\) be a measure space and $f_n, f : X \to \mathbb{R} \cup \{\infty\}$. Then we say that $f_n \to f$ <strong>almost uniformly</strong> if  $\forall \epsilon &gt;0, \exists E \in \mathcal{A}$ such that $\mu(E^c)&lt;\epsilon$ and $f_n \to f$ uniformly on $E$. It can be easily proved that if $f_n \to f$ almost uniformly, then $f_n \to f$ uniformly $\mu$-a.e. <strong>Egorov Theorem</strong>  shows that if $f_n \to f$ uniformly $\mu$-a.e. then $f_n \to f$ almost uniformly. Notice that the condition that $f_n \to f$ uniformly $\mu$-a.e. is stronger than both of these concepts and in that case both $f_n \to f$ almost uniformly and $f_n \to f$ $\mu$-a.e.</p>
+  </li>
+  <li>
+    <p><strong>\(\mathcal{L}_{\mu}^{\infty}(X)\)</strong> is the set of all measurable functions $f : X \to \mathbb{C}$ such that \(\lVert f \rVert_{\infty}&lt; \infty\). Also <strong>\({L}_{\mu}^{\infty}(X)\)</strong>  is the set of equivalence classes defined by the equivalence relation \(\sim\) on <strong>\(\mathcal{L}_{\mu}^{\infty}(X)\)</strong>.</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A}, \mu)\) be a measure space. We say that $\{A_n : n=1,\dots, N\} is a finite collection of <strong>independent sets</strong> if 
+ \(\mu\left(A_{n_1}\cap \dots A_{n_k} \right)= \mu\left(A_{n_1}\right) \dots \mu \left(A_{n_k}\right)\) for all $k \le N$ and $n_1 &lt; \dots &lt; n_k \le N$. An infinite collection of measurable sets is <strong>independent</strong> of each other if each of its finite subcollections is independent.</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A}, \mu)\) be a measure space. We say that \((X, \mathcal{A}, \mu)\) or $X$ is a <strong>finite measure space</strong> and $\mu$ is a <strong> bounded measure</strong> if $\mu(X) &lt; \infty$. We say that $X$ or $\mu$ is <strong>$\sigma$-finite</strong> if \(\exists \{A_n : n=1,\dots\} \subseteq \mathcal{A}\) such that $\forall n, \mu(A_n) &lt; \infty$ and \(\bigcup_{n=1}^{\infty} A_n = X\). Clearly, we can always take \(\{A_n : n=1,\dots\}\) to be a disjoint family.</p>
+  </li>
+  <li>
+    <p>A measure space \((X, \mathcal{A}, \mu)\) is <strong>complete</strong> if \(\forall A \in \mathcal{A}\) for which \(\mu(A)=0\), and \(\forall B \subseteq A\), we have \(B \in \mathcal{A}\) and thus $\mu(B) = 0$. For instance, \((\mathbb{R}, \mathcal{M}(\mathbb{R}), m)\) is complete while \((\mathbb{R}, \mathcal{B}(\mathbb{R}), m)\) is not complete.</p>
+  </li>
+  <li>
+    <p>An <strong>outer measure</strong> is a nonnegative set function \(\mu^{*} : \mathcal{P}(X) \to \mathbb{R}^{*}\) such that</p>
+    <ul>
+      <li>If \(A \subseteq B\), then \(\mu^{*}(A) \le \mu^{*}(B)\).</li>
+      <li>$\mu^{*}(\emptyset)=0$.</li>
+      <li>\(\mu^{*}(\bigcup_{n=1}^{\infty}) \le \sum_{n=1}^{\infty}\mu^{*}(A_n)\).</li>
+    </ul>
+  </li>
+</ul>
+
+<p>      Notice that outer measure does not require $\sigma$-addititivity. It only requires $\sigma$-subadditivity.</p>
+
+<ul>
+  <li>
+    <p>The outer measure $\mu^{*}$ can be constructed from measure $\mu$ as \(\mu^{*}(E) = \inf \left\{\sum_{j=1}^{\infty} \mu(A_j) \right\}\) for $\forall E \in \mathcal{P}(X)$ where the infimum is taken over all the collections \(\{A_j : j=1,\dots\} \subseteq \mathcal{A}\) that cover $E$.</p>
+  </li>
+  <li>
+    <p>For a given measure space \((X, \mathcal{A}, \mu)\), a function $f:X \to \mathbb{R}$ is <strong>simple </strong> if it can be written in the form 
+\(f = \sum_{j=1}^n a_j \mathbb{1}_{A_j}\) where $a_j \in \mathbb{R}$ and $A_j \in \mathcal{A}$.</p>
+  </li>
+  <li>
+    <p>Let $X$ be a locally compact Hausdorff space and let $(X, \mathcal{A}, \mu)$ be a measure space for which $\mathcal{B} \subseteq \mathcal{A}$. Then $\mu$ is a <strong>Borel measure</strong> and \((X, \mathcal{A}, \mu)\) is a <strong>Borel measure space</strong>. The measure $\mu$ is a <strong>regular Borel measure</strong> and \((X, \mathcal{A}, \mu)\) is a <strong> regular Borel measure space</strong> if</p>
+    <ul>
+      <li>$\forall F \subseteq X,$ compact, $\mu(F) &lt; \infty$</li>
+      <li>$\forall A \in \mathcal{A}$, we have \(\mu(A) = \inf \left \{ \mu(U) : A \subseteq U ~and~ U ~ is ~ open ~\right\}\)</li>
+      <li>$\forall U \subseteq X$, open, or $\mu(U) &lt; \infty$, we have \(\mu(U) = \sup \left \{ \mu(F) : F \subseteq U ~and~ F ~ is ~ compact ~\right\}\)</li>
+    </ul>
+  </li>
+</ul>
+
+<p>      Another way to define regular measures is that $\forall A \in \mathcal{A}, \forall \epsilon &gt; 0$, we can find a closed set $F$ and           an open set $G$ such that $F \subseteq A \subseteq G$ such that $\mu (G \setminus F) \le \epsilon$.</p>
+
+<ul>
+  <li>
+    <p>A locally compact Hausdorff space is <strong>$\sigma$-compact</strong> if it is the countable union of compact sets.</p>
+  </li>
+  <li>
+    <p>If \((X, \mathcal{A}, \mu)\) is a measure space, and \(f = \sum_{j=1}^{n}a_j \mathbb{1}_{A_j}\) for $A_j \in \mathcal{A}$ and $a_j \in \mathbb{R}^{+}$, then the <strong>integral</strong> of $f$ is defined as \(\int_X f \mathrm{d}\mu = \sum_{j=1}^n a_j \mu(A_j)\). Since, it can be proved that for every nonngeative function $f \ge 0$, there exists a sequence of simple functions $f_n$ that are increasing and they converge to $f$, one can define the integral of such a function as the limit of the integrals of the simple functions in the sequence. This limit is proved to be exist. This definition can then be extended to all funtions by considering their positive and negative parts and defining their integrals. The function $f$ is said to be <strong>$\mu$-integrable</strong> if $\int_X f \mathrm{d} \mu &lt; \infty$.</p>
+  </li>
+  <li>Let \((X, \mathcal{A}, \mu)\) be a measure space.
+    <ul>
+      <li>
+        <p>A measurable function $f$ on $X$ is <strong>absolutely continuous</strong> with respect to $\mu$, if for $\forall \epsilon &gt; 0, \exists \delta &gt; 0$ such that for $\forall A \in \mathcal{A}$ for which $\mu(A) &lt; \delta$, we have $\int_X \lvert f \rvert \mathrm{d} \mu &lt; \epsilon$.</p>
+      </li>
+      <li>
+        <p>A collection of measurable functions $\{f_{\alpha}\} \subseteq L^1_{\mu}$ is <strong>uniformly absolutely continuous</strong> with respect to $\mu$, if for $\forall \epsilon &gt; 0, \exists \delta &gt; 0$ such that for $\forall A \in \mathcal{A}$ for which $\mu(A) &lt; \delta$ and for $\forall \alpha$, we have $\int_X \lvert f \rvert \mathrm{d} \mu &lt; \epsilon$.</p>
+      </li>
+      <li>
+        <p>A sequence $\{\nu_m: m=1,\dots\}$ of scalar-valued functions on $\mathcal{A}$ is <strong>uniformly absolutely continuous</strong> if for $\forall \epsilon &gt; 0, \exists \delta &gt; 0$ such that for $\forall A \in \mathcal{A}$ for which $\mu(A) &lt; \delta$ and for $\forall m$, we have $\ \lvert \nu_m(A) \rvert &lt; \epsilon$.</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>If $\mathcal{F} \subseteq \mathcal{P}(X)$ and $\nu$ is a scalar-valued function on $\mathcal{F}$, we say that $\nu$ is <strong>Vitali continuous</strong> if, for each decreasing sequence $\{A_n : n=1,…\} \subseteq \mathcal{F}$ for which $\bigcap_{n}A_n = \emptyset$ we can conclude that $\lim_{n \to \infty} \nu(A_n) = 0$.</p>
+  </li>
+  <li>
+    <p>A sequence of Vitali continuous functions $\nu_m$ on $\mathcal{F}$ is <strong>Vitali equicontinuous</strong> if, for each decreasing sequence $\{A_n : n=1,…\} \subseteq \mathcal{F}$ for which $\bigcap_{n}A_n = \emptyset$ we have $\forall \epsilon &gt; 0, \exists N$ such that $\forall n \ge N$ and $\forall m, ~ \lvert \nu_m(A_n) \rvert &lt; \epsilon$.</p>
+  </li>
+  <li>
+    <p>The <strong>product measure</strong> of two measures \((X, \mathcal{A}_1, \mu)\) and \((Y, \mathcal{A}_2, \nu)\) is defined on the space $X \times Y$. It can be proved that its $\sigma$-algebra contains all the sets $A \times B$ where $A \in \mathcal{A}_1$ and $B \in \mathcal{A}_2$. The <strong>product measure</strong> $\omega$ is defined as $\omega(A \times B) = \mu(A) \nu(B)$.</p>
+  </li>
+  <li>A real- or complex-valued function $f$ defined on an interval $[a, b]$ is of <strong>bounded variation</strong> on $[a, b]$, in which case we write $f \in \mathrm{BV}([a, b])$ if</li>
+</ul>
+
+\[V(f, [a, b]) \triangleq \sup \left\{ \sum_{j=1}^n \lvert f(x_j) - f(x_{j-1}) \rvert : a \le x_0 \le ... \le x_n \le b\right\} &lt; \infty\]
+
+<ul>
+  <li>If $f \in \mathrm{BV}([a, b])$ then $V(f, [a, b])$ is called the <strong>total variation</strong> of $f$ on $[a, b]$. The <strong>variation function</strong> of $f$ is defined as</li>
+</ul>
+
+\[V(f)(x) = 
+\begin{cases} f(0) + V(f, [0, x]), \qquad if ~ x \ge 0 \\ f(0) - V(f, [x, 0]), \qquad if ~ x \le 0 \end{cases}\]
+
+<ul>
+  <li>
+    <p>The space of functions of <strong>bounded variation</strong> on $\mathbb{R}$, denoted by $BV(\mathbb{R})$, is defined as the space of all functions $f$ for which $V(f) = V(f, \mathbb{R}) &lt; \infty$. Given $f : \mathbb{R} \to \mathbb{R}$, then $f \in BV(\mathbb{R})$ if and only if $f = f_1 - f_2$ where $f_1, f_2$ are bounded increasing functions on $\mathbb{R}$.</p>
+  </li>
+  <li>
+    <p>A collection $\nu$ (possibly uncountable) of intervals is a <strong>Vitali covering</strong> of $X \subseteq \mathrm{R}$ if $\forall \epsilon &gt;0$ and $\forall x \in X, \exists I \in \nu$ for which $m(I) &lt; \epsilon$, such that $x \in I$.</p>
+  </li>
+  <li>
+    <p>A function $F$ is <strong>singular</strong> if it is continuous and $F^{\prime} = 0$ $m$-a.e.</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A})\) be a measurable space. A function $\mu : \mathcal{A} \to \mathbb{R}^{*}$, respectively, $\mathbb{C}$ is a <strong>signed measure</strong>, respectively, <strong>complex measure</strong> if $\mu(\emptyset) = 0$ and for every disjoint sequence $\{A_n : n = , \dots\} \subseteq \mathcal{A}$ we have</p>
+  </li>
+</ul>
+
+\[\mu \left( \bigcup_{n=1}^{\infty} A_n \right) = \sum_{n=1}^{\infty} \mu(A_n)\]
+
+<ul>
+  <li>Let \((X, \mathcal{A}, \mu)\) be a signed measurable space. A set $A \in \mathcal{A}$ is <strong>nonnegative</strong>, respectively, <strong>nonpositive</strong> if $\forall E \subseteq A$, for which $E \in \mathcal{A}$, we have $\mu(E) \ge 0$, respectively, $\mu(E) \le 0$. For each $A \in \mathcal{A}$, we define the <strong>positive and negative variation</strong> of $\mu$ as</li>
+</ul>
+
+\[\mu^{+}(A) = \sup \left\{ \mu(E) : E \subseteq A, E \in \mathcal{A}\right\}\]
+
+\[\mu^{-}(A) = \sup \left\{ -\mu(E) : E \subseteq A, E \in \mathcal{A}\right\}\]
+
+<p>        we also define the <strong>total variation</strong>, $\lvert \mu \rvert$ as $\lvert \mu \rvert(A) = \mu^+(A)+\mu^{-}(A)$. It can be proved that
+                       \((X, \mathcal{A}, \mu^+)\) and \((X, \mathcal{A}, \mu^-)\) and \((X, \mathcal{A}, \lvert \mu \rvert)\) are measure spaces. If \((X, \mathcal{A})\) be a measurable 
+                   space and $M_b(X)$ denotes the set of complex measure spaces, then $M_b(X)$ is a Banach space
+                 with norm \(\lVert \mu \rVert = \lVert \mu \rVert_1 = \lvert \mu \rvert(X)\).</p>
+
+<ul>
+  <li><strong>Dini derivatives</strong> of a function $f: \mathbb{R} \to \mathbb{R}$ are defined as</li>
+</ul>
+
+\[D^+f(x) = \mathrm{lim sup}_{h \to 0^+} \frac{f(x+h)-f(x)}{h}\]
+
+\[D_+f(x) = \mathrm{lim inf}_{h \to 0^+} \frac{f(x+h)-f(x)}{h}\]
+
+\[D^-f(x) = \mathrm{lim sup}_{h \to 0^-} \frac{f(x+h)-f(x)}{h}\]
+
+\[D_-f(x) = \mathrm{lim inf}_{h \to 0^-} \frac{f(x+h)-f(x)}{h}\]
+
+<ul>
+  <li>
+    <p>We say that a function $f$ is <strong>differentiable</strong> at point $x$ if \(D^+f(x) = D_+f(x) = D^-f(x) = D_-f(x)\). This value will be equal to $f^{\prime}(x)$.</p>
+  </li>
+  <li>
+    <p>A function $F : [a, b] \to \mathbb{R}$ is <strong>absolutely continuous on [a, b]</strong> if $\forall \epsilon &gt; 0, \exists \delta &gt; 0$ such that for any collection of disjoint intervals in $[a, b]$, i.e. $\forall \{ (x_j, y_j) \subseteq [a, b] : j =1, \dots, n\}$ for which $\sum_{j=1}^n (y_j - x_j) &lt; \delta$ we have $\sum_{j=1}^n \lvert F(y_j) - F(x_j) \rvert &lt; \epsilon$.</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A})\) be a measurable space. A complex measure $\mu \in M_b(X)$ is <strong>continuous</strong> denoted by $\mu \in M_c(X)$ if $\forall x \in X$ we have $\mu(\{x\})=0$.</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A})\) be a measurable space. A complex measure $\mu \in M_b(X)$ is <strong>discrete</strong> denoted by $\mu \in M_d(X)$ if $\mu = \sum_{x \in D} a_x \delta_x$ where $D \subseteq X$ is countable, $\sum_{x \in D} \lvert a_x \rvert &lt; \infty$ and $\forall A \in \mathcal{A}$, $\delta_x(A) = 1$ if $x \in A$ and is zero otherwise.</p>
+  </li>
+  <li>
+    <p>We say that $\mu \in M_b(X)$ is <strong>absolutely continuous</strong> with respect to $\nu \in M_b(X)$ denoted by $\mu « \nu$, if $\forall A \in \mathcal{A}$, $\lvert \nu \rvert(A) = 0 \Longrightarrow \mu(A) = 0$. Notationally, we write $M_{ac}(X, \nu) = \{\mu \in M_b(X) : \mu « \nu\}$.</p>
+  </li>
+  <li>
+    <p>We say that $\eta \in M_b(X)$ is <strong>concentrated</strong> on $A \in \mathcal{A}$ if $\forall B \in \mathcal{A}$ we have $\eta(B) = \eta(A \cap B)$. Concentration sets are not unique but they are unique up to sets of measure 0.</p>
+  </li>
+  <li>
+    <p>A complex measure $\mu \in M_b(X)$ is <strong>singular</strong> with respect to $\nu \in M_b(X)$, denoted by $\mu \perp \nu$, if there are disjoint sets $C_{\mu}, C_{\nu} \in \mathcal{A}$ such that $\mu$, respectively, $\nu$ is concentrated on $C_{\mu}$, respectively, $C_{\nu}$. Obviously,   $\mu \perp \nu$ if and only if $\nu \perp \mu$, and we say that $\mu$ and $\nu$ are <strong>mutually singular</strong>. Notationally, we write $M_s(X,\nu) = \{\mu \in M_b(X) : \mu \perp \nu \}$.</p>
+  </li>
+  <li>
+    <p>Another way to define a singular function for a nonnegative measures is as follows. We say that $\nu \perp \mu$ if there exists a set $E \in \mathcal{A}$ such that $\mu(E) = 0$ and $\nu(E^c) = 0$. As an example of singular measures, let $\nu = \sum_{j=1}^{\infty} c_j \delta_{q_j}$ for all $q_j \in \mathbb{Q}$ where $\delta(.)$ represents the delta function and let $\lambda$ be the Lebesgue measure. Since $\lambda(\mathbb{Q}) = 0$ and $\nu(\mathbb{Q}^c) = 0$ we can conclude that $\nu$ and $\lambda$ are singular measures.</p>
+  </li>
+  <li>
+    <p>For any functions $f, g \in L_{\mu}^p(X)$, it can be proved using the Minkowski inequality that the metric $d(f,g) = \lVert f- g \rVert_p$ is a distance. Using this distance, we can define the notion of convergence in $L_{\mu}^p$. A sequence of functions $f_n \in L_{\mu}$ for $n=1,\dots$ is said to <strong>converge to $f$ in $L_{\mu}^p(X)$</strong> and notationally represented as \(f_n \xrightarrow{\mathcal{L}_{\mu}^p} f\) if \(\lim_{n \to \infty} d(f_n, f) = \lim_{n \to \infty} \lVert f_n -f \rVert = 0\). A sequence can converge uniformly or converge in measure but may not converge in $L_{\mu}^p$. It can be proved that the space $L_{\mu}^p$ is complete since for every Cauchy sequence $f_n$ in $L_{\mu}^p$, there exists a function $f$ such that \(f_n \xrightarrow{\mathcal{L}_{\mu}^p} f\).</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A}, \mu)\) be a measure space and let $f, f_n, n=1, \dots$ be a sequence of measurable functions. We say that the sequence $f_n$ <strong>converges to $f$ in measure</strong> and we denote it by $f_n \xrightarrow{\mu} f$ if $\forall \epsilon &gt; 0$ we have \(\lim_{n \to \infty} \mu \left(\{x : \lvert f_n(x) - f(x) \rvert &gt; \epsilon \}\right) = 0\). Notice that convergence in measure does not imply pointwise convergence.</p>
+  </li>
+  <li>
+    <p>A transformation (or operator) $T(f)$ over $\mathcal{L}^p$ is <strong>linear</strong> if $\forall \alpha, \beta$ we have $T(\alpha f_1 + \beta f_2) = \alpha T(f_1) + \beta (f_2)$. We say that $T$ if <strong>bounded</strong> if $\exists c &lt; \infty$ such that  $\lvert T(f) \rvert \le c \lVert f \rVert$ for $\forall f \in \mathcal{L}^p$. The <strong>norm</strong> of $T$ will be the smallest constant $c$ that satisfied the previous bound. In other words,</p>
+  </li>
+</ul>
+
+\[\lVert T \rVert = \sup_{f \neq 0} \frac{\lvert T(f) \rvert}{\lVert f \rVert} = \sup_{f \in \mathcal{L}^p, \lVert f \rVert = 1} \lvert T(f) \rvert\]
+
+<h2 id="theorems">Theorems</h2>
+
+<ul>
+  <li>
+    <p>If $X$ is a Hausdorff space, then a sequence of points $X$ converges to at most one point of $X$.</p>
+  </li>
+  <li>
+    <p>Every closed subspace of a compact space is compact.</p>
+  </li>
+  <li>
+    <p>Every compact subspace of a Hausdorff space is closed.</p>
+  </li>
+  <li>
+    <p>The image of a compact space under a continuous map is compact.</p>
+  </li>
+  <li>
+    <p>Let $f: X \to Y$ be a bijective continuous function. If $X$ is compact and $Y$ is Hausdorff then $f$ is a homeomorphism.</p>
+  </li>
+  <li>
+    <p>Let $X$ be a simply ordered set having the least upper bound property. In the order topology, each closed interval in $X$ is compact. This proves that every closed interval in $\mathbb{R}$ is compact.</p>
+  </li>
+  <li>
+    <p><strong>Extreme Value Theorem:</strong> Let $f :X \to Y$ be continuous, where $Y$ is an ordered set in the order topology. If $X$ is compact, then there exist points $c$ and $d$ in $X$ such that $f(c) \le f(x) \le f(d)$ for every $x \in X$.</p>
+  </li>
+  <li>
+    <p>Let $f:X \to Y$ be a continuous map of the compact metric space $(X, d_x)$ to the metric space $(Y,d_y)$. Then $f$ is uniformly continuous.</p>
+  </li>
+  <li>
+    <p>Let $X$ be a nonempty compact Hausdorff space. If $X$ has no isolated points, then $X$ is uncountable.</p>
+  </li>
+  <li>
+    <p>Compactness implies limit point compactness but not conversely.</p>
+  </li>
+  <li>Let $X$ be a metrizable space. Then the following are equivalent.
+    <ul>
+      <li>$X$ is compact.</li>
+      <li>$X$ is limit point compact.</li>
+      <li>$X$ is sequentially compact.</li>
+    </ul>
+  </li>
+  <li>
+    <p>Every simply ordered set $X$ having the least upper bound property is locally compact.</p>
+  </li>
+  <li>
+    <p>Let $X$ be a Hausdorff space. Then $X$ is locall compact if and only if given $x \in X$ and given a neighborhood $U$ of $x$, there is a neighborhood $V$ of $x$ such that $\bar{V}$ is compact and $\bar{V} \subseteq U$.</p>
+  </li>
+  <li>
+    <p>Let $X$ be a locally compact Hausdorff space and let $A$ be a subspace of $X$. If $A$ is closed in $X$ or open in $X$, then $A$ is locally compact.</p>
+  </li>
+  <li>
+    <p>Metric spaces are Hausdorff.</p>
+  </li>
+  <li>
+    <p><strong> Urysohn Lemma: </strong> Let $X$ be a locally compact Hausdorff space. If $K \subseteq X$ is compact and $U \subseteq X$ is an open set containing $K$, then there is a continuous function $f: X \to [0,1]$ such that $f=1$ on $K$ and $f=0$ on $U^c$.</p>
+  </li>
+  <li>
+    <p>Let $(X, \rho)$ be a metric space. A subset $K \subseteq X$ is compact if and only if every sequence has a convergent subsequence.</p>
+  </li>
+  <li>
+    <p>A normed vector space $X$ is a Banach space if and only if every absolutely convergent series is convergent.</p>
+  </li>
+  <li>
+    <p><strong>Cauchy Criterion: </strong>Let \(\{f_n : n = 1, \dots\}\) be a sequence of real-valued functions on \(X \subseteq \mathbb{R}\). Then \(\{f_n\}\) converges uniformly on $X$ (to some function $f$) if and only if $\forall \epsilon &gt;0, \exists N &gt; 0$ such that $\forall m,n &gt; N$ and $\forall x \in X$ we have \(\lvert f_m(x) - f_n(x) \rvert &lt; \epsilon\).</p>
+  </li>
+  <li>
+    <p>Any intersection of algebras in an algebra. Any intersection of $\sigma$-algebras is a $\sigma$-algebra.</p>
+  </li>
+  <li>
+    <p>Let $\mathcal{S} \in \mathcal{P}(X)$ be a semialgebra and let $\mathcal{Q}(\mathcal{S})$ be the algebra generated by $\mathcal{S}$. If $A \in \mathcal{Q}(\mathcal{S})$, then it can be written as a finite disjoint union of the elements of the semialgebra, i.e. $\exists E_j \in \mathcal{S}$ such that $A = \bigcup_{j=1}^n E_j$.</p>
+  </li>
+  <li>Let $\mathcal{A} \in \mathcal{P}(X)$ be an algebra and assume that $\mu : \mathcal{A} \to \mathbb{R}^{+} \bigcup \{\infty\}$ be additive on $\mathcal{A}$.
+    <ul>
+      <li>If $\mu$ is $\sigma$-additive, then $\mu$ is continuous on $E$,   $\forall E \in \mathcal{A}$.</li>
+      <li>If $\mu$ is continuous from below on all $\forall E \in \mathcal{A}$ then $\mu$ is $\sigma$-additive.</li>
+      <li>If $\mu$ is continuous from above on the empty set $\emptyset$ and $\mu$ is finite, then $\mu$ is $\sigma$-additive.</li>
+    </ul>
+  </li>
+  <li>Let $\mathcal{S} \in \mathcal{P}(X)$ be a semialgebra and assume that $\mu : \mathcal{A} \to \mathbb{R}^{+} \bigcup \{\infty\}$ is additive (respectively, $\sigma$-additive). We can extend this function $\mu$ on the algebra $\mathcal{Q}(\mathcal{S})$ generated by this semialgebra as follows:
+    <ul>
+      <li>\(\exists \nu : \mathcal{Q}(\mathcal{S}) \to \mathbb{R}^{+} \bigcup \{\infty\}\) such that $\nu$ is additive (respectively, $\sigma$-additive).</li>
+      <li>For any $A \in \mathcal{S}$ we have $\mu(A) = \nu(A)$.</li>
+      <li>$\nu$ is unique. Meaning that if we have $\mu_1, \mu_2$ defined on \(\mathcal{Q}(\mathcal{S})\), and if we have $\mu_1(A) = \mu_2(A)$ for $\forall A \in \mathcal{S}$, then $\mu_1(E) = \mu_2(E)$ for $\forall E \in  \mathcal{Q}(\mathcal{S})$.</li>
+    </ul>
+  </li>
+  <li>As we saw above, a set function on a semialgebra can be extended to a set function on an algebra. We can further extend it in a unique way to a measure on the $\sigma$-algebra generated by the algebra. To do so, we define a function \(\pi^{*}: \mathcal{P}(X) \to \mathbb{R}^{*}\) on all subsets of $X$ as follows. For $\forall A \in X$ we define,</li>
+</ul>
+
+\[\pi^{*}(A) \triangleq \inf_{E_j} \left\{ \sum_{j=1}^{\infty} \nu(E_j), ~ for ~  E_j \in \mathcal{Q}(\mathcal{S}) ~ such ~ that ~ A \in \bigcup_{j=1}^{\infty}E_j \right\}\]
+
+<p>      This is a well defined measure and it can be proved that it is an outer measure. Next, we define the 
+         set $\mathcal{M}$ of all measurable subsets of $\mathcal{P}(X)$ as the collection of sets that can correctly divide all the
+          sets. In other words, $A \in \mathcal{M}$ if $\forall E \in X$ we have \(\pi^{*}(A) = \pi^{*}(A \cup E) + \pi^{*}(A \cap E)\). It can be
+              proved that \(\mathcal{M}\) is a $\sigma$-algebra and \(\mathcal{Q}(\mathcal{S}) \in \mathcal{M}\). Hence, \(\mathcal{M}\) contains the $\sigma$-algebra generated by 
+           the algebra \(\mathcal{Q}(\mathcal{S})\). Notice that $\pi^{*}$ is defined for all subsets, but if we consider its restriction over
+           $\mathcal{M}$, it can be proved that it will be $\sigma$-additive, further, it can be proved that for $\forall A \in \mathcal{Q}(\mathcal{S})$ we have
+        \(\pi^{*}(A) = \nu(A)\). This allows us to introduce an extension to the $\sigma$-algebra which can be proved to
+           be unique if $\mu$ is $\sigma$-finite.</p>
+
+<ul>
+  <li>
+    <p>The monotone class generated by an algebra is equal to the $\sigma$-algebra generated by the same algebra.</p>
+  </li>
+  <li>If \(\mathcal{B}(\mathbb{R})\) is the set of all Borel sets in \(\mathbb{R}\) and \(\mathcal{M}(\mathbb{R})\) is the set of all Lebesgue measurable  subsets of \(\mathbb{R}\), we can prove that
+    <ul>
+      <li>\(\mathcal{M}(\mathbb{R})\) is a $\sigma$-algebra.</li>
+      <li>We have \(\mathcal{B}(\mathbb{R}) \subseteq \mathcal{M}(\mathbb{R})\)</li>
+      <li>\(\mathcal{M}(\mathbb{R}) \setminus \mathcal{B}(\mathbb{R}) \neq \emptyset\). Hence there are measurable sets that are not Borel.</li>
+      <li>If \(A \in \mathcal{M}(\mathbb{R})\), then \(\exists B \in \mathcal{B}(\mathbb{R})\) and \(\exists E \in \mathcal{M}(\mathbb{R})\) with $m(E)=0$ such that $A= B \cup E$ and $B \cap E = \emptyset$ and $m(A)=m(B)$. i.e. every Lebesgue measurable set is a Borel set up to a set of measure zero.</li>
+      <li>There exists sets that are not Lebesgue measurable and it is very difficult to approximate these nonmeasurable sets with measurable ones. More formally, let \(E \subseteq \mathbb{R}\) be nonmeasurable. There is $\epsilon &gt; 0$ such that if $E \subseteq A$ and $E^c \subseteq B$ where $A$ and $B$ are measurable, then $m(A \cap B) &gt; \epsilon$.</li>
+    </ul>
+  </li>
+  <li>Let \((X, \mathcal{A}, \mu)\) be a measure space.
+    <ul>
+      <li>If $A,B \in \mathcal{A}, A \subseteq B$, then $\mu(A) \le \mu(B)$.</li>
+      <li>For each sequence $\{A_n : n=1,\dots\} \subseteq \mathcal{A}$ we have \(\mu \left( \bigcup_{n=1}^{\infty} A_n\right) \le \sum_{n=1}^{\infty} \mu(A_n)\).</li>
+      <li>If $\{A_n : n=1,\dots\} \subseteq \mathcal{A}$ statisfies the condition that $\mu(A_1) &lt; \infty$ and $A_n \subseteq A_{n-1}$ for each $n \ge 2$, then \(\mu \left( \bigcap_{n=1}^{\infty} A_n\right) = \lim_{n \to \infty} \mu(A_n)\).</li>
+      <li>If $\{A_n : n=1,\dots\} \subseteq \mathcal{A}$ is a sequence with the property that $A_n \subseteq A_{n+1}$ for each $n \ge 1$, then \(\mu \left( \bigcup_{n=1}^{\infty} A_n\right) = \lim_{n \to \infty} \mu(A_n)\).</li>
+    </ul>
+  </li>
+  <li><strong>First Borel-Cantelli lemma:</strong> Let \((X, \mathcal{A}, \mu)\) be a measure space. If $\{A_n : n=1,\dots\} \subseteq \mathcal{A}$ statisfies the condition that $\sum_{n=1}^{\infty } \mu(A_n) &lt; \infty$, then the collection of all those $x \in X$ that belong to infinitely many sets $A_n$ has measure 0. Formally,</li>
+</ul>
+
+\[\mu \left( \bigcap_{m=1}^{\infty} \bigcup_{n=m}^{\infty} \right) = 0\]
+
+<ul>
+  <li><strong>Second Borel-Cantelli lemma:</strong> Let \((X, \mathcal{A}, \mu)\) be a measure space such that $\mu(X) = 1$. If $\{A_n : n=1,\dots\} \subseteq \mathcal{A}$ is a sequence of independent sets and $\sum_{n=1}^{\infty } \mu(A_n) = \infty$, then</li>
+</ul>
+
+\[\mu \left( \bigcap_{m=1}^{\infty} \bigcup_{n=m}^{\infty} \right) = 1\]
+
+<ul>
+  <li>
+    <p><strong>Kolmogorov zero-one law:</strong>  Let \((X, \mathcal{A}, \mu)\) be a measure space and let $\{A_n : n=1,\dots\} \subseteq \mathcal{A}$ be a sequence of independent sets. Let \(\mathcal{A}_m\) denote the $\sigma$-algebra generated by $\{A_n : n=m,\dots\}$. 	For each $A \in \cap_{m=1}^{\infty}\mathcal{A}_m$, either $\mu(A)=0$ or $\mu(A)=1$.</p>
+  </li>
+  <li><strong>Measure Completeness Theorem</strong> Let \((X, \mathcal{A}, \mu)\) be a measure space. There is a measure space Let \((X, \mathcal{A}_0, \mu_0)\), called the complete measure space corresponding to \((X, \mathcal{A}, \mu)\) such that
+    <ul>
+      <li>\(\mathcal{A} \subseteq \mathcal{A}_0\).</li>
+      <li>$\mu = \mu_0$ on $\mathcal{A}$.</li>
+      <li>\(A \in \mathcal{A}_0 \Longleftrightarrow A = B \cup E\) where $B \in \mathcal{A}$ and $E \subseteq{D}$ for some $D \in \mathcal{A}$ that satisfies $\mu(D) = 0$.</li>
+      <li>If $A \in \mathcal{A}_0, \mu_0(A) = 0$ and $S \subseteq A$, then  $S \subseteq \mathcal{A}_0$ and $\mu_0(S)=0$.</li>
+    </ul>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A}, \mu)\) be a complete measure space. If $f$ is measurable and $f=g$, $\mu$-a.e. then $g$ is measurable. This allows us to define an equivalence class $\sim$ where $f \sim g$ if $f=g$, $\mu$-a.e.</p>
+  </li>
+  <li>
+    <p>If $f \sim g$ then we have \(\mathrm{ess sup}\lvert f \rvert = \mathrm{ess sup}\lvert g \rvert\).</p>
+  </li>
+  <li>
+    <p>Let $f_n, f : X \to \mathbb{R} \cup \{\infty\}$. Then \(f_n \to f\) uniformly $\mu$-a.e. $\Longleftrightarrow d(f_n, f) = \mathrm{ess sup}\lvert f_n - f \rvert \to 0$.</p>
+  </li>
+  <li>
+    <p>If $X$ is a topological space and \((X, \mathcal{A}, \mu)\) is a measure space, assuming that $\mathcal{B}(X) \subseteq \mathcal{A}$, every continuous function $f : X \to \mathbb{R}$ is $\mathcal{B}(X)$ measurable.</p>
+  </li>
+  <li>
+    <p>There exists a perfect symmetric set having positive Lebesgue measure with a subset that is not Lebesgue measurable.</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A}, \mu)\) be a measure space and let $\{f_n : n=1,…\}: X \to \mathbb{R}^*$ be a sequence of measurable functions such that $\lim_{n \to \infty} f_n(x) = f(x)$ exists pointwise for each $x \in X$. Then $f$ is a measurable function.</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A}, \mu)\) be a measure space and let $\{f_n : n=1,…\}: X \to \mathbb{R}^*$ be a sequence of measurable functions each defined $\mu$-a.e. on $X$. If $f$ is defined $\mu$-a.e. on $X$ and $\lim_{n \to \infty} f_n = f$ pointwise $\mu$-a.e. then $f$ is a measurable function.</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A}, \mu)\) be a measure space and let \(\{f_n : n=1,...\}: X \to \mathbb{R}^*\) be a sequence of measurable functions, then \(\inf \{f_n\}, \sup \{f_n\}, \mathrm{liminf} \{f_n\}, \mathrm{limsup} \{f_n\}\) are all measurable functions. Notice that these results are only valid for countable sets and they may not be valid for uncountable sets.</p>
+  </li>
+  <li>Let $f$ be a measurable function on \((X, \mathcal{A}, \mu)\) be a measure space. There is a sequence $\{f_n : n=1,…\}$ of simple functions such that
+    <ul>
+      <li>$\forall j, \forall x \in X$, we have $\lvert f_j(x) \rvert \le \lvert f_{j+1}(x) \rvert$.</li>
+      <li>$\forall x \in X$ we have $\lim_{j \to \infty} f_j(x) = f(x)$.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>        If f is a bounded function on $X$, then the convergence is uniform.</p>
+
+<ul>
+  <li>
+    <p><strong>Vitali-Luzin Theorem</strong> Let \((X, \mathcal{A}, \mu)\) be a measure space, where $X$ is a locally compact Hausdorff space and $\mu$ is regular. Choose $A \in \mathcal{A}$ for which $\mu(A) &lt; \infty$ and take a measurable function $f:X \to \mathbb{R}^*$ that vanishes on $A^c$. For each $\epsilon &gt; 0$ there is a continuous function $g:X \to \mathbb{R}$ that vanishes outside of a compact set such that \(\mu \left( \left\{ x: f(x) \neq g(x) \right\} \right) &lt; \epsilon\).</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A}, \mu)\) be a measure space, where $X$ is a locally compact Hausdorff space and $\mu$ is regular. A function $f:X \to \mathbb{R}^*$ that is finite $\mu$-a.e. is measurable if and only if for every compact set $K \subseteq X$ and $\forall \epsilon &gt; 0, \exists F \subseteq K$, compact, such that $\mu(K \setminus F) &lt; \epsilon$.</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A}, \mu)\) be a measure space, where $X$ is a locally compact Hausdorff space and $\mu$ is regular. A function $f:X \to \mathbb{R}^*$ that is finite $\mu$-a.e. is measurable if and only if there is a sequence of continuous functions $f_n : X \to \mathbb{R}$ such that $f_n \to f$, $\mu$-a.e.</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A}, \mu)\) be a complete finite measure space and let $f:X \to \mathrm{R}$ be a bounded function. The function $f$ is $\mu$-measurable if and only if</p>
+  </li>
+</ul>
+
+\[\inf \left\{ \int_X h \mathrm{d}\mu : f \le h ~and~ h ~is~simple \right\} = \sup \left\{ \int_X g \mathrm{d}\mu : f \ge g ~and~ g ~is~simple \right\}\]
+
+<p>        because of this theorem, we can also define the $\mu$-integral of a $\mu$-measurable bounded function 
+             $f:X \to \mathbb{R}, \mu(X) &lt; \infty$ as</p>
+
+\[\int_X f \mathrm{d}\mu = \inf \left\{ \int_X h \mathrm{d}\mu : f \ge h ~and~ h ~is~simple \right\}\]
+
+<ul>
+  <li>
+    <p>Let \((X, \mathcal{A}, \mu)\) be a measure space and let $f$ be a $\mu$-measurable function that is nonnegative $\mu$-a.e. then $\int_X f \mathrm{d} \mu = 0  \Longleftrightarrow f=0$ $\mu$-a.e.</p>
+  </li>
+  <li>
+    <p>If \((X, \mathcal{A}, \mu)\) is a measure space and $f$ is $\mu$-integrable, then $\lvert f \rvert$ is bounded $\mu$-a.e.</p>
+  </li>
+  <li>
+    <p>If \((X, \mathcal{A}, \mu)\) is a measure space and $f=g$ $\mu$-a.e. then  $\int_X f \mathrm{d} \mu = \int_X g \mathrm{d} \mu$.</p>
+  </li>
+  <li>
+    <p>If \((X, \mathcal{A}, \mu)\) is a measure space and $h: X \to \mathbb{R}^*$ is a measurable function such that the absolute value of $h$ is bounded by a $\mu$-integrable function $f$, i.e. $\lvert h \rvert \le f$, then $h$ is a $\mu$-integrable function.</p>
+  </li>
+  <li>
+    <p>If \((X, \mathcal{A}, \mu)\) is a measure space and $f: X \to \mathbb{R}^*$ is a measurable function and $\exists E \in \mathcal{A}$ such that $\mu(E) &lt; \infty$, $\lvert f \rvert \le c$ on $E$ and $\lvert f \rvert = 0$ on $E^c$, then $f$ is $\mu$-integrable.</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A}, \mu)\) be a finite measure space and let $\{f_n : n=1,\dots\}$ be a sequence of measurable functions $f_n : X \to \mathbb{R}^*$ for which \(\sup_{n \in \mathbb{N}} \lVert f_n \rVert_{\infty} = M &lt; \infty\). If $f_n \to f$ pointwise on $X$ then $f \in L_{\mu}^1(X), \lVert f \rVert_{\infty} \le M$, and \(\lim_{n \to \infty} \lVert f_n - f \rVert_1 = 0\) and in particular \(\lim_{n \to \infty} \int_X f_n \mathrm{d}\mu = \int_X f \mathrm{d}\mu\). This is a special case of Lebesgue dominated convergence theorem.</p>
+  </li>
+  <li>
+    <p><strong>Lebesgue Dominated Convergence (LDC):</strong> Let \((X, \mathcal{A}, \mu)\) be a measure space and let $\{f_n : n=1,\dots\}$ be a sequence of $\mu$-measurable functions each of which is complex valued $\mu$-a.e. Assume that $f_n \to f$ $\mu$-a.e., that $f$ is $\mu$-measurable, and that there is an element $g \in L_{\mu}^1(X)$ such that $\forall n=1,\dots, \lvert f_n \rvert \le g$ $\mu$-a.e. Then $f \in L_{\mu}^1(X)$ and \(\lim_{n \to \infty} \lVert f_n - f \rVert_1 = 0\) and in particular \(\lim_{n \to \infty} \int_X f_n \mathrm{d}\mu = \int_X f \mathrm{d}\mu\).</p>
+  </li>
+  <li>
+    <p><strong>Fatou lemma:</strong> Let \((X, \mathcal{A}, \mu)\) be a measure space and let $\{f_n : n=1,\dots\}$ be a sequence of $\mu$-measurable functions $f_n : X \to \mathbb{R}^*$. Assume that $\{f_n : n =1,\dots\}$ is bounded below by some $g \in L_{\mu}^1(X)$, $f_n \to f$ $\mu$-a.e., and $f$ is $\mu$-measurable, then</p>
+  </li>
+</ul>
+
+\[\int_X f \mathrm{d}\mu \le \underline{\lim_{n \to \infty}} \int_X f_n \mathrm{d}\mu\]
+
+<ul>
+  <li><strong>Fatou lemma:</strong> Let \((X, \mathcal{A})\) be a measurable space and let $\{f_n : n=1,\dots\}$ be a sequence of $\mu$-measurable functions $f_n : X \to \mathbb{R}^*$.
+    <ul>
+      <li>If there exists a non-negative $\mu$-integrable function $g$ such that $f_n \le g$ for all $n$, then</li>
+    </ul>
+
+\[\mathrm{lim~ sup}_{n \to \infty}  \int_X f_n \mathrm{d}\mu \le  \int_X \mathrm{lims ~sup}_{n \to \infty} f_n \mathrm{d}\mu\]
+
+    <ul>
+      <li>If there exists a non-negative $\mu$-integrable function $g$ such that $f_n \ge -g$ for all $n$, then</li>
+    </ul>
+
+\[\mathrm{lim ~inf}_{n \to \infty}  \int_X f_n \mathrm{d}\mu \ge  \int_X \mathrm{lim ~inf}_{n \to \infty} f_n \mathrm{d}\mu\]
+  </li>
+  <li>
+    <p><strong>Levi-Lebesgue theorem (monotone convergence theorem): </strong> Let \((X, \mathcal{A}, \mu)\) be a measure space and let $\{f_n : n=1,\dots\}$ be a sequence of $\mu$-measurable functions $f_n : X \to \mathbb{R}^*$. Assume that $\{f_n : n =1,\dots\}$ is bounded below some $g \in L_{\mu}^1(X)$ and that  $\{f_n : n =1,\dots\}$ converges $\mu$-a.e. to a $\mu$-measurable function $f$. If $\forall n=1,\dots, f_n \le f$ $\mu$-a.e. then \(\lim_{n \to \infty} \int_X f_n \mathrm{d}\mu = \int_X f \mathrm{d}\mu\).</p>
+  </li>
+  <li>
+    <p><strong>A general LDC: </strong> Let \((X, \mathcal{A})\) be a measurable space and let $\{\mu_n : n=1,\dots\}$ be a sequence of measures on $\mathcal{A}$ such that $\forall A \in \mathcal{A}, \lim_{n \to \infty} \mu_n(A) = \mu(A)$, where $\mu$ is a measure on $\mathcal{A}$. Assume that the sequence \(\{g, g_n: n=1,\dots \} \subseteq L^1_{\mu}(X)\) satisfies the condition that $g_n \to g$ pointwise and \(\lim_{n \to \infty} \int_X g_n \mathrm{d}\mu_n = \int_X g \mathrm{d}\mu\). If $\{f_n : n =1,\dots\}$ is a sequence of functions with the properties that $f_n \to f$ pointwise, each $f_n$ is $\mu_n$-measurable, and $\forall n, \lvert f_n \rvert \le g_n$, then $f \in L^1_{\mu}(X)$ and \(\lim_{n \to \infty} \lVert f_n - f \rVert_1 = 0\) and in particular \(\lim_{n \to \infty} \int_X f_n \mathrm{d}\mu_n = \int_X f \mathrm{d}\mu\).</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A}, \mu)\) be a measure space and let $f \in L^1_{\mu}(X)$, then for $\forall \epsilon &gt; 0, \exists \delta &gt; 0$ such that $\forall A \in \mathcal{A}$ for which $\mu(A) &lt; \delta$ we have $\int_X \lvert f \rvert \mathrm{d} \mu &lt; \epsilon$.</p>
+  </li>
+  <li>
+    <p>A function $f:\mathbb{R} \to \mathbb{R}$ is continuous $m$-a.e. if and only if $\forall V \subseteq \mathbb{R}$, open, we have $f^{-1}(V) = U \cup A$ where $U$ is open and $A \in \mathcal{M}(\mathbb{R})$ has Lebesgue measure $m(A)=0$.</p>
+  </li>
+  <li>
+    <p>Let $f: [a, b] \to \mathbb{R}$ be a bounded function. Then it is Riemann integrable if and only if $f$ is continuous $m$-a.e.</p>
+  </li>
+  <li>
+    <p>Let $f : \mathbb{R} \to \mathbb{R}$ be an increasing right continuous function. It can be proved that the set function $\mu_f$ defined by $\mu_f((a, b]) = f(b) - f(a)$ is a measure on the set of half open intervals in $\mathbb{R}$ which is called the <strong>Lebesgue-Stieltjes measure</strong>.</p>
+  </li>
+  <li>
+    <p>The product measure of two finite ($\sigma$-finite) measures is finite ($\sigma$-finite) while the the product meaure of two complete $\sigma$-finite measure spaces is not necessarily complete.</p>
+  </li>
+  <li><strong>Fubini theorem </strong>for integrable functions: Let \((X, \mathcal{A}_1, \mu)\) and \((Y, \mathcal{A}_2, \nu)\) be $\sigma$-finite measure spaces and let $h : X \times Y \to \mathbb{R}^{*}$ be an element of $L^1_{\mu \times \nu}(X \times Y)$.
+    <ul>
+      <li>For $\mu$-a.e. $x \in X, h_x \in L_{\nu}^1(Y)$ and $\int_Y h_x \mathrm{d}\nu \in L_{\mu}^1(X)$.</li>
+      <li>Similarly, for $\nu$-a.e. $y \in Y$, $h^y \in L_{\mu}^1(X)$ and $\int_X h^y \mathrm{d}\mu \in L_{\nu}^1(Y)$.</li>
+      <li>We have,</li>
+    </ul>
+
+\[\int \int_{X \times Y} h(x,y) \mathrm{d}(\mu \times \nu)(x,y) = \int_X \left( \int_Y h(x,y) \mathrm{d}\nu(y) \right) \mathrm{d} \mu(x) = \int_Y \left( \int_X h(x,y) \mathrm{d}\mu(x) \right) \mathrm{d} \nu(y) \label{eq_fubini}\]
+  </li>
+  <li>
+    <p><strong>Tonelli theorem</strong> for nonnegative functions: Let \((X, \mathcal{A}_1, \mu)\) and \((Y, \mathcal{A}_2, \nu)\) be $\sigma$-finite measure spaces and let $h : X \times Y \to \mathbb{R}^{+}$ be a $(\mu \times \nu)$-measurable function. Then $\int_Y h_x \mathrm{d} \nu$ is $\mu$-measurable and $\int_X h^y \mathrm{d}y$ is $\nu$-measurable. Moreover, the equations \eqref{eq_fubini} are valid.</p>
+  </li>
+  <li>
+    <p><strong>Vitali covering lemma:</strong> Let $X \subseteq \mathbb{R}$ with \(m^*(X) &lt; \infty\) and let $\nu$ be a Vitali covering of $X$. Then, there is a disjoint family $\{I_n : n=1,…,N\} \subseteq \nu$ such that $m^*(X \setminus \bigcup_{n=1}^N I_n) = 0$.</p>
+  </li>
+  <li>
+    <p>If $F \in BV([a, b])$ then $V(F, [a, b]) \ge \int_a^b \lvert F^{\prime} \rvert$, Moreover, if $F: [a, b] \to \mathbb{C}$ is absolutely continuous, then $V(F, [a, b]) = \int_a^b \lvert F^{\prime} \rvert$.</p>
+  </li>
+  <li>
+    <p><strong>Hahn decomposition theorem</strong> Let \((X, \mathcal{A}, \mu)\) be a signed measure space. There is a nonnegative set $P \in \mathcal{A}$ such that $N = X \setminus P$ is nonpositive.</p>
+  </li>
+  <li>
+    <p><strong>Jordan decomposition theorem</strong> Let \((X, \mathcal{A}, \mu)\) be a signed measure space. Then $\mu = \mu^+ - \mu^-$. In particular, either $\mu^+$ or $\mu^-$ is bounded.</p>
+  </li>
+  <li>
+    <p>Using Vitali covering lemma we can prove that if we have an increasing function, it will be differentiable a.e.</p>
+  </li>
+  <li>If the function $f:\mathbb{R} \to \mathbb{R}$ is an element of $BV([a, b])$ for each interval $[a, b] \subseteq \mathbb{R}$, then it can be written as the difference of two increasing functions defined as</li>
+</ul>
+
+\[P(x) = \frac{1}{2} \left( V(f)(x) + f(x)\right)\]
+
+\[N(x) = \frac{1}{2} \left( V(f)(x) - f(x)\right)\]
+
+<p>        Since we know that any increasing function is differentiable a.e. then this shows that 
+            any function of bounded variations is differentiable a.e.</p>
+
+<ul>
+  <li><strong>Lebesgue differentiation theorem:</strong> If $f \in BV([a, b])$, then
+    <ul>
+      <li>$f^{\prime}$ exists $m$-a.e.</li>
+      <li>$f^{\prime} \in L_m^1([a, b])$</li>
+      <li>If $f$ is increasing then \(\int_a^bf^{\prime} \le f(b) - f(a)\). And there exists examples where this inequality is strict.</li>
+    </ul>
+  </li>
+  <li>If $f \in L_m^1([a, b])$ and we define $F(x) = \int_a^x f$ for $\forall x \in [a, b]$, then
+    <ul>
+      <li>$F$ is a continuous function of bounded variation.</li>
+      <li>If $F$ is identially 0, then $f=0$ $m$-a.e.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Fundamental Theorem of Calculus I: </strong> Let $f \in L_m^1([a, b])$ and take $r \in \mathbb{R}$. Define the function $F:[a,b] \to \mathbb{R}$ as $F(x) = r + \int_a^x f$ (so that $F(a)=r$), then $F^{\prime} = f$ $m$-a.e.</p>
+  </li>
+  <li>
+    <p>Let $f \in L_m^1([a, b])$ and set $F(x) = r + \int_a^x f$ for $x \in [a, b]$. Then $r = F(a)$ and $F$ is absolutely continuous on $[a, b]$.</p>
+  </li>
+  <li>
+    <p>If $G:[a, b] \to \mathbb{R}$ is absolutely continuous on $[a, b]$, then $G$ is a continuous function of bounded variation and in particular $G^{\prime}$ exists $m$-a.e. and is an element of $L_m^1([a, b])$.</p>
+  </li>
+  <li>
+    <p>Let $F$ be absolutely continuous on $[a, b]$ and assume that $F^{\prime} = 0$ $m$-a.e. then $F$ is a constant.</p>
+  </li>
+  <li>
+    <p><strong>Fundamental Theorem of Calculus II: </strong> A function $F : [a, b] \to \mathbb{R}$ is absolutely continuous on $[a, b]$ if and only if there is an element $f \in L_m^1([a, b])$ such that $\forall x \in [a, b]$ we have $F(x) - F(a) = \int_a^x f$.</p>
+  </li>
+  <li>
+    <p>Let $F:[a, b] \to \mathbb{R}$ be an everywhere differentiable function. If $F^{\prime} \in L_m^1([a, b])$ then $F$ is absolutely continuous on $[a, b]$.</p>
+  </li>
+  <li><strong>Banach-Zaretsky theorem:</strong> Let $F \in BV([a, b])$ be a continuous function. Then $F$ is absolutely continuous on $[a,b]$ if and only if</li>
+</ul>
+
+\[m(A) = 0 \Longrightarrow m(F(A)) = 0\]
+
+<ul>
+  <li>
+    <p>Let $F : [a, b] \to \mathbb{R}$ be a function and assume that $F^{\prime}$ exists on $A \subseteq [a, b]$. Then $F^{\prime} = 0$ $m$-a.e. on $A$ if and only if $m(F(A))=0$.</p>
+  </li>
+  <li>
+    <p>If a function is discrete, then it is singular. If a function is absolutely continuous then it is continuous.</p>
+  </li>
+  <li>
+    <p><strong>Continuous and discrete decomposition: </strong> Let $\mu \in M_b(X)$. There is a unique decomposition $\mu = \mu_c + \mu_d$ where $\mu_c \in M_c(X)$ and $\mu_d \in M_d(X)$.</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A}, \nu)\) be a measure space and let $\mu \in M_b(X)$. If $\mu ~« ~\nu$ and $\mu \perp \nu$ then $\mu=0$.</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A})\) be a measurable space and let \(SM(X)\) denotes the set of all signed measures on $X$. If $\mu \in SM(X)$, then $\mu^+ \perp \mu^-$, and if $P, N$ is the Hahn decomposition for $\mu$ then we can take $C_{\mu^+} = P$ and $C_{\mu}^- = N$.</p>
+  </li>
+  <li>
+    <p><strong>Lebesgue decomposition theorem: </strong> Let \((X, \mathcal{A}, \nu)\) be a measure space, and assume that $\mu$ satisfies one of the following conditions:</p>
+    <ol>
+      <li>\((X, \mathcal{A}, \mu)\)  is a $\sigma$-finite measure space,</li>
+      <li>$\mu \in M_b(X)$.</li>
+    </ol>
+  </li>
+</ul>
+
+<p>         Then there is a unique pair, $\mu_1$ and $\mu_2$, of $\sigma$-finite measures in the case of condition (1) or elements          in $M_b(X)$ in case of condition (2) such that $\mu = \mu_1 + \mu_2$, $\mu_1 \perp \nu$ and $\mu_2 ~«~ \nu$.</p>
+
+<ul>
+  <li>
+    <p>A measure $\mu$ is Lebesgue measurable and is absolutely continuous with respect to the lebesgue measure if and only if the function $F_{\mu}(x) = \mu((-\infty, x))$ is absolutely continuous. This theorem shows how the the absolutely continuous functions and measures are related to each other.</p>
+  </li>
+  <li>
+    <p>If $F \in BV([a, b])$, then it can be proved that $F = F_a + F_s$ where $F_a$ is absolutely continuous and $F_s$ is singular.</p>
+  </li>
+  <li>
+    <p>A measure $\mu$ is monotonic and singular with respect to the Lebesgue measure if and only if $F_{\mu}(x) = \mu((-\infty, x))$ is singular. This theorem shows how the the singular functions and measures are related to each other.</p>
+  </li>
+  <li>
+    <p><strong>Radon-Nikodym theorem for bounded measures: </strong> Let $\mu$ and $\nu$ be bounded measures on a measurable space \((X, \mathcal{A})\). Assume that $\mu ~«~ \nu$. There is a unique element $f \in L_{\nu}^1(X)$ such that $\forall A \in \mathcal{A}$ we have $\mu(A) = \int_A f \mathrm{d}\nu$.</p>
+  </li>
+  <li>
+    <p><strong>Radon-Nikodym theorem: </strong> Let \((X, \mathcal{A})\) be a measurable space, let $\mu \in M_b(X)$, and assume that $(X, \mathcal{A} , \mu)$ is $\sigma$-finite measure space. If $\mu ~«~ \nu$, then there is a unique element $f \in L_{\nu}^1(X)$ such that $\forall A \in \mathcal{A}$ we have $\mu(A) = \int_A f \mathrm{d}\nu$.</p>
+  </li>
+  <li>
+    <p><strong>Radon-Nikodym theorem: </strong> Let \((X, \mathcal{A}, \mu)\) be a $\sigma$-finite measure space and let $\nu$ be a $\sigma$-finite signed measure that can take the values in the range $(-\infty, +\infty]$. There exists unique measures $\nu_1$ and $\nu_2$ such that $\nu = \nu_1 + \nu_2$,  $\nu_1 ~«~ \mu$ and $\nu_2 \perp \mu$ and there exists a measurable function $f$ with respect to $\mathcal{A}$ such that $\forall A \in \mathcal{A}$ we have $\nu_1(A) = \int_A f \mathrm{d}\mu$. Function $f$ is called the <strong>Radon-Nikodym derivative of $\mu$ with respect to $\nu$</strong>.</p>
+  </li>
+  <li>
+    <p><strong>Radon-Nikodym theorem as a bijection on $L_{\nu}^1(X)$: </strong> Let \((X, \mathcal{A}, \mu)\) be a $\sigma$-finite measure space. There is a natural bijective mapping $L_{\nu}^1(X) \to M_{ac}(X, \nu)$, $f \to \mu_f$, where for $\forall A \in \mathcal{A}$, $\mu_f(A) = \int_A f \mathrm{d} \nu$.</p>
+  </li>
+  <li>
+    <p>Radon-Nikodym theorem (R-N) is a natural generalization of Fundamental Theorem of Calculus (FTC) in the sense that FTC characterizes absolutely continuous functions $g$ as those for which we have $g(x) - g(a) = \int_a^x g^{\prime}$ and R-N characterizes absolutely continuous measures $\mu ~«~ \nu$ as those for which we have $\mu(A) = \int_A f \mathrm{d} \nu$.</p>
+  </li>
+  <li><strong> The decomposition $\mu = \mu_a + \mu_s + \mu_d$: </strong> Let \((X, \mathcal{A})\) be a measurable space.
+    <ul>
+      <li>If $\mu, \nu \in M_b(X)$ and $\mu \perp \nu$, then $\lvert \mu + \nu \rvert = \lvert \mu \rvert + \lvert \nu \rvert$.</li>
+      <li>If $\mu \in M_b(X)$ and $\nu$ is a measure on $X$, then $\mu = \mu_a + \mu_s + \mu_d$ where $\mu_d \in M_d(X), \mu_a ~«~ \nu, \mu_s \perp \nu$ and $\mu_a, \mu_s \in M_c(X)$. Also, $(\mu_a + \mu_s) \perp \mu_d$ and $ \lvert \mu \rvert= \lvert \mu_a \rvert+  \lvert \mu_s \rvert +  \lvert \mu_d \rvert$.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Equivalence of decomposition of measures and elements of $BV(\mathbb{R})$: </strong> Let $(\mathbb{R}, \mathcal{B}(\mathbb{R}), \mu)$ be a regular measure space. Then $\mu$ has the unique decomposition $\mu = \mu_a + \mu_s + \mu_d$ into regular Borel measures, where $\mu_d$ is discrete, $\mu_a ~«~ m, \mu_s \perp m$ and $\mu_s$ is continuous. Further, there are unique increasing functions $f, f_a, f_s, f_d$ corresponding to $\mu, \mu_a, \mu_s, \mu_d$ such that $f = f_a + f_s + f_d$, where $f_a$ is absolutely continuous on every compact interval, $f_s$ is continuous and $f^{\prime}_s = 0$ $m$-a.e., $f^{\prime}_d=0$ $m$-a.e., and $f_d$ has at most countably many discontinuities $x_n, n=1,\dots$ each of the form $f_d(x_n^{+}) - f_d(x_n^{-})$. Finally, $\forall B \in \mathcal{B}(\mathbb{R})$, $\mu_a(B) = \int_B f_a$, and $\forall y \ge x$, $f_a(y) - f_a(x) = \int_x^y f^{\prime}$.</p>
+  </li>
+  <li>Let \((X, \mathcal{A}, \mu)\) be a measure space and take $1 \le p \le \infty$ and let $\frac{1}{p}+\frac{1}{q} = 1$,
+    <ul>
+      <li>$L^p_{\mu}(X)$ is a Banach space with norm $\lVert f \rVert_p$.</li>
+      <li><strong>Holder inequality: </strong> If $f \in L_{\mu}^p(X)$ and $g \in L_{\mu}^q(X)$, then $fg \in L_{\mu}^1(X)$ then \(\int_X \lvert fg \rvert \mathrm{d}\mu \le \lVert f \rVert_p \lVert g \rVert_q\).</li>
+      <li><strong>Minkowski inequality: </strong> $\forall f, g \in L_{\mu}^p(X)$ we have  \(\lVert f+g \rVert_{p} \le  \lVert f \rVert_p +  \lVert g \rVert_p\).</li>
+    </ul>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A}, \mu)\) be a measure space and let $f, g, f_n, n=1, \dots$ be a sequence of measurable functions. If $f_n \xrightarrow{\mu} f$ and $f_n \xrightarrow{\mu} g$ then $f=g$ $\mu$-a.e.</p>
+  </li>
+  <li>
+    <p>Notice that convergence in measure is a property of class. This means that if $f_n \xrightarrow{\mu} f$  and $f_n \sim g_n$ and $f \sim g$ then $g_n \xrightarrow{\mu} g$.</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A}, \mu)\) be a measure space and let $\{ f_n, n=1, \dots \}$ be a sequence of measurable functions that converge to a function $f$ in measure i.e. $f_n \xrightarrow{\mu} f$,  then we can find a subsequence $\{ f_{n_k} \dots \} \subseteq \{ f_n, n=1, \dots \} $ which converges to $f$ $\mu$-a.e. in other words, $f_{n_k} \xrightarrow{\mu-a.e.} f$.</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A}, \mu)\) be a finite measure space and let $\{ f_n, n=1, \dots \}$ be a sequence of measurable functions that converge to a function $f$ $\mu$-a.e. then it will converges to $f$ in measure. In other words, $f_{n_k} \xrightarrow{\mu} f$.</p>
+  </li>
+  <li>
+    <p>Let $(X, \mathcal{A})$ be a measurable space and let \(\{\nu_n : n=1,\dots\}\) be a family of measures which are Vitali equicontinuous at the empty set and which are absolutely continuous with respect to some measure $\mu$, then this family is uniformly absolutely continuous.</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A}, \mu)\) be a measure space and let $\{ f_n, n=1, \dots \}$ be a sequence of measurable functions that belong to $L_{\mu}^p(X)$. For $\forall A \in \mathcal{A}$ we define $\nu_n(A) = \int_A \lvert f_n \rvert^p \mathrm{d} \mu$ and we assume that this family of measures is Vitali equicontinuous at the empty set and assume that $f_n$ converges to $f$ in measure, i.e. $f_n \xrightarrow{\mu} f$, then  $f_{n} \xrightarrow{\mathcal{L}_{\mu}^p} f$.</p>
+  </li>
+  <li>
+    <p>Let \((X, \mathcal{A}, \mu)\) be a measure space and let $\{ f_n, n=1, \dots \}$ be a sequence of measurable functions that belong to $L_{\mu}^p(X)$. If $\exists h \in L_1$ such that $\lvert f_n \rvert^P \le h$ then the family $\nu_n(A) = \int_A \lvert f_n \rvert^p \mathrm{d} \mu$ will be Vitali equicontinuous at the empty set.</p>
+  </li>
+  <li>
+    <p>Let $p$ and $q$ be a conjugate pair such that $1 \le p &lt; \infty$, $\frac{1}{p} + \frac{1}{q} = 1$ and let $f \in \mathcal{L}^p$ and $g \in \mathcal{L}^q$. Using Holder inquality we can then prove that $fg \in \mathcal{L}^1$. If $T_g ~:~ \mathcal{L}^p \to \mathbb{R}$ is a linear operator that assigns $\int ~ fg ~\mathrm{d}\mu$ to function $f \in \mathcal{L}^p$, then $T_g$ is a bounded linear operator and \(\lVert T_g \rVert = \lVert g \rVert_q\).</p>
+  </li>
+  <li><strong>Dual space of $\mathcal{L}^p$: </strong> Let $p$ and $q$ be a conjugate pair such that $1 \le p &lt; \infty$, $\frac{1}{p} + \frac{1}{q} = 1$ and let $T ~:~ \mathcal{L}^p \to \mathbb{R}$ be a bounded linear operator in $\mathbb{R}$. Then there exists a function $g \in \mathcal{L}^q$ such that $\forall f \in \mathcal{L}^p$ we have $T(f) = \int f g ~ \mathrm{d}\mu$.</li>
+</ul>
+:ET

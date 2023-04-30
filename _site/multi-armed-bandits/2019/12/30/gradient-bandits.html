@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Gradient Bandits</title>
+  <meta name="description" content="In this post, I will explain the fundamentals of gradient bandits. First, I will explain the Log-likelihood trick (or REINFORCE trick, Williams 1992). Assume...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/multi-armed-bandits/2019/12/30/gradient-bandits.html">
+  <link rel="alternate" type="application/rss+xml" title="Topics in Machine Learning." href="http://localhost:4000/feed.xml">
+
+  <!-- <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+          extensions: ["tex2jax.js"],
+          jax: ["input/TeX", "output/HTML-CSS"],
+          tex2jax: {
+              inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+              displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+              processEscapes: true
+          },
+      "HTML-CSS": { availableFonts: ["TeX"] }
+        });
+  </script> -->
+  <script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Topics in Machine Learning.</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Gradient Bandits</h1>
+    <p class="post-meta"><time datetime="2019-12-30T19:13:11-08:00" itemprop="datePublished">Dec 30, 2019</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>In this post, I will explain the fundamentals of gradient bandits. First, I will explain the <code class="highlighter-rouge">Log-likelihood trick</code> (or <code class="highlighter-rouge">REINFORCE</code> trick, Williams 1992). Assume that $\theta$ is the parameter
+vector and $R_t$ is the <code class="highlighter-rouge">reward</code> at time t which is a function of $\theta$. Also, let $A_t$ be the <code class="highlighter-rouge">action</code> at time t, $\pi_{\theta}(a)$ be the <code class="highlighter-rouge">policy</code> which is parametrized on $\theta$ and we want to find it directly through gradient updates. Letting</p>
+
+\[q(a) \triangleq \mathbb{E}[R_t | A_t = a].\]
+
+<p>and running gradient ascent on parameters $\theta$ to maximize the expected reward, we have</p>
+
+\[\theta \leftarrow \theta + \alpha \nabla_{\theta} \mathbb{E}[R_t | \theta].\]
+
+<p>However, this is not quite possible since we need to first take the average and then take the gradient. We cannot simply do the sampling. Hence, we can write the second term as</p>
+
+\[\begin{align}
+\nabla_{\theta} \mathbb{E}[R_t | \theta] &amp;= \nabla_{\theta} \sum_{a} \pi_{\theta}(a) \mathbb{E}[R_t | A_t = a] \nonumber \\
+&amp;= \sum_{a} q(a) \nabla_{\theta} \pi_{\theta}(a) \nonumber \\
+&amp;=  \sum_{a} q(a) \frac{\pi_{\theta}(a)}{\pi_{\theta}(a)} \nabla_{\theta} \pi_{\theta}(a) \nonumber \\
+&amp;= \sum_{a}\pi_{\theta}(a) q(a) \frac{\nabla_{\theta}\pi_{\theta}(a)}{\pi_{\theta}(a)}  \nonumber \\
+&amp;= \mathbb{E} \left[ R_t \frac{\nabla_{\theta} \pi_{\theta}(A_t)}{\pi_{\theta}(A_t)} \right] \nonumber \\
+&amp;= \mathbb{E} \left[ R_t \nabla_{\theta} \log \pi_{\theta}(A_t) \right].
+\end{align}\]
+
+<p>This allows us to easily perform stochastic gradient descent since now we are sampling from the values of the gradient. In this case, the stochastic gradient update formula looks like</p>
+
+\[\theta \leftarrow \theta + \alpha R_t \nabla_{\theta} \log \pi_{\theta}(A_t).\]
+
+<p>The policy can be a very complex function and it can be a deep network as we know how to compute gradients on deep networks. This is what makes this approach unique. We only need to sample the 
+reward and its corresponding action for each iteration of the gradient ascent algorithm.</p>
+
+<p>In the following, we will use this trick to derive the gradient update equation for the case of softmax policy preferences (derivation from <a href="https://www.amazon.com/Reinforcement-Learning-Introduction-Adaptive-Computation/dp/0262039249">Richard Sutton</a>). If $H_t(a)$ shows the action <code class="highlighter-rouge">preference</code> in a softmax setting we have,</p>
+
+\[\pi(a) = \frac{\exp(H_t(a))}{\sum_{b} \exp(H_t(b))}.
+\label{eq_def_pi}\]
+
+<p>Gradient ascent updates the preference as</p>
+
+\[H_{t+1}(a) \leftarrow H_t(a) + \alpha \frac{\partial \mathbb{E}[R_t]}{\partial H_t(a)}\]
+
+<p>where the expected reward is computed as</p>
+
+\[\mathbb{E}[R_t] = \sum_{x} \pi_t(x) q_{\star}(x)\]
+
+<p>hence,</p>
+
+\[\frac{\partial \mathbb{E}[R_t]}{\partial H_t(a)} = \frac{\partial}{\partial H_t(a)} \left[ \sum_x \pi_t(x) q_{\star}(x) \right] = \sum_x q_{\star}(x) \frac{\partial \pi_t(x)}{\partial H_t(a)} = \sum_x (q_{\star}(x) - B_t) \frac{\partial \pi_t(x)}{\partial H_t(a)}\]
+
+<p>Where $B_t$ called the <code class="highlighter-rouge">baseline</code>, can be any scalar that does not depend on $x$. The baseline can be included without changing the equality because the gradient sums
+to zero over all the actions, $\sum_x \frac{\partial \pi_t(x)}{\partial H_t(a)} = 0$. As $H_t(a)$ is changed, some actions 
+probabilities go up and some go down, but the sum of the changes must be zero because the sum of the probabilities is always one. If we multiply each term of the sum by $\frac{\pi_t(x)}{\pi_t(x)}$, we have</p>
+
+\[\frac{\partial \mathbb{E}[R_t]}{\partial H_t(a)} = \sum_x \pi_t(x) (q_{\star}(x) - B_t) \frac{\partial \pi_t(x)}{\partial H_t(a)} \frac{1}{\pi_t(x)}\]
+
+<p>The equation is now in the form of an expectation, summing over all possible values $x$ of the random variable $A_t$, then multiplying by the probability of taking those values, we have</p>
+
+\[\frac{\partial \mathbb{E}[R_t]}{\partial H_t(a)} = \mathbb{E} \left[ \left(q_{\star}(A_t) - B_t \right) \frac{\partial \pi_t(A_t)}{\partial H_t(a)} \frac{1}{\pi_t(A_t)} \right]\]
+
+<p>Noting that 
+$q_{\star}(A_t) = \mathbb{E}[R_t | A_t]$ 
+and choosing 
+$B_t = \bar{R}_t$ 
+where 
+$\bar{R}_t$
+is the average of all the rewards up through and including time $t$, we have</p>
+
+\[\frac{\partial \mathbb{E}[R_t]}{\partial H_t(a)} = \mathbb{E} \left[ \left(R_t - \bar{R}_t \right) \frac{\partial \pi_t(A_t)}{\partial H_t(a)} \frac{1}{\pi_t(A_t)} \right]\]
+
+<p>Using equation \eqref{eq_def_pi} we can prove that</p>
+
+\[\frac{\partial \pi_t(A_t)}{\partial H_t(a)} = \pi_t(A_t) \left( \mathbb{1}_{a==A_t}- \pi_t(a)\right)\]
+
+<p>Hence,</p>
+
+\[\frac{\partial \mathbb{E}[R_t]}{\partial H_t(a)} = \mathbb{E} \left[ \left(R_t - \bar{R}_t \right) \left( \mathbb{1}_{a==A_t}- \pi_t(a)\right) \right]\]
+
+<p>Now that we wrote this in the form of a nice expectation, we can sample in each step and therefore, we can write the update equation for stochastic gradient ascent algorithm as</p>
+
+\[H_{t+1}(a) \leftarrow H_t(a) + \alpha \left( R_t - \bar{R}_t \right)\left( \mathbb{1}_{a==A_t}- \pi_t(a)\right) \qquad \forall a\]
+
+<p>This equation can be written as</p>
+
+\[\begin{align}
+H_{t+1}(A_t) &amp;\leftarrow H_t(A_t) + \alpha (R_t - \bar{R}_t) \left( 1 - \pi_t(A_t) \right) \nonumber \\
+H_{t+1}(a) &amp;\leftarrow H_t(a) - \alpha (R_t - \bar{R}_t) \pi_t(a) \qquad \textrm{if} ~ a \neq A_t
+\end{align}\]
+
+<p>This means that we select a certain action and we update all the preferences. The algorithm updates all action preferences in each step. The $\bar{R}_t$ term serves as a baseline with which the reward is compared. If the reward is higher than the baseline, then the probability of taking $A_t$ in the future is increased, and if the reward is below baseline, then probability is decreased. The non-selected actions move in the opposite direction. The baseline helps reduce the varaince.</p>
+
+<p>Here is a simple Python implementation of this algorithm (inspired by <a href="https://gist.github.com/khanrc/fe36cd1e7e60f61c90b5a6d484fadb7a">this post</a>).</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">get_rewards</span><span class="p">():</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">])</span> 
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">mean</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">softmax</span><span class="p">(</span><span class="n">H</span><span class="p">):</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">H</span> <span class="o">-</span> <span class="n">np</span><span class="p">.</span><span class="nb">max</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+    <span class="n">exp</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">exp</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">exp</span> <span class="o">/</span> <span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">gradient_bandit</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  
+    <span class="n">r_hist</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.1</span>  
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+        <span class="n">policy</span> <span class="o">=</span> <span class="n">softmax</span><span class="p">(</span><span class="n">H</span><span class="p">)</span> <span class="c1"># policy pi
+</span>        <span class="c1"># sampling (choice) action by policy
+</span>        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">policy</span><span class="p">)</span> 
+        <span class="n">rewards</span> <span class="o">=</span> <span class="n">get_rewards</span><span class="p">()</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">rewards</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="c1"># R_t (reward for chosen action)
+</span>        <span class="n">r_hist</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+        <span class="n">avg_r</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">average</span><span class="p">(</span><span class="n">r_hist</span><span class="p">)</span>
+        <span class="c1"># update a == A_t (chosen action)
+</span>        <span class="n">H</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">+</span> <span class="n">alpha</span><span class="o">*</span><span class="p">(</span><span class="n">r</span><span class="o">-</span><span class="n">avg_r</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">policy</span><span class="p">[</span><span class="n">a</span><span class="p">])</span>
+        <span class="c1"># update a != A_t (non-chosen action)
+</span>        <span class="n">H</span><span class="p">[:</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">H</span><span class="p">[:</span><span class="n">a</span><span class="p">]</span> <span class="o">-</span> <span class="n">alpha</span><span class="o">*</span><span class="p">(</span><span class="n">r</span><span class="o">-</span><span class="n">avg_r</span><span class="p">)</span><span class="o">*</span><span class="n">policy</span><span class="p">[:</span><span class="n">a</span><span class="p">]</span>
+        <span class="n">H</span><span class="p">[</span><span class="n">a</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="n">a</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">alpha</span><span class="o">*</span><span class="p">(</span><span class="n">r</span><span class="o">-</span><span class="n">avg_r</span><span class="p">)</span><span class="o">*</span><span class="n">policy</span><span class="p">[</span><span class="n">a</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+    
+    <span class="k">return</span> <span class="n">softmax</span><span class="p">(</span><span class="n">H</span><span class="p">),</span> <span class="n">r_hist</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">opt_policy</span><span class="p">,</span> <span class="n">r_hist</span> <span class="o">=</span> <span class="n">gradient_bandit</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">opt_policy</span><span class="p">,</span> <span class="s">'o'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="gradient-bandit.png" alt="Gradient Bandit" /></p>
+
+<p>A summary of this code is available in <a href="https://github.com/kiskani/kiskani.github.io/blob/master/multi-armed-bandits/2019/12/30/Gradient-Bandit.ipynb">this notebook.</a></p>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Topics in Machine Learning.</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Topics in Machine Learning.</li>
+          <li><a href="mailto:mohsen.kiskani@gmail.com">mohsen.kiskani@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/kiskani"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">kiskani</span></a>
+
+          </li>
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>This page is dedicated to some interesting ideas in statistics and machine learning. I will try to scratch the surface about some interesting ideas. Mainly for my own benefit and access but maybe helpful for others too.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

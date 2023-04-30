@@ -16,7 +16,7 @@ $$
 \textrm{IV} = \sum_{i=1}^{N} \frac{\textrm{FCF}_i}{(1+r)^i} + \frac{\textrm{TV}}{(1+r)^N}
 $$
 
-Now, the interesting question is how to estimate the terminal value. A sound approach to estimate this value is to use the *stable growth model*. In this model, we assume that when the comany enters its **mature** phase of operations, its cash flow grows at a constant rate of $g$. 
+Now, the interesting question is how to estimate the terminal value. A sound approach to estimate this value is to use the *stable growth model*. In this model, we assume that when the comany enters its **mature** phase of operations, its cash flow grows at a constant rate of $g$. Imagine that the current Free Cash Flow 
 
 
 
