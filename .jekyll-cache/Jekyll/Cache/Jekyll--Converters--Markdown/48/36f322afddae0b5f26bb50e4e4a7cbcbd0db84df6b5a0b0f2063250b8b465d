@@ -1,0 +1,30 @@
+I"f<p>In this post, I will explain some methods of valuating stock prices. If we show the Free Cash Flow of this company at year $n$ from now by $\textrm{FCF}_n$ and if the discount rate is $r$, then the <strong>Intrinsic Value (IV)</strong> of the company will be equal to</p>
+
+\[\textrm{IV} = \sum_{i=1}^{\infty} \frac{\textrm{FCF}_i}{(1+r)^i}\]
+
+<p>However, it is not possible to estimate	cash flows forever so we need to estimate cash flows for a <strong>growth	period</strong> and then estimate a <strong>Terminal Value (TV)</strong>, to capture the value at the end of the period. Assume that the company enters the <strong>maturity period</strong> at the end of year $N$, then the intrinsic value of the company can be estimated as</p>
+
+\[\textrm{IV} = \sum_{i=1}^{N} \frac{\textrm{FCF}_i}{(1+r)^i} + \frac{\textrm{TV}}{(1+r)^{N}}\]
+
+<p>One way to estimate the terminal value is to use the <em>stable growth model</em>. In this model, we assume that when the comany enters its mature phase of operations, its free cash flow grows at a constant rate of $g$. We assumed that the company just entered the maturity phase at the end of year $N$, so we can say that the company’s free cash flow at year $N+i$ for $i=1,2,…$ will be equal to</p>
+
+\[\textrm{FCF}_{N+i} = (1+g)^i \textrm{FCF}_N\]
+
+<p>Since want to calculate the terminal value at the beginning of the maturity phase, we need to discount $\textrm{FCF}_{N+i}$ to the end of year $N$. Therefore, we have</p>
+
+\[\textrm{TV} = \sum_{i=1}^{\infty} \frac{\textrm{FCF}_{N+i}}{(1+r)^i} = \sum_{i=1}^{\infty}   \frac{(1+g)^i \textrm{FCF}_N}{(1+r)^i} =\textrm{FCF}_N \sum_{i=1}^{\infty} \left( \frac{1+g}{1+r}\right)^i = \left( \frac{1+g}{r-g} \right) \textrm{FCF}_N\]
+
+<p>Notice that the assumption is that the overall economy is composed of high growth and stable growth firms and therefore the growth rate of the latter is less than the average growth rate of the economy. Therefore, in the above formula the stable growth rate $g$ should be set smaller than the discount rate $r$. However, $g$ can be negative implying that the firm is losing value over time.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">yearly_interest</span><span class="p">,</span> <span class="s">'-k'</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">"Yearly Interest Paid"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Year passed.'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Dollar amount'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Yearly Interest plot'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s">"upper right"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
+
+<p><img src="yearly-interest.png" alt="yearly-interest" /></p>
+
+:ET
