@@ -40,7 +40,7 @@ $$
 \textrm{Stock Price} = \frac{\textrm{EQUITY}}{\textrm{SHARES}}.
 $$
 
-To be able to use the above method, we need to be able to have good estimates for $\textrm{FCF}_i$ for $i=1,2,...,N$. On top of that, it is also very important to choose the right estimates for $r$ and $g$. The more accurate estimates we can find for these values the more accurate our price evaluation will become. 
+To be able to use the above method, we need to be able to have good estimates for $\textrm{FCF}_i$ for $i=1,2,...,N$. On top of that, it is also very important to choose the right estimates for $r$ and $g$. The more accurate estimates we can find for these values the more accurate our stock valuation will become. 
 
 
 As a simple first step, we can look at the previous FCF values and try to fit a linear least squares model to this data and predict the future FCFs. Assume that we look at the past $m$ years of company FCF data and let the FCF at year $x_t$ for $t = t_0, t_0 -1,..., t_0 - (m-1)$ be denoted by $y_t$ and let the predicted least squares value of FCF at year $t$ be $\hat{y}_t = a x_t + b$. Miniming the square error using linear least squares we can easily show that if we denote:
@@ -95,15 +95,58 @@ $$
 r_d = (r_f + \textrm{credit spread})(1-T)
 $$
 
-where $r_f$ is the risk-free return, $T$ is the firm's tax rate and **credit spread** is the difference between the rate that corporate bonds are paying compared to gonvernment bonds. Firms with lower credit rating have higher credit spreads which means that they are more risky and they need to pay higher returns to be able to borrow money from the open market. Notice that cost of debt is expressed as an after tax rate because the interest deductible for income taxes to allow for fair comparisons. That's why the above equation includes a tax term. Summarizing above, if we show the debt to equity ratio by $D/E$ then the discount rate to be used in our stock evaluation formula will be found as 
+where $r_f$ is the risk-free return, $T$ is the firm's tax rate and **credit spread** is the difference between the rate that corporate bonds are paying compared to gonvernment bonds. Firms with lower credit rating have higher credit spreads which means that they are more risky and they need to pay higher returns to be able to borrow money from the open market. Notice that cost of debt is expressed as an after tax rate because the interest deductible for income taxes to allow for fair comparisons. That's why the above equation includes a tax term. Summarizing above, if we show the debt to equity ratio by $D/E$ then the discount rate to be used in our stock valuation formula will be found as 
 
 $$
 r_{\textrm{WACC}} = \frac{1}{1+D/E} r_e + \frac{D/E}{1+D/E} r_d
 $$
 
-The last peice of our stock evaluation puzzle is the parameter $g$ which is the stable growth rate. One way of estimating this value is to look at the average growth rate of the stable firms in that industry branch and use it as a proxy for $g$.
+The last peice of our stock valuation puzzle is the parameter $g$ which is the stable growth rate. One way of estimating this value is to look at the average growth rate of the stable firms in that industry branch and use it as a proxy for $g$.
+
+## Example
+
+Let's analyze the value of a few stocks say Nvidia with ticker NVDA and Verison with ticker VZ using this method. We can get the past $m=10$ years of FCF data for VZ from [this link](https://stockanalysis.com/stocks/vz/financials/cash-flow-statement/) and for NVDA from [this link](https://stockanalysis.com/stocks/nvda/financials/cash-flow-statement/). To simplify our analysis, we work with Free Cash Flow per Share data, i.e. the last line of data in these links. Writing a few lines of code in Python, we can estimate and plot the next $N=10$ years of FCF values as follows.
 
 
+{% highlight python %}
+import numpy as np
+import matplotlib.pyplot as plt
 
-![yearly-interest](yearly-interest.png)
+years = list(range(2013, 2023))
+futures = list(range(2023, 2033))
+fcf_share = {
+    "NVDA" : [0.26, 0.36, 0.51, 0.69, 1.22, 1.29, 1.75, 1.9, 3.26, 1.53],
+    "VZ": [7.75, 3.38, 5.20, 1.14, 1.73, 4.28, 4.30, 5.70, 4.64, 3.35]
+}
 
+def find_lls_params(ticker):
+    n = len(years)
+    mx = np.mean(years)
+    mxx = np.mean([x**2 for x in years])
+    denom = mxx - mx**2
+    b = (np.mean([years[i]*fcf_share[ticker][i] for i in range(n)]) -  np.mean(fcf_share[ticker]) * mx)/denom
+    c = np.mean(fcf_share[ticker]) - b * mx
+    return b, c
+
+def find_lls_points(ticker):
+    b, c = find_lls_params(ticker)
+    data = {x:b*x+c for x in years+futures} 
+    return data
+
+def plot_lls_points(ticker):
+    plt.figure(figsize=(12,8))
+    plt.plot(years, fcf_share[ticker])
+    lls_data = find_lls_points(ticker)
+    plt.plot(lls_data.keys(), lls_data.values(), 'r*')
+    plt.grid()
+    plt.legend(['Historical FCF per Share', 'LLS prediction of FCF per share'])
+    plt.ylabel('Free Cash Flow per Share')
+    plt.xlabel('Year')
+    plt.title(ticker +' Free Cash Flow per Share')
+    return lls_data
+
+{% endhighlight %}
+
+
+![NVDA-lls](NVDA-lls.png)
+![yVZ-lls](VZ-lls.png)
