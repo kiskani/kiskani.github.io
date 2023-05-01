@@ -147,6 +147,22 @@ def plot_lls_points(ticker):
 
 {% endhighlight %}
 
-
 ![NVDA-lls](NVDA-lls.png)
 ![yVZ-lls](VZ-lls.png)
+
+Now, it remains to estimate the discount rate for these stocks. There are certain websites that have these rates calculated for us. For instance, WACC for VZ can be found from [here](https://valueinvesting.io/VZ/valuation/wacc) and for [NVDA](https://valueinvesting.io/NVDA/valuation/wacc) from here. However, we can also calculate these values using the formulas above. For instance, we can find risk-free interest rates from [this website](https://ycharts.com/indicators/10_year_treasury_rate) and values of $\beta$ from [here](https://stockanalysis.com/stocks/vz/) and [here](https://stockanalysis.com/stocks/nvda/) and we can use any stock charting website to calculate the historical value of $r_m$ for the overall market. This allows us to confirm that the WACC numbers in the above links actually make sense. 
+
+Taking the values of selected WACCs in the links above and assuming that NVDA has a stable growth rate of 4% and VZ has a stable growth rate of -2% then PVFFCF per share will be caculated to 76.84 and 49.60, respectively. I used the following peice of code for that calculation:
+
+{% highlight python %}
+def calculate_PVFFCF(lls_data, r_wacc, g):
+    N = len(futures)
+    TVFFCF_share = lls_data[futures[-1]]*(1+g)/(r_wacc-g)
+    PVFFCF_share = TVFFCF_share / (1+r_wacc)**N
+    for year in futures:
+        i = year - years[-1]
+        PVFFCF_share += lls_data[year] / (1+r_wacc**i)
+    return PVFFCF_share
+{% endhighlight %}
+
+Now, we need to look at the values of debt and cash assets for these two companies. These numbers can be found from links like [this for NVDA](https://stockanalysis.com/stocks/nvda/financials/balance-sheet/) and [this for VZ](https://stockanalysis.com/stocks/vz/financials/balance-sheet/). If we subtract total debt from cash and cash equivalents that we have from these links and divide that by the number of outstanding shares that we can find from [here for NVDA](https://stockanalysis.com/stocks/nvda/) and [here for VZ](https://stockanalysis.com/stocks/vz/) and if we add that ratio to the PVFFCF per share numbers we found above, then we can find the estimate for stock price. In this case, it leads to a stock price of for NVDA and for VZ on April 30th 2023.
