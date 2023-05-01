@@ -1,0 +1,48 @@
+I"�<p>In this post, I will explain some methods of valuating stock prices. If we show the Free Cash Flow of this company at year $n$ from now by $\textrm{FCF}_n$ and if the discount rate is $r$, then the <strong>Present Value of Future Free Cash Flows (PVFFCF)</strong> of the company will be equal to</p>
+
+\[\textrm{PVFFCF} = \sum_{i=1}^{\infty} \frac{\textrm{FCF}_i}{(1+r)^i}\]
+
+<p>However, it is not possible to estimate	cash flows forever so we need to estimate cash flows for a <strong>growth	period</strong> and then estimate a <strong>Terminal Value of Future Free Cash Flows (TVFFCF)</strong>, to capture the value at the end of the period. Assume that the company enters the <strong>maturity period</strong> at the end of year $N$, then the Present Value of Future the company can be estimated as</p>
+
+\[\textrm{PVFFCF} = \sum_{i=1}^{N} \frac{\textrm{FCF}_i}{(1+r)^i} + \frac{\textrm{TVFFCF}}{(1+r)^{N}}\]
+
+<p>One way to estimate the terminal value is to use the <em>stable growth model</em> or <em><a href="https://en.wikipedia.org/wiki/Terminal_value_(finance)">perpetuity growth model</a></em> or <em><a href="https://en.wikipedia.org/wiki/Dividend_discount_model">Gordon growth model</a></em> or <em><a href="https://en.wikipedia.org/wiki/Dividend_discount_model">Dividend Discount Model (DDM)</a></em>. In this model, we assume that when the comany enters its mature phase of operations, its free cash flow grows at a constant rate of $g$. We assumed that the company just entered the maturity phase at the end of year $N$, so we can say that the company’s free cash flow at year $N+i$ for $i=1,2,…$ will be equal to</p>
+
+\[\textrm{FCF}_{N+i} = (1+g)^i \textrm{FCF}_N\]
+
+<p>Since want to calculate the terminal value at the beginning of the maturity phase, we need to discount $\textrm{FCF}_{N+i}$ to the end of year $N$. Therefore, we have</p>
+
+\[\textrm{TVFFCF} = \sum_{i=1}^{\infty} \frac{\textrm{FCF}_{N+i}}{(1+r)^i} = \textrm{FCF}_N \sum_{i=1}^{\infty} \left( \frac{1+g}{1+r}\right)^i = \left( \frac{1+g}{r-g} \right) \textrm{FCF}_N\]
+
+<p>Notice that the assumption is that the overall economy is composed of high growth and stable growth firms and therefore the growth rate of the latter is less than the average growth rate of the economy. Therefore, in the above formula the stable growth rate $g$ should be set smaller than the discount rate $r$. However, $g$ can be negative implying that the firm is losing value over time.</p>
+
+<p>Finding $\textrm{TVFFCF}$ enables us to find $\textrm{PVFFCF}$. We can then subtract the company’s <strong>Total Debt (DEBT)</strong> from $\textrm{PVFFCF}$ and add the sum of <strong>Cash and Cash Equivalents (CASH)</strong> to it to find the <strong>Equity Value (EQUITY)</strong> of the company.</p>
+
+\[\textrm{EQUITY} = \textrm{PVFFCF} - \textrm{DEBT} + \textrm{CASH}\]
+
+<p>The stock price of the company is then found by dividing the equity value by the <strong>Number of Shares Outstanding (SHARES)</strong></p>
+
+\[\textrm{Stock Price} = \frac{\textrm{EQUITY}}{\textrm{SHARES}}.\]
+
+<p>To be able to use the above method, we need to be able to have good estimates for $\textrm{FCF}_i$ for $i=1,2,…,N$. On top of that, it is also very important to choose the right estimates for $r$ and $g$. The more accurate estimates we can find for these values the more accurate our price evaluation will become.</p>
+
+<p>As a simple first step, we can look at the previous FCF values and try to fit a linear least squares model to this data and predict the future FCFs. Assume that we look at the past $m$ years of company FCF data and let the FCF at year $x_t$ for $t = t_0, t_0 -1,…, t_0 - (m-1)$ be denoted by $y_t$ and let the predicted least squares value of FCF at year $t$ be $\hat{y}_t = \alpha x_t + \beta$. Miniming the square error using linear least squares we can easily shows that if we denote:</p>
+
+\[\bar{X} \triangleq \frac{1}{m} \sum_{t=t_0-(m-1)}^{t_0} x_t\]
+
+\[\bar{X^2} \triangleq \frac{1}{m}\sum_{t=t_0-(m-1)}^{t_0} x^2_t\]
+
+\[\alpha = \frac{}{\bar{X^2}  - \left(\bar{X} \right)^2}\]
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">yearly_interest</span><span class="p">,</span> <span class="s">'-k'</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">"Yearly Interest Paid"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Year passed.'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Dollar amount'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Yearly Interest plot'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s">"upper right"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
+
+<p><img src="yearly-interest.png" alt="yearly-interest" /></p>
+
+:ET

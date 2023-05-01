@@ -1,0 +1,61 @@
+I"�<p>In this post, I will explain some methods of valuating stock prices. If we show the Free Cash Flow of this company at year $n$ from now by $\textrm{FCF}_n$ and if the discount rate is $r$, then the <strong>Present Value of Future Free Cash Flows (PVFFCF)</strong> of the company will be equal to</p>
+
+\[\textrm{PVFFCF} = \sum_{i=1}^{\infty} \frac{\textrm{FCF}_i}{(1+r)^i}\]
+
+<p>However, it is not possible to estimate	cash flows forever so we need to estimate cash flows for a <strong>growth	period</strong> and then estimate a <strong>Terminal Value of Future Free Cash Flows (TVFFCF)</strong>, to capture the value at the end of the period. Assume that the company enters the <strong>maturity period</strong> at the end of year $N$, then the Present Value of Future the company can be estimated as</p>
+
+\[\textrm{PVFFCF} = \sum_{i=1}^{N} \frac{\textrm{FCF}_i}{(1+r)^i} + \frac{\textrm{TVFFCF}}{(1+r)^{N}}\]
+
+<p>One way to estimate the terminal value is to use the <em>stable growth model</em> or <em><a href="https://en.wikipedia.org/wiki/Terminal_value_(finance)">perpetuity growth model</a></em> or <em><a href="https://en.wikipedia.org/wiki/Dividend_discount_model">Gordon growth model</a></em> or <em><a href="https://en.wikipedia.org/wiki/Dividend_discount_model">Dividend Discount Model (DDM)</a></em>. In this model, we assume that when the comany enters its mature phase of operations, its free cash flow grows at a constant rate of $g$. We assumed that the company just entered the maturity phase at the end of year $N$, so we can say that the company’s free cash flow at year $N+i$ for $i=1,2,…$ will be equal to</p>
+
+\[\textrm{FCF}_{N+i} = (1+g)^i \textrm{FCF}_N\]
+
+<p>Since want to calculate the terminal value at the beginning of the maturity phase, we need to discount $\textrm{FCF}_{N+i}$ to the end of year $N$. Therefore, we have</p>
+
+\[\textrm{TVFFCF} = \sum_{i=1}^{\infty} \frac{\textrm{FCF}_{N+i}}{(1+r)^i} = \textrm{FCF}_N \sum_{i=1}^{\infty} \left( \frac{1+g}{1+r}\right)^i = \left( \frac{1+g}{r-g} \right) \textrm{FCF}_N\]
+
+<p>Notice that the assumption is that the overall economy is composed of high growth and stable growth firms and therefore the growth rate of the latter is less than the average growth rate of the economy. Therefore, in the above formula the stable growth rate $g$ should be set smaller than the discount rate $r$. However, $g$ can be negative implying that the firm is losing value over time.</p>
+
+<p>Finding $\textrm{TVFFCF}$ enables us to find $\textrm{PVFFCF}$. We can then subtract the company’s <strong>Total Debt (DEBT)</strong> from $\textrm{PVFFCF}$ and add the sum of <strong>Cash and Cash Equivalents (CASH)</strong> to it to find the <strong>Equity Value (EQUITY)</strong> of the company.</p>
+
+\[\textrm{EQUITY} = \textrm{PVFFCF} - \textrm{DEBT} + \textrm{CASH}\]
+
+<p>The stock price of the company is then found by dividing the equity value by the <strong>Number of Shares Outstanding (SHARES)</strong></p>
+
+\[\textrm{Stock Price} = \frac{\textrm{EQUITY}}{\textrm{SHARES}}.\]
+
+<p>To be able to use the above method, we need to be able to have good estimates for $\textrm{FCF}_i$ for $i=1,2,…,N$. On top of that, it is also very important to choose the right estimates for $r$ and $g$. The more accurate estimates we can find for these values the more accurate our price evaluation will become.</p>
+
+<p>As a simple first step, we can look at the previous FCF values and try to fit a linear least squares model to this data and predict the future FCFs. Assume that we look at the past $m$ years of company FCF data and let the FCF at year $x_t$ for $t = t_0, t_0 -1,…, t_0 - (m-1)$ be denoted by $y_t$ and let the predicted least squares value of FCF at year $t$ be $\hat{y}_t = a x_t + b$. Miniming the square error using linear least squares we can easily show that if we denote:</p>
+
+\[\bar{X} \triangleq \frac{1}{m} \sum_{t=t_0-(m-1)}^{t_0} x_t\]
+
+\[\bar{Y} \triangleq \frac{1}{m} \sum_{t=t_0-(m-1)}^{t_0} y_t\]
+
+\[\bar{X^2} \triangleq \frac{1}{m}\sum_{t=t_0-(m-1)}^{t_0} x^2_t\]
+
+\[\bar{XY} \triangleq \frac{1}{m} \sum_{t=t_0-(m-1)}^{t_0} x_t y_t\]
+
+<p>Then</p>
+
+\[a = \frac{\bar{XY} - \bar{X} \bar{Y}}{\bar{X^2}  - \left(\bar{X} \right)^2}\]
+
+<p>and</p>
+
+\[b = \bar{Y} - a \bar{X}\]
+
+<p>We can then use the estimated parameters to estimate $\textrm{FCF}_i$ as \(\hat{y}_{i} = a x_i + b\) for $i = 1,2,…, N$.</p>
+
+<p>For estimating the discount parameter $r$, we need to find the <a href="https://en.wikipedia.org/wiki/Weighted_average_cost_of_capital"><strong>Weighted Average Cost of Capital (WACC)</strong></a> or <a href="https://en.wikipedia.org/wiki/Cost_of_capital"><strong>Cost of Capital</strong></a> for the firm that we analyzing. WACC is the average rate that the company is required to pay to its debt holders, investors and other types of financiers. This rate is dictated by the market and if the firm is not able to pay that rate, the financiers would seek better opportunities. In general, WACC can be quite complex to find as the firm may have many different financiers with different rates. However, in cases when the firm is only financed with debt and equity, we have</p>
+
+\[\textrm{WACC} = \frac{\textrm{Equity}}{\textrm{Debt} + \textrm{Equity}} \textrm{Cost of Equity} + \frac{\textrm{Debt}}{\textrm{Debt} + \textrm{Equity}} \textrm{Cost of Debt}\]
+
+<p>In the equation above <strong>Cost of Equity</strong> is  the return that the firm theoretically pays to its equity investors, i.e., shareholders, to compensate for the risk they undertake by investing their capital. It can be calculated using the $\beta$ parameter in <a href="https://en.wikipedia.org/wiki/Capital_asset_pricing_model">CAPM</a> as</p>
+
+\[r_e = r_f + \beta (r_m - r_f)\]
+
+<p>where $r_f$ is the risk free return which can typically be found from government bond yields and $r_m$ is the historical return of the stock market and $\beta$ is a unique parameter for the firm found through <a href="https://en.wikipedia.org/wiki/Capital_asset_pricing_model">CAPM</a>.</p>
+
+<p><img src="yearly-interest.png" alt="yearly-interest" /></p>
+
+:ET
