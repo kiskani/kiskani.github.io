@@ -58,7 +58,7 @@ $$
 For instance, for a 30 year mortgage loan of amount $P = 1,280,000$ with APR 3.75%, the monthly APR is 0.003125 and therefore the exact monthly coupon rate is 
 
 $$
-c_m = 1,280,000 \frac{0.003125 \times 1.003125^360}{1.003125^360 - 1} = 5927.88
+c_m = 1,280,000 \frac{0.003125 \times 1.003125^{360}}{1.003125^{360} - 1} = 5927.88
 $$ 
 
 {% highlight python %}
