@@ -55,7 +55,7 @@ $$
 c_m = P \frac{r_m \left(1+r_m\right)^{12T}}{\left(1+r_m\right)^{12T}-1}
 $$
 
-
+For instance, for a mortgage loan of amount $P = \$1,280,000$
 
 {% highlight python %}
 P = 741750
