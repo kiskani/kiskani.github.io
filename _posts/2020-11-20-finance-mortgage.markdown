@@ -42,6 +42,21 @@ $$C_y = P \frac{r(1+r)^T}{(1+r)^T-1} = 741750 \frac{0.02875 (1.02875^{30})}{1.02
 
 Roughly speaking, the monthly coupon will be equal to $$ \$37234.63 /12 = \$3102.89 $$.
 
+This is however an approximate and the exact amount is calculated differently. To find the exact amount, you should first find the monthly interest rate by dividing $r$ by 12 to get the monthly rate
+
+
+$$
+r_m \triangleq \frac{r}{12}
+$$
+
+Then you need to replicate the above calculation using the monthly rate. In other words,
+
+$$
+c_m = P \frac{r_m \left(1+r_m\right)^{12T}}{\left(1+r_m\right)^{12T}-1}
+$$
+
+
+
 {% highlight python %}
 P = 741750
 r = 0.02875
