@@ -55,7 +55,11 @@ $$
 c_m = P \frac{r_m \left(1+r_m\right)^{12T}}{\left(1+r_m\right)^{12T}-1}
 $$
 
-For instance, for a mortgage loan of amount $P = \$1,280,000$
+For instance, for a 30 year mortgage loan of amount $P = 1,280,000$ with APR 0.0375, the monthly APR is 0.003125 and therefore the exact monthly coupon rate is 
+
+$$
+c_m = 1,280,000 \frac{0.003125 \times 1.003125^360}{1.003125^360 - 1} = 5927.88
+$$ 
 
 {% highlight python %}
 P = 741750
