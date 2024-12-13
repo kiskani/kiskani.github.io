@@ -1,8 +1,18 @@
 ---
 layout: post
-title:  "ML tips"
+title:  "Machine Learning tips"
 date:   2025-01-01 00:00:00 -0000
 categories: machinelearning
 ---
 
-In this page, I will summarize a 
+In this page, I will summarize a few tips related to training and use of machine learning models and techniques. 
+
+# Dropout 
+
+* Applying dropout to a neural network amounts to sampling a ``thinned'' network from
+it. The thinned network consists of all the units that survived dropout. A
+neural net with $n$ units, can be seen as a collection of $2^{n}$ possible thinned neural networks.
+These networks all share weights so that the total number of parameters is still $O(n^2)$, or less. For each presentation of each training case, a new thinned network is sampled and
+trained. So training a neural network with dropout can be seen as training a collection of $2^n$
+thinned networks with extensive weight sharing, where each thinned network gets trained
+very rarely, if at all.
