@@ -16,3 +16,5 @@ These networks all share weights so that the total number of parameters is still
 trained. So training a neural network with dropout can be seen as training a collection of $2^n$
 thinned networks with extensive weight sharing, where each thinned network gets trained
 very rarely, if at all.
+
+* Under some key assumptions like operating in the linear region of a neural network where softmax in linear and with some very restrictive assumptions like linearity of log (close to 0) we can prove that the geometric mean of the softmax outputs of this ensemble of networks trained with dropout is equivalent to the softmax output of a single network with weights scaled by the dropout probability p at test time (ask Gemini for proving this also watch [here around 18:00[(https://www.youtube.com/watch?v=DleXA5ADG78]). 
