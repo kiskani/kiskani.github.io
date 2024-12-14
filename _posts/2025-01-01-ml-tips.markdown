@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Machine Learning tips"
+title:  "Tips on Dropout"
 date:   2025-01-01 00:00:00 -0000
 categories: machinelearning
 ---
@@ -17,4 +17,46 @@ trained. So training a neural network with dropout can be seen as training a col
 thinned networks with extensive weight sharing, where each thinned network gets trained
 very rarely, if at all.
 
-* Under some key assumptions like operating in the linear region of a neural network where softmax in linear and with some very restrictive assumptions like linearity of log (close to 0) we can prove that the geometric mean of the softmax outputs of this ensemble of networks trained with dropout is equivalent to the softmax output of a single network with weights scaled by the dropout probability p at test time (ask Gemini for proving this also watch [here around 18:00](https://www.youtube.com/watch?v=DleXA5ADG78). 
+* Under some key assumptions like operating in the linear region of a neural network where softmax in linear and with some very restrictive assumptions like linearity of log (close to 0) we can prove that the geometric mean of the softmax outputs of this ensemble of networks trained with dropout is equivalent to the softmax output of a single network with weights scaled by the dropout probability p at test time (ask Gemini for proving this also watch [here around 18:00](https://www.youtube.com/watch?v=DleXA5ADG78).
+
+* Dropout can be viewed in both ways of either doing model averaging for overcomming overfitting or adding noise to overcome the overfitting problem.
+
+* Dropout with linear regression is equivalent in expectation, to ridge regression as proved in the dropout paper. 
+
+* A drawback of dropout is that it increases the training time to 2-3 times that of a standard neural network. A major cause of this increase is that the parameter updates are very noisy.
+Each training case effectively tries to train a different random architecture. Therefore, the
+gradients that are being computed are not gradients of the final architecture that will be
+used at test time. Therefore, it is not surprising that training takes a long time. However,
+it is likely that this stochasticity prevents overfitting. This creates a trade-off between overfitting and training time. With more training time, one can use high dropout and suffer less
+overfitting.
+
+* It is to be expected that dropping units will reduce the capacity of a neural network. If
+$n$ is the number of hidden units in any layer and $p$ is the probability of retaining a unit,
+then instead of $n$ hidden units, only pn units will be present after dropout, in expectation.
+Moreover, this set of pn units will be different each time and the units are not allowed to
+build co-adaptations freely. Therefore, if an $n$-sized layer is optimal for a standard neural
+net on any given task, a good dropout net should have at least $n/p$ units. This is
+ a useful heuristic for setting the number of hidden units in both convolutional and fully
+connected networks. 
+
+* Dropout introduces a significant amount of noise in the gradients compared to standard
+stochastic gradient descent. Therefore, a lot of gradients tend to cancel each other. In
+order to make up for this, a dropout net should typically use 10-100 times the learning rate
+that was optimal for a standard neural net. Another way to reduce the effect the noise is
+to use a high momentum. While momentum values of 0.9 are common for standard nets,
+with dropout values around 0.95 to 0.99 work quite a lot better. Using high
+learning rate and/or momentum significantly speed up learning. 
+
+* Though large momentum and learning rate speed up learning, they sometimes cause the
+network weights to grow very large. To prevent this, we can use max-norm regularization.
+This constrains the norm of the vector of incoming weights at each hidden unit to be bound
+by a constant $c$. Typical values of $c$ range from 3 to 4.
+
+* Dropout introduces an extra hyperparameter, the probability of retaining a unit $p$. This
+hyperparameter controls the intensity of dropout. $p = 1$, implies no dropout and low values
+of $p$ mean more dropout. Typical values of $p$ for hidden units are in the range 0.5 to 0.8.
+For input layers, the choice depends on the kind of input. For real-valued inputs (image
+patches or speech frames), a typical value is 0.8. For hidden layers, the choice of $p$ is coupled
+with the choice of number of hidden units $n$. Smaller $p$ requires big $n$ which slows down
+the training and leads to underfitting. Large $p$ may not produce enough dropout to prevent
+overfitting.
