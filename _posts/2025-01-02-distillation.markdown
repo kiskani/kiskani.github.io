@@ -21,7 +21,7 @@ $$
 q_i = \frac{\exp(z_i/T)}{\sum_j \exp(z_j/T)}
 $$
 
-In this equation $T$ is a temperature that is normally set to 1. Using higher values for $T$ produces a softer probability distribution over classes with higher entropy.
+* In this equation $T$ is a temperature that is normally set to 1. Using higher values for $T$ produces a softer probability distribution over classes with higher entropy.
 
 * In the simplest form of distillation, knowledge is transferred to the distilled model by training it on
 a transfer set and using a soft target distribution for each case in the transfer set that is produced by
@@ -33,7 +33,11 @@ improved by also training the distilled model to produce the correct labels. One
 to use the correct labels to modify the soft targets, but a better way is to simply use
 a weighted average of two different objective functions. 
 
-* The first objective function is the cross entropy with the soft targets and this cross entropy is computed using the same high temperature in the softmax of the distilled model as was used for generating the soft targets from the cumbersome model.
+* The first objective function is the cross entropy with the soft targets and this cross entropy is computed using the same high temperature in the softmax of the distilled model as was used for generating the soft targets from the cumbersome model. If the cumbersome model produces soft-target probabilies $p_i$, then the first objective function can be written as
+
+$$
+C = - \sum_{i=1}^{c} p_i \log(q_i) 
+$$
 
 * The second objective function is the cross entropy with the correct labels. This is computed
 using exactly the same logits in softmax of the distilled model but at a temperature of 1.
@@ -43,3 +47,5 @@ objective function. Since the magnitudes of the gradients produced by the soft t
 it is important to multiply them by $T^2$ when using both hard and soft targets. This ensures that the
 relative contributions of the hard and soft targets remain roughly unchanged if the temperature used
 for distillation is changed while experimenting with meta-parameters.
+
+* In
