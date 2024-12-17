@@ -15,13 +15,13 @@ less data than the original cumbersome model and using a much higher learning ra
 * In distillation, the temperature of the final softmax is raised until the cumbersome model produces a suitably soft set of targets. We then use the same high temperature when training the small model to match these
 soft targets.
 
-* In softmax, logits $z_i$ are converted to probabilities $q_i$ using a temperature $T$ according to the following equation.
+* Let the logits for the student model prior to softmax be $z_i$. These logits are converted to probabilities $q_i$ using a temperature $T$ according to the following equation in which $T$ is a temperature that is normally set to 1. Using higher values for $T$ produces a softer probability distribution over classes with higher entropy.
 
 $$
 q_i = \frac{\exp(z_i/T)}{\sum_j \exp(z_j/T)}
 $$
 
-* In this equation $T$ is a temperature that is normally set to 1. Using higher values for $T$ produces a softer probability distribution over classes with higher entropy.
+* Hence for the first 
 
 * In the simplest form of distillation, knowledge is transferred to the distilled model by training it on
 a transfer set and using a soft target distribution for each case in the transfer set that is produced by
@@ -36,7 +36,7 @@ a weighted average of two different objective functions.
 * The first objective function is the cross entropy with the soft targets and this cross entropy is computed using the same high temperature in the softmax of the distilled model as was used for generating the soft targets from the cumbersome model. If the cumbersome model produces soft-target probabilies $p_i$, then the first objective function can be written as
 
 $$
-C = - \sum_{i=1}^{c} p_i \log(q_i) 
+C_1 = - \sum_{i=1}^{c} p_i \log(q_i) 
 $$
 
 * The second objective function is the cross entropy with the correct labels. This is computed
@@ -48,4 +48,8 @@ it is important to multiply them by $T^2$ when using both hard and soft targets.
 relative contributions of the hard and soft targets remain roughly unchanged if the temperature used
 for distillation is changed while experimenting with meta-parameters.
 
-* In
+* If the cumbersome model has logits $v_i$  n
+
+$$
+\frac{\partial C_1}{\partial z_i} = -\frac{p_i}{q_i}\frac{\partial q_i}{\partial z_i} 
+$$
