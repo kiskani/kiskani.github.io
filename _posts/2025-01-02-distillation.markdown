@@ -49,5 +49,14 @@ for distillation is changed while experimenting with meta-parameters.
 * If the cumbersome model has logits $v_i$, then for high temperatures and for the case  that the logits have been zero-meaned separately for each transfer case ($\sum_j z_j = \sum_j v_j = 0$) we can show that 
 
 $$
-\frac{\partial C_1}{\partial z_i} = -\frac{1}{T}(q_i - p_i) = \frac{1}{N T^2}(z_i - v_i) 
+\frac{\partial C_1}{\partial z_i} = \frac{1}{T}(q_i - p_i) = \frac{1}{N T^2}(z_i - v_i) 
 $$
+
+* So in the high temperature limit, distillation is equivalent to minimizing $1/2(z_i − v_i)^2$, provided the
+logits are zero-meaned separately for each transfer case. At lower temperatures, distillation pays much less attention to matching logits that are much more negative than the average. This is potentially advantageous because these logits are almost completely unconstrained by the cost function
+used for training the cumbersome model so they could be very noisy. 
+
+* On the other hand, the very negative logits may convey useful information about the knowledge acquired by the cumbersome
+model. Which of these effects dominates is an empirical question. When the distilled
+model is much too small to capture all of the knowledege in the cumbersome model, intermediate temperatures work best which strongly suggests that ignoring the large negative logits can be
+helpful.
