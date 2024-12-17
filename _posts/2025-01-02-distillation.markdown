@@ -21,8 +21,6 @@ $$
 q_i = \frac{\exp(z_i/T)}{\sum_j \exp(z_j/T)}
 $$
 
-* Hence for the first 
-
 * In the simplest form of distillation, knowledge is transferred to the distilled model by training it on
 a transfer set and using a soft target distribution for each case in the transfer set that is produced by
 using the cumbersome model with a high temperature in its softmax. The same high temperature is
@@ -36,7 +34,7 @@ a weighted average of two different objective functions.
 * The first objective function is the cross entropy with the soft targets and this cross entropy is computed using the same high temperature in the softmax of the distilled model as was used for generating the soft targets from the cumbersome model. If the cumbersome model produces soft-target probabilies $p_i$, then the first objective function can be written as
 
 $$
-C_1 = - \sum_{i=1}^{c} p_i \log(q_i) 
+C_1 = - \sum_{i=1}^{N} p_i \log(q_i) 
 $$
 
 * The second objective function is the cross entropy with the correct labels. This is computed
@@ -48,8 +46,8 @@ it is important to multiply them by $T^2$ when using both hard and soft targets.
 relative contributions of the hard and soft targets remain roughly unchanged if the temperature used
 for distillation is changed while experimenting with meta-parameters.
 
-* If the cumbersome model has logits $v_i$  n
+* If the cumbersome model has logits $v_i$, then for high temperatures and for the case  that the logits have been zero-meaned separately for each transfer case ($\sum_j z_j = \sum_j v_j = 0$) we can show that 
 
 $$
-\frac{\partial C_1}{\partial z_i} = -\frac{p_i}{q_i}\frac{\partial q_i}{\partial z_i} 
+\frac{\partial C_1}{\partial z_i} = -\frac{1}{T}(q_i - p_i) = \frac{1}{N T^2}(z_i - v_i) 
 $$
