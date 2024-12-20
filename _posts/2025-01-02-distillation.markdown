@@ -61,6 +61,8 @@ model. Which of these effects dominates is an empirical question. When the disti
 model is much too small to capture all of the knowledege in the cumbersome model, intermediate temperatures work best which strongly suggests that ignoring the large negative logits can be
 helpful.
 
+* In the following code we tried to replicate the experiment on MNIST data in the distillation paper and we trained a teacher model in standalone mode for 300 epochs and a student model in standalone mode for 200 epochs and a distillation model for 600 epochs. Standalone precision for teacher model is 99.01% and for student model is 98.81% and for the distillation model is 98.91%. Notice that our results differ from the ones in the distillation paper because we trained the small model in standalone mode using the jittered inputs and that seems to have increase the precision of the small model. Also we used jittered model for training the distillation models which was different from the paper. However, we noticed that we got improved results when training using distillation compared to standalone. 
+
 {% highlight python %}
 import os
 import pandas as pd
@@ -179,37 +181,6 @@ def train_student(student, teacher, dataloader, optimizer, criterion, temperatur
     distill_loss /= len(dataloader.dataset)
     return distill_loss
 
-# def eval_standalone(model, dataloader, criterion):
-#   model.eval()  # Set model to evaluation mode
-#   val_loss = 0.0
-#   with torch.no_grad():  # No gradient computation
-#     for inputs, labels in dataloader:
-#       inputs, labels = inputs.to(device), labels.to(device)
-#       inputs = inputs.view(inputs.size(0), -1)
-#       outputs = model(inputs)
-#       loss = criterion(outputs, labels)
-#       val_loss += loss.item() * inputs.size(0)
-#   val_loss /= len(dataloader.dataset)
-#   return val_loss
-
-# def compute_precision(model, dataloader):
-#     all_preds = torch.tensor([]).to(device)
-#     all_probs = torch.tensor([]).to(device)
-#     all_labels = torch.tensor([]).to(device)
-#     model.eval()
-#     with torch.no_grad():
-#         for inputs, labels in dataloader:
-#             inputs, labels = inputs.to(device), labels.to(device)
-#             inputs = inputs.view(inputs.size(0), -1)
-#             outputs = model(inputs)
-#             probs, idx = outputs.max(dim=1)
-#             all_preds = torch.cat((all_preds, idx), dim=0)
-#             all_probs = torch.cat((all_probs, probs), dim=0)
-#             all_labels = torch.cat((all_labels, labels), dim=0)
-#     correctly_found = (all_preds == all_labels)
-#     precision = sum(correctly_found)/correctly_found.size(0)
-#     return precision, all_preds, all_probs, all_labels
-
 # Transform to normalize data
 transform = transforms.Compose([
     transforms.ToTensor(),
@@ -238,7 +209,7 @@ distillation_val_losses = []
 
 teacher_num_epochs = 300
 student_num_epochs = 200
-distill_num_epochs = 200
+distill_num_epochs = 600
 temperature = 20
 alpha = 0.7
 teacher_learning_rate = 0.001
@@ -262,9 +233,7 @@ optimizer_teacher = torch.optim.Adam(teacher.parameters(), lr=teacher_learning_r
 print("Training the teacher model", "\n")
 for epoch in range(teacher_num_epochs):
   train_loss_teacher = train_standalone(teacher, train_loader, optimizer_teacher, criterion)
-  # eval_loss_teacher = eval_standalone(teacher, test_loader, criterion)
   eval_loss_teacher = compute_val_loss(teacher, test_inputs, test_labels, criterion)
-  # Print losses for the epoch
   print(f"Epoch [{epoch+1}/{teacher_num_epochs}], "
         f"Train Loss: {train_loss_teacher:.4f}, "
         f"Val Loss: {eval_loss_teacher:.4f}")
@@ -283,9 +252,7 @@ optimizer_student_standalone = torch.optim.Adam(student.parameters(), lr=student
 print("\n","Training the student model standalone...", "\n")
 for epoch in range(student_num_epochs):
   train_loss_student = train_standalone(student, train_loader, optimizer_student_standalone, criterion)
-  # eval_loss_student = eval_standalone(student, test_loader, criterion)
   eval_loss_student = compute_val_loss(student, test_inputs, test_labels, criterion)
-  # Print losses for the epoch
   print(f"Epoch [{epoch+1}/{student_num_epochs}], "
         f"Train Loss: {train_loss_student:.4f}, "
         f"Val Loss: {eval_loss_student:.4f}")
@@ -298,19 +265,13 @@ print("Standalone student precision: ", round(100*p_student.cpu().numpy(), 2), "
 student_path = "/kaggle/working/checkpoints/distillation/student_standalone_8192_200.pth"
 save_checkpoint(student, optimizer_student_standalone, student_num_epochs, student_path)
 
-distilled_model = SmallNet().to(device)
-distillation_optimizer = torch.optim.Adam(distilled_model.parameters(), lr=distill_learning_rate)
-
-distillation_path = "/kaggle/working/checkpoints/distillation/distillation_8192_200.pth"
-distilled_model_checkpoint = torch.load(distillation_path, weights_only=False)
-distilled_model.load_state_dict(distilled_model_checkpoint['model_state_dict'])
-
-
 teacher_model = LargeNet().to(device)
 teacher_path = "/kaggle/working/checkpoints/distillation/teacher_p5_p5_8192_300.pth"
 teacher_model_checkpoint = torch.load(teacher_path, weights_only=False)
 teacher_model.load_state_dict(teacher_model_checkpoint['model_state_dict'])
 
+distilled_model = SmallNet().to(device)
+distillation_optimizer = torch.optim.Adam(distilled_model.parameters(), lr=distill_learning_rate)
 
 print("Training student network through distillation...")
 for epoch in range(distill_num_epochs):  # Adjust epochs as needed
@@ -321,23 +282,18 @@ for epoch in range(distill_num_epochs):  # Adjust epochs as needed
                                                  criterion,
                                                  temperature,
                                                  alpha)
-    # distillation_eval_loss = eval_standalone(distilled_model, test_loader, criterion)
     distillation_eval_loss = compute_val_loss(distilled_model, test_inputs, test_labels, criterion)
-    # Print losses for the epoch
     print(f"Epoch [{epoch+1}/{distill_num_epochs}], "
         f"Distillation Training Loss: {distillation_trainining_loss:.4f}, "
         f"Distillation Val Loss: {distillation_eval_loss:.4f}")
     distillation_train_losses.append(distillation_trainining_loss)
     distillation_val_losses.append(distillation_eval_loss)
 
-
 distillation_path = "/kaggle/working/checkpoints/distillation/distillation_8192_600.pth"
 save_checkpoint(distilled_model, distillation_optimizer, 600, distillation_path)
 
 p_distill, distill_preds, distill_probs, distill_labels = compute_score(distilled_model, test_inputs, test_labels)
 print("Distillation model (600 epochs) precision: ", round(100*p_distill.cpu().numpy(), 2), "%")
-
-
 
 teacher_model = LargeNet().to(device)
 print("Loading trained teacher model...")
@@ -348,9 +304,7 @@ teacher_model.eval()
 test_outputs = teacher_model(test_inputs)
 _, test_idx = test_outputs.max(dim=1)
 equalit = test_idx == test_labels
-sum(equalit.detach().cpu().numpy())
-
-
+print(sum(equalit.detach().cpu().numpy()))
 
 student_model = SmallNet().to(device)
 print("Loading standalone trained student model...")
@@ -358,13 +312,10 @@ student_path = "/kaggle/working/checkpoints/distillation/student_standalone_8192
 student_model_checkpoint = torch.load(student_path, weights_only=False, map_location=torch.device('cpu'))
 student_model.load_state_dict(student_model_checkpoint['model_state_dict'])
 student_model.eval()
-
 test_outputs = student_model(test_inputs)
 _, test_idx = test_outputs.max(dim=1)
 equalit = test_idx == test_labels
-sum(equalit.detach().cpu().numpy())
-
-
+print(sum(equalit.detach().cpu().numpy()))
 
 distillation_path = "/kaggle/working/checkpoints/distillation/distillation_8192_600.pth"
 print("Loading trained distilled model...")
@@ -372,9 +323,8 @@ distilled_model = SmallNet().to(device)
 distilled_model_checkpoint = torch.load(distillation_path, weights_only=False, map_location=torch.device('cpu'))
 distilled_model.load_state_dict(distilled_model_checkpoint['model_state_dict'])
 distilled_model.eval()
-
 test_outputs = distilled_model(test_inputs)
 _, test_idx = test_outputs.max(dim=1)
 equalit = test_idx == test_labels
-sum(equalit.detach().cpu().numpy())
+print(sum(equalit.detach().cpu().numpy()))
 {% endhighlight %}
