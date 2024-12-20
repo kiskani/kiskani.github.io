@@ -61,6 +61,8 @@ model. Which of these effects dominates is an empirical question. When the disti
 model is much too small to capture all of the knowledege in the cumbersome model, intermediate temperatures work best which strongly suggests that ignoring the large negative logits can be
 helpful.
 
+* Soft targets are VERY good regulizers and they prevent the model from being too sure. They allow each training example to impose much more constraints on the weights. 
+
 * In the following code we tried to replicate the experiment on MNIST data in the distillation paper and we trained a teacher model in standalone mode for 300 epochs and a student model in standalone mode for 200 epochs and a distillation model for 600 epochs. Standalone precision for teacher model is 99.01% and for student model is 98.81% and for the distillation model is 98.91%. Notice that our results differ from the ones in the distillation paper because we trained the small model in standalone mode using the jittered inputs and that seems to have increase the precision of the small model. Also we used jittered model for training the distillation models which was different from the paper. However, we noticed that we got improved results when training using distillation compared to standalone. 
 
 {% highlight python %}
