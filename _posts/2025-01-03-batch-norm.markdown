@@ -29,3 +29,4 @@ These parameters are learned along with the original model parameters, and resto
 
 ![Algorithm 1](alg1-bn.png) 
 
+
