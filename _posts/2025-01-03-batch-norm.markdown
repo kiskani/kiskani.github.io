@@ -14,14 +14,18 @@ In this page, I will talk about few tips related to batch normalization in neura
 * Batch normalization makes two simplications to achieve the goal of normalizing data. First the ``whitening'' process is done for each feature independently of all the other features to make it 0 have a 0 mean and variance of 1. Secondly, batch normalization uses mini-batches in stochastic gradient training, each mini-batch produces estimates of the mean and variance of each activation.
 
 * Normalizing the $k$-th feature dimension of the $d$-dimensional input $x=(x^{1}, \dots, x^{d})$ as 
+
 $$
 \hat{x}^k = \frac{x^k - \mathbb{E}[x^k]}{\sqrt{\mathrm{VAR}[x^k]}}
 $$
+
 is known to speed-up the convergence even when features are not decorrelated. However, this may change what the layer can represent. To address this, we make sure that the transformation inserted in the network can represent the identity transform. To accomplish this, for each feature dimension $x^k$ we introduce a pair of parameters $\gamma^k, \beta^k$ which scale and shift the normalized value:
+
 $$
 y^k = \gamma^k \hat{x}^k + \beta^k
 $$
-These parameters are learned along with the original
-model parameters, and restore the representation power
-of the network.
+
+These parameters are learned along with the original model parameters, and restore the representation power of the network. Algorithm 1 shows how batch normalization is done over a mini-batch. 
+
+![Algorithm 1](alg1-bn.png) 
 
