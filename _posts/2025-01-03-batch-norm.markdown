@@ -34,7 +34,7 @@ over the course of training, we expect that the introduction of normalized input
 sub-network and, consequently, the network as a whole. The learned affine transform applied to these normalized
 activations allows the BN transform to represent the identity transformation and preserves the network capacity.
 
-
+![Algorithm 1](alg2-bn.png)
 
 
 
