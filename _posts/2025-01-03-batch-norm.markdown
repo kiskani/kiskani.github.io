@@ -29,4 +29,5 @@ These parameters are learned along with the original model parameters, and resto
 
 ![Algorithm 1](alg1-bn.png) 
 
+* The scaled and shifted values $y$ are passed to other network layers. The normalized activations xb are internal to our transformation, but their presence is crucial. The distributions of values of any xb has the expected value of 0 and the variance of 1, as long as the elements of each mini-batch are sampled from the same distribution
 
