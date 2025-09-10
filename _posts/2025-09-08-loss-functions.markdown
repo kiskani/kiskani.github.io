@@ -17,20 +17,20 @@ $$\hat{y_i} = f(X_i;\theta) = \mathrm{Pr} [y_i=1 | X_i, \theta ]$$
 
  In Maximum Likelihood Estimation (MLE), we want to find the set of parameters $\theta$ for our model that maximize the probability of joint distributions of observed events. In other words, in MLE we want to maximize 
 
-  \[
-  \hat{\theta}_{\text{MLE}} = \arg\max_\theta P(D \mid \theta)
-  \]
-
-$$L(\theta | D)$$ 
+$$
+\hat{\theta}_{\text{MLE}} = \arg\max_\theta P(D \mid \theta)
+$$
 
 while in MAP we want to instead maximize the likelihood of $$\theta$$ given $$D$$.
 
-\[
+$$
   \hat{\theta}_{\text{MAP}} = \arg\max_\theta P(\theta \mid D) = \arg\max_\theta \big[ P(D \mid \theta) P(\theta) \big]
-\]
+$$
 
 
  Therefore, in MLE we have  
+$$L(\theta | D)$$ 
+
 
 $$
 L(\theta | D) = \prod_{i=1}^N f(X_i, y_i; \theta) = \prod_{i=1}^N f(y_i | 
