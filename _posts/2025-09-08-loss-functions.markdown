@@ -9,7 +9,7 @@ Let's go deeper into some of the loss functions in machine learning. We can star
 
 # Cross Entropy Loss Function
 
-## Connection to Maximum Likelihood Estimation
+### Connection to Maximum Likelihood Estimation
 
 Assume that we have i.i.d samples $D = \{(X_i, y_i)\}_{i=1}^N$ where $X_i$'s are features and $y_i$'s are binary labels of 0 or 1 and assume that we have a parametric prediction algorithm $f(. \mid \theta)$ that predicts the probability of the event that the label of each feature is 1, i.e. 
 
@@ -54,4 +54,4 @@ $$
 In other words, Maximum Likelihood Estimation is equivalent to minimizing the Cross Entropy loss function. 
 
 
-## Connection to KL Divergence
+### Connection to KL Divergence
