@@ -15,7 +15,7 @@ Assume that we have i.i.d samples $D = \{(X_i, y_i)\}_{i=1}^N$ where $X_i$'s are
 
 $$\hat{y_i} = f(X_i;\theta) = \mathrm{Pr} [y_i=1 | X_i, \theta ]$$
 
- In Maximum Likelihood Estimation (MLE), we want to find the set of parameters $\theta$ for our model that maximize the probability of joint distributions of observed events. In other words, in MLE we want to maximize $$L(\theta | D)$$ while in MAP we want to instead maximize the likelihood of $$D$$ given $$\theta$$. Therefore, in MLE we have  
+ In Maximum Likelihood Estimation (MLE), we want to find the set of parameters $\theta$ for our model that maximize the probability of joint distributions of observed events. In other words, in MLE we want to maximize $$L(\theta \| D)$$ while in MAP we want to instead maximize the likelihood of $$D$$ given $$\theta$$. Therefore, in MLE we have  
 
 $$
 L(\theta | D) = \prod_{i=1}^N f(X_i, y_i; \theta) = \prod_{i=1}^N f(y_i | 
