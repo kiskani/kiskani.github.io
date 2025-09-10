@@ -33,10 +33,10 @@ $$
 \hat{\theta}_{\text{MLE}} = \arg \max_{\theta} L(D \mid \theta) = \arg \max_{\theta} \prod_{i=1}^N f(X_i, y_i \mid \theta) = \arg \max_{\theta} \prod_{i=1}^N f\big(y_i | X_i, \theta \big)  
 $$ 
 
-set of parameters for this algorithm, we have
+We can instead maximize the log of this likelihood function to find the maximizing set of parameters. Therefore, 
 
 $$
-\theta_{MLE} = \mathrm{Argmax}_{\theta} 
+\hat{\theta}_{\text{MLE}} = \arg \max_{\theta} \sum_{i=1}^N \log \big( f\big(y_i | X_i, \theta \big)\big)
 $$
 
 Imagine that we have samples
