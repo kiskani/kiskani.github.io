@@ -42,7 +42,7 @@ $$
 based on the definition in the first equation above, we can write
 
 $$
-P\big(y_i | X_i, \theta \big) = \hat{y_i}^{y_i} \big(1-\hat{y_i}\big^{1-y_i}
+P\big(y_i | X_i, \theta \big) = \hat{y_i}^{y_i} \big(1-\hat{y_i}\big)^{1-y_i}
 $$
 
 Therefore, 
