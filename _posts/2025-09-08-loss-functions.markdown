@@ -39,10 +39,13 @@ $$
 \hat{\theta}_{\text{MLE}} = \arg \max_{\theta} \sum_{i=1}^N \log \big( P\big(y_i | X_i, \theta \big)\big)
 $$
 
-based on the definition in the first equation above, we have 
+based on the definition in the first equation above, we can write
 
 $$
-P\big(y_i | X_i, \theta \big) = P\big(y_i = 1| X_i, \theta \big)
+P\big(y_i | X_i, \theta \big) = \hat{y_i}^{y_i} \big(1-\hat{y_i}\big^{1-y_i}
 $$
+
+Therefore, 
+
 
 - Connection to KL Divergence
