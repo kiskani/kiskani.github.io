@@ -45,7 +45,13 @@ $$
 P\big(y_i | X_i, \theta \big) = \hat{y_i}^{y_i} \big(1-\hat{y_i}\big)^{1-y_i}
 $$
 
-Therefore, 
+Therefore, the MLE problem reduces to solving the following equation 
+
+$$
+\hat{\theta}_{\text{MLE}} = \arg \min_{\theta} \sum_{i=1}^N -y_i \log(\hat{y_i}) -(1-y_i)\log(1-\hat{y_i})
+$$
+
+In other words, Maximum Likelihood Estimation is equivalent to minimizing the Cross Entropy loss function. 
 
 
 - Connection to KL Divergence
