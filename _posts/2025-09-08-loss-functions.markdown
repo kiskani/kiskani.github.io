@@ -107,6 +107,7 @@ $$
 $$
 
 For a fixed true distribution $\(p\)$, the entropy $\(H(p)\)$ does **not** depend on the model $\(q\)$. Therefore,
+**minimizing KL divergence with respect to  the model is equivalent to minimizing the cross-entropy with respect to the model**. 
 
 $$
 \arg\min_q \mathrm{KL}(p\|q) \;=\; \arg\min_q H(p,q).
