@@ -113,59 +113,23 @@ $$
 \arg\min_q \mathrm{KL}(p\|q) \;=\; \arg\min_q H(p,q).
 $$
 
----
+In binary classification where labels are observed, the per-sample **cross-entropy loss** is
 
-## Binary Classification (Observed Labels)
-In practice, we observe samples \((x_i,y_i)\) with labels \(y_i\in\{0,1\}\).  
-The per-sample **cross-entropy loss** is
+$$
+\ell_{\text{CE}}(q; y_i) = -\big(y_i \log q + (1-y_i)\log(1-q)\big).
+$$
 
-\[
-\ell_{\text{CE}}(q; y) = -\big(y\log q + (1-y)\log(1-q)\big).
-\]
+If the true label is deterministic (i.e. $\(p\)$ is a delta at the observed $\(y\)$), then $\(H(p)=0\)$, and
 
-This is exactly
-
-\[
--\log q(y),
-\]
-
-the negative log-probability the model assigns to the observed label.  
-The expected cross-entropy over the true \(p\) equals \(H(p,q)\).
-
-If the true label is deterministic (i.e. \(p\) is a delta at the observed \(y\)), then \(H(p)=0\), and
-
-\[
+$$
 \mathrm{KL}(p\|q) = H(p,q) = \ell_{\text{CE}}(q;y).
-\]
+$$
 
-Thus, minimizing KL is **exactly** minimizing the usual CE loss.
+Thus, minimizing KL is **exactly** minimizing the usual CE loss. Therefore, 
 
----
-
-## Link to Maximum Likelihood
-Cross-entropy (negative log probability of observed labels) is the **negative log-likelihood**.  
-
-So minimizing average CE is equivalent to maximizing the likelihood (MLE):
-
-\[
+$$
 \text{minimize KL} 
 \;\Longleftrightarrow\; \text{minimize CE} 
 \;\Longleftrightarrow\; \text{maximize likelihood}.
-\]
-
----
-
-## Summary
-Because
-
-\[
-\mathrm{KL}(p\|q)=H(p,q)-H(p),
-\]
-
-and \(H(p)\) is constant w.r.t. the model, minimizing KL w.r.t. \(q\) is equivalent to minimizing cross-entropy.  
-In binary classification with observed labels, this reduces to the familiar **binary cross-entropy / negative log-likelihood loss**:
-
-\[
--\big(y\log q + (1-y)\log(1-q)\big).
-\]
+$$
 
