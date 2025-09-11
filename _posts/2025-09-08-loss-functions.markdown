@@ -84,38 +84,33 @@ $$
 
 Using **entropy** and **cross-entropy**:
 
-- Entropy of \(p\):  
-  \[
-  H(p) = -\sum_y p(y)\log p(y).
-  \]
+- Entropy of $\(p\)$:  
+  $$
+  H(p) = -\sum_{y_i} p(y_i)\log p(y_i).
+  $$
 
-- Cross-entropy between \(p\) and \(q\):  
-  \[
-  H(p,q) = -\sum_y p(y)\log q(y).
-  \]
+- Cross-entropy between $\(p\)$ and $\(q\)$:  
+  $$
+  H(p,q) = -\sum_{y_i} p(y_i)\log q(y_i).
+  $$
 
 Thus,
 
-\[
+$$
 \mathrm{KL}(p\|q) = -H(p) + H(p,q).
-\]
+$$
 
 So we have
 
-\[
+$$
 \boxed{\mathrm{KL}(p\|q) = H(p,q) - H(p).}
-\]
+$$
 
----
+For a fixed true distribution $\(p\)$, the entropy $\(H(p)\)$ does **not** depend on the model $\(q\)$. Therefore,
 
-## Key Observation
-For a fixed true distribution \(p\), the entropy \(H(p)\) does **not** depend on the model \(q\).  
-
-Therefore,
-
-\[
+$$
 \arg\min_q \mathrm{KL}(p\|q) \;=\; \arg\min_q H(p,q).
-\]
+$$
 
 ---
 
